@@ -4,7 +4,7 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<h1>Detalles</h1>
 
 <div>
     <h4>Alumno</h4>
@@ -29,16 +29,10 @@
             @Html.DisplayFor(model => model.Carnet)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Edad)
+            @Html.DisplayNameFor(model => model.FechaNacimiento)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Edad)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Email)
+            @Html.DisplayFor(model => model.FechaNacimiento)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Celular)
@@ -47,10 +41,10 @@
             @Html.DisplayFor(model => model.Celular)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Nro_emergencia)
+            @Html.DisplayNameFor(model => model.NroEmergencia)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Nro_emergencia)
+            @Html.DisplayFor(model => model.NroEmergencia)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Correo)
@@ -58,9 +52,15 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Correo)
         </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Estado)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Estado)
+        </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id_alumno">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model?.IdAlumno">Editar</a> |
+    <a asp-action="Index">Regresar</a>
 </div>
