@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Helluz.Contexto;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using Helluz.Contexto;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -10,22 +10,22 @@ using Helluz.Models;
 
 namespace Helluz.Controllers
 {
-    public class AlumnoesController : Controller
+    public class DisciplinasController : Controller
     {
         private readonly MyContext _context;
 
-        public AlumnoesController(MyContext context)
+        public DisciplinasController(MyContext context)
         {
             _context = context;
         }
 
-        // GET: Alumnoes
+        // GET: Disciplinas
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Alumnos.ToListAsync());
+            return View(await _context.Disciplinas.ToListAsync());
         }
 
-        // GET: Alumnoes/Details/5
+        // GET: Disciplinas/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,39 +33,39 @@ namespace Helluz.Controllers
                 return NotFound();
             }
 
-            var alumno = await _context.Alumnos
-                .FirstOrDefaultAsync(m => m.IdAlumno == id);
-            if (alumno == null)
+            var disciplina = await _context.Disciplinas
+                .FirstOrDefaultAsync(m => m.IdDisciplina == id);
+            if (disciplina == null)
             {
                 return NotFound();
             }
 
-            return View(alumno);
+            return View(disciplina);
         }
 
-        // GET: Alumnoes/Create
+        // GET: Disciplinas/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Alumnoes/Create
+        // POST: Disciplinas/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IdAlumno,Nombre,Apellido,Carnet,FechaNacimiento,Celular,NroEmergencia,Correo,Estado")] Alumno alumno)
+        public async Task<IActionResult> Create([Bind("IdDisciplina,NombreDisciplina,Descripcion,Estado")] Disciplina disciplina)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(alumno);
+                _context.Add(disciplina);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(alumno);
+            return View(disciplina);
         }
 
-        // GET: Alumnoes/Edit/5
+        // GET: Disciplinas/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -73,22 +73,22 @@ namespace Helluz.Controllers
                 return NotFound();
             }
 
-            var alumno = await _context.Alumnos.FindAsync(id);
-            if (alumno == null)
+            var disciplina = await _context.Disciplinas.FindAsync(id);
+            if (disciplina == null)
             {
                 return NotFound();
             }
-            return View(alumno);
+            return View(disciplina);
         }
 
-        // POST: Alumnoes/Edit/5
+        // POST: Disciplinas/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("IdAlumno,Nombre,Apellido,Carnet,FechaNacimiento,Celular,NroEmergencia,Correo,Estado")] Alumno alumno)
+        public async Task<IActionResult> Edit(int id, [Bind("IdDisciplina,NombreDisciplina,Descripcion,Estado")] Disciplina disciplina)
         {
-            if (id != alumno.IdAlumno)
+            if (id != disciplina.IdDisciplina)
             {
                 return NotFound();
             }
@@ -97,12 +97,12 @@ namespace Helluz.Controllers
             {
                 try
                 {
-                    _context.Update(alumno);
+                    _context.Update(disciplina);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!AlumnoExists(alumno.IdAlumno))
+                    if (!DisciplinaExists(disciplina.IdDisciplina))
                     {
                         return NotFound();
                     }
@@ -113,10 +113,10 @@ namespace Helluz.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(alumno);
+            return View(disciplina);
         }
 
-        // GET: Alumnoes/Delete/5
+        // GET: Disciplinas/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -124,34 +124,34 @@ namespace Helluz.Controllers
                 return NotFound();
             }
 
-            var alumno = await _context.Alumnos
-                .FirstOrDefaultAsync(m => m.IdAlumno == id);
-            if (alumno == null)
+            var disciplina = await _context.Disciplinas
+                .FirstOrDefaultAsync(m => m.IdDisciplina == id);
+            if (disciplina == null)
             {
                 return NotFound();
             }
 
-            return View(alumno);
+            return View(disciplina);
         }
 
-        // POST: Alumnoes/Delete/5
+        // POST: Disciplinas/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var alumno = await _context.Alumnos.FindAsync(id);
-            if (alumno != null)
+            var disciplina = await _context.Disciplinas.FindAsync(id);
+            if (disciplina != null)
             {
-                _context.Alumnos.Remove(alumno);
+                _context.Disciplinas.Remove(disciplina);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool AlumnoExists(int id)
+        private bool DisciplinaExists(int id)
         {
-            return _context.Alumnos.Any(e => e.IdAlumno == id);
+            return _context.Disciplinas.Any(e => e.IdDisciplina == id);
         }
     }
 }

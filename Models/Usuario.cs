@@ -8,11 +8,11 @@ namespace Helluz.Models
     public class Usuario
     {
         [Key]
-        public int Id_usuario { get; set; }
+        public int IdUsuario { get; set; }
         [Required]
         [StringLength(20, ErrorMessage = "El Nombre del Alumno no puede tener mas de 20 caracteres.")]
         [RegularExpression(@"^[A-Za-z]+$", ErrorMessage = "El Nombre del Alumno solo puede contener letras.")]
-        public string? Nombre_usuario { get; set; }
+        public string? NombreUsuario { get; set; }
         [Required]
         [StringLength(20, ErrorMessage = "La contraseña no puede tener mas de 20 caracteres.")]
         public string? Password { get; set; }
@@ -21,8 +21,7 @@ namespace Helluz.Models
         [Required]
         public Roles Rol { get; set; }
         [Required]
-        public string? Id_instructor { get; set; }
-        [ForeignKey("Id_instructor")]
+        public bool Estados { get; set; }
         public Instructor? Instructor { get; set; }
     }
 }

@@ -8,17 +8,17 @@ namespace Helluz.Models
     {
         [Key]
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
-        public int Id_membresia { get; set; }
+        public int IdMembresia { get; set; }
         [Required]
         public string? Nombre { get; set; }
         [Required]
-        public decimal Costo { get; set; }
+        public float Costo { get; set; }
         [Required]
         public int Nro_sesiones { get; set; }
         [Required]
-        public DateTime Fecha_inicio { get; set; }
+        public DateTime FechaActivo { get; set; }
         [Required]
-        public DateTime Fecha_fin { get; set; }
+        public DateTime FechaInactivo { get; set; }
         [Required]
         public bool Estado { get; set; }
         public ICollection<Inscripcion> Inscripcion { get; set; } = new List<Inscripcion>();

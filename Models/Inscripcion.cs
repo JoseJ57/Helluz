@@ -9,22 +9,24 @@ namespace Helluz.Models
     {
         [Key]
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
-        public int Id_inscripcion { get; set; }
+        public int IdInscripcion { get; set; }
         [Required]
-        public DateOnly Fecha_inicio { get; set; }
+        public DateOnly FechaInicio { get; set; }
         [Required]
-        public DateTime Fecha_fin { get; set; }
+        public DateTime FechaFin { get; set; }
         [Required]
-        public Metodos_pagos? Metodo_pago { get; set; }
+        public MetodosPagos MetodoPago { get; set; }
         [Required]
-        public int Nro_permisos { get; set; }
+        public int NroPermisos { get; set; }
         [Required]
-        public int Id_alumno { get; set; }
-        [ForeignKey("Id_alumno")]
+        public EstadoInscripcion Estado {  get; set; }
+        [Required]
+        public int IdAlumno { get; set; }
+        [ForeignKey("IdAlumno")]
         public Alumno? Alumno { get; set; }
         [Required]
-        public int Id_membresia { get; set; }
-        [ForeignKey("Id_membresia")]
+        public int IdMembresia { get; set; }
+        [ForeignKey("IdMembresia")]
         public Membresia? Membresia { get; set; }
     }
 }

@@ -7,9 +7,12 @@ namespace Helluz.Models
     {
         [Key]
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
-        public int Id_disciplina { get; set; }
+        public int IdDisciplina { get; set; }
         [Required]
-        public string? Nombre_disciplina { get; set; }
+        public string? NombreDisciplina { get; set; }
+        public string? Descripcion {  get; set; }
+        [Required]
+        public bool Estado { get; set; }
         public ICollection<Horario> Horarios { get; set; }= new List <Horario>(); 
 
     }

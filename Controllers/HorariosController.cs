@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Helluz.Contexto;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using Helluz.Contexto;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -10,22 +10,23 @@ using Helluz.Models;
 
 namespace Helluz.Controllers
 {
-    public class AlumnoesController : Controller
+    public class HorariosController : Controller
     {
         private readonly MyContext _context;
 
-        public AlumnoesController(MyContext context)
+        public HorariosController(MyContext context)
         {
             _context = context;
         }
 
-        // GET: Alumnoes
+        // GET: Horarios
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Alumnos.ToListAsync());
+            var myContext = _context.Horarios.Include(h => h.Instructor);
+            return View(await myContext.ToListAsync());
         }
 
-        // GET: Alumnoes/Details/5
+        // GET: Horarios/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,39 +34,42 @@ namespace Helluz.Controllers
                 return NotFound();
             }
 
-            var alumno = await _context.Alumnos
-                .FirstOrDefaultAsync(m => m.IdAlumno == id);
-            if (alumno == null)
+            var horario = await _context.Horarios
+                .Include(h => h.Instructor)
+                .FirstOrDefaultAsync(m => m.IdHorario == id);
+            if (horario == null)
             {
                 return NotFound();
             }
 
-            return View(alumno);
+            return View(horario);
         }
 
-        // GET: Alumnoes/Create
+        // GET: Horarios/Create
         public IActionResult Create()
         {
+            ViewData["IdInstructor"] = new SelectList(_context.Instructors, "IdInstructor", "Apellido");
             return View();
         }
 
-        // POST: Alumnoes/Create
+        // POST: Horarios/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IdAlumno,Nombre,Apellido,Carnet,FechaNacimiento,Celular,NroEmergencia,Correo,Estado")] Alumno alumno)
+        public async Task<IActionResult> Create([Bind("IdHorario,HoraInicio,HoraFin,DiaSemana,IdDisciplina,IdInstructor")] Horario horario)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(alumno);
+                _context.Add(horario);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(alumno);
+            ViewData["IdInstructor"] = new SelectList(_context.Instructors, "IdInstructor", "Apellido", horario.IdInstructor);
+            return View(horario);
         }
 
-        // GET: Alumnoes/Edit/5
+        // GET: Horarios/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -73,22 +77,23 @@ namespace Helluz.Controllers
                 return NotFound();
             }
 
-            var alumno = await _context.Alumnos.FindAsync(id);
-            if (alumno == null)
+            var horario = await _context.Horarios.FindAsync(id);
+            if (horario == null)
             {
                 return NotFound();
             }
-            return View(alumno);
+            ViewData["IdInstructor"] = new SelectList(_context.Instructors, "IdInstructor", "Apellido", horario.IdInstructor);
+            return View(horario);
         }
 
-        // POST: Alumnoes/Edit/5
+        // POST: Horarios/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("IdAlumno,Nombre,Apellido,Carnet,FechaNacimiento,Celular,NroEmergencia,Correo,Estado")] Alumno alumno)
+        public async Task<IActionResult> Edit(int id, [Bind("IdHorario,HoraInicio,HoraFin,DiaSemana,IdDisciplina,IdInstructor")] Horario horario)
         {
-            if (id != alumno.IdAlumno)
+            if (id != horario.IdHorario)
             {
                 return NotFound();
             }
@@ -97,12 +102,12 @@ namespace Helluz.Controllers
             {
                 try
                 {
-                    _context.Update(alumno);
+                    _context.Update(horario);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!AlumnoExists(alumno.IdAlumno))
+                    if (!HorarioExists(horario.IdHorario))
                     {
                         return NotFound();
                     }
@@ -113,10 +118,11 @@ namespace Helluz.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(alumno);
+            ViewData["IdInstructor"] = new SelectList(_context.Instructors, "IdInstructor", "Apellido", horario.IdInstructor);
+            return View(horario);
         }
 
-        // GET: Alumnoes/Delete/5
+        // GET: Horarios/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -124,34 +130,35 @@ namespace Helluz.Controllers
                 return NotFound();
             }
 
-            var alumno = await _context.Alumnos
-                .FirstOrDefaultAsync(m => m.IdAlumno == id);
-            if (alumno == null)
+            var horario = await _context.Horarios
+                .Include(h => h.Instructor)
+                .FirstOrDefaultAsync(m => m.IdHorario == id);
+            if (horario == null)
             {
                 return NotFound();
             }
 
-            return View(alumno);
+            return View(horario);
         }
 
-        // POST: Alumnoes/Delete/5
+        // POST: Horarios/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var alumno = await _context.Alumnos.FindAsync(id);
-            if (alumno != null)
+            var horario = await _context.Horarios.FindAsync(id);
+            if (horario != null)
             {
-                _context.Alumnos.Remove(alumno);
+                _context.Horarios.Remove(horario);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool AlumnoExists(int id)
+        private bool HorarioExists(int id)
         {
-            return _context.Alumnos.Any(e => e.IdAlumno == id);
+            return _context.Horarios.Any(e => e.IdHorario == id);
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace Helluz.Dto
 {
-    public enum Metodos_pagos
+    public enum MetodosPagos
     {
         Efectivo=0,
         Qr=1,

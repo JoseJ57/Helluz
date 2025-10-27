@@ -9,20 +9,21 @@ namespace Helluz.Models
     {
         [Key]
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
-        public int Id_horario { get; set; }
+        public int IdHorario { get; set; }
         [Required]
-        public TimeOnly Hora_inicio { set; get; }
+        public TimeOnly HoraInicio { set; get; }
         [Required]
-        public TimeOnly Hora_fin { set; get; }
+        public TimeOnly HoraFin { set; get; }
         [Required]
-        public Dias Dia { set; get; }
+        public Dias DiaSemana { set; get; }
         [Required]
-        public int Id_disciplina { get; set; }
-        [ForeignKey("Id_dicsiplina")]
+        public int IdDisciplina { get; set; }
+        [ForeignKey("IdDicsiplina")]
         public Disciplina? Disciplina { get; set; }
-        public ICollection<Horario> Horarios { get; set; }= new HashSet<Horario>();
-        public int Id_instructor { get; set; }
-        [ForeignKey("Id_instructor")]
+        public ICollection<AlumnoHorario> AlumnoHorarios { get; set; }= new HashSet<AlumnoHorario>();
+        public ICollection<AsistenciaInstructor> AsistenciaInstructors { get; set; }= new HashSet<AsistenciaInstructor>();
+        public int IdInstructor { get; set; }
+        [ForeignKey("IdInstructor")]
         public Instructor? Instructor { get;set; }
         
     }
