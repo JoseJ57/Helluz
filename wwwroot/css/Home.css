@@ -1,0 +1,16 @@
+﻿body {
+    background-image: url('/imagenes/wallpaperflare.com_wallpaper (5).jpg');
+    color:#fff;
+    font-family:'Times New Roman', Times, serif;
+    background-position:center;
+    background-size:cover;
+    margin-top:80px;
+}
+#LogoInicio {
+    width: 400px;
+    height: 400px;
+    border-radius: 250px;
+}
+.container{
+    margin-top: 120px; /* evita que se superponga con el encabezado */
+}

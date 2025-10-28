@@ -10,24 +10,8 @@
     <h4>TokenQr</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Token)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Token)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FechaGeneracion)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FechaGeneracion)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Estado)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Estado)
-        </dd>
+
+        <img src="@Url.Action("Generar", "QR", new { token = Model.Token })" alt="QR para marcar asistencia" />
     </dl>
 </div>
 <div>

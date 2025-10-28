@@ -36,12 +36,22 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Estado)
             </td>
+                <td>
+                    <img src="~/qr/qr_@(item.IdToken).png" width="150" alt="QR" />
+                </td>
+
+
             <td>
-                <a asp-action="Edit" asp-route-id="@item.IdToken">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.IdToken">Details</a> |
+                <a asp-action="Details" asp-route-id="@item.IdToken">Ver</a> |
                 <a asp-action="Delete" asp-route-id="@item.IdToken">Delete</a>
             </td>
         </tr>
-}
+        }
+        <div class="mb-3">
+            <a asp-action="GenerarQr" class="btn btn-success">
+                <i class="bi bi-qr-code"></i> Generar QR
+            </a>
+        </div>
+
     </tbody>
 </table>

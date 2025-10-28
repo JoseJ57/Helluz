@@ -10,16 +10,16 @@
     <link rel="stylesheet" href="~/Helluz.styles.css" asp-append-version="true" />
 </head>
 <body>
-    <header class="Encabezado">
-        <div class="d-flex align-items-center">
-             <img src="~/imagenes/HelluzLogo.jpeg" alt="Logo del sistema" width="100" height="100">
-             <h4 class="ms-3 mb-0">Sistema de Gestión 
-                 <br />
-                 Helluz</h4>
+    <header class="Encabezado navbar navbar-dark bg-dark fixed-top">
+        <div class="container-fluid d-flex align-items-center">
+            <img src="~/imagenes/HelluzLogo.jpeg" alt="Logo del sistema" width="60" height="60">
+            <h4 class="ms-3 mb-0 text-white">Helluz</h4>
         </div>
     </header>
-    <nav class="navbar navbar-expand-sm navbar-dark bg-dark flex-column align-items-start vh-100 position-fixed" style="width: 220px;">
-        <div class="container-fluid flex-column align-items-start">
+    <nav class="navbar navbar-expand-sm navbar-dark bg-dark flex-column align-items-start vh-100 position-fixed"
+         style="width: 220px; top: 80px; margin-top: 0;">
+
+        <div class="container-fluid flex-column align-items-start mt-3">
 
             <a class="navbar-brand mb-4" asp-area="" asp-controller="Home" asp-action="Index">Helluz</a>
 
@@ -30,9 +30,7 @@
 
             <div class="collapse navbar-collapse w-100" id="sideMenu">
                 <ul class="navbar-nav flex-column w-100">
-                    <li class="nav-item">
-                        <a class="nav-link " asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                    </li>
+                    
                     <li class="nav-item">
                         <a class="nav-link " asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                     </li>
@@ -60,7 +58,7 @@
     </nav>
 
     <div class="container">
-        <main role="main" class="pb-3" margin-left: 220px;>
+        <main role="main" class="pb-3" margin-left: 220px; margin-top:120px;>
             @RenderBody()
         </main>
     </div>

@@ -335,4 +335,11 @@ C:\Users\JJ\Desktop\FNI INF\New folder\Software I\Helluz\obj\Debug\net9.0\Helluz
 C:\Users\JJ\Desktop\FNI INF\New folder\Software I\Helluz\obj\Debug\net9.0\Helluz.genruntimeconfig.cache
 C:\Users\JJ\Desktop\FNI INF\New folder\Software I\Helluz\obj\Debug\net9.0\ref\Helluz.dll
 C:\Users\JJ\Desktop\FNI INF\New folder\Software I\Helluz\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt
-C:\Users\JJ\Desktop\FNI INF\New folder\Software I\Helluz\obj\Debug\net9.0\compressed\v48ljr5vn3-y198jc65k1.gz
+C:\Users\JJ\Desktop\FNI INF\New folder\Software I\Helluz\obj\Debug\net9.0\compressed\wsq9tzhbzg-ffjaia8aq1.gz
+C:\Users\JJ\Desktop\FNI INF\New folder\Software I\Helluz\obj\Debug\net9.0\compressed\v48ljr5vn3-6n8i4gu8at.gz
+C:\Users\JJ\Desktop\FNI INF\New folder\Software I\Helluz\bin\Debug\net9.0\Microsoft.Win32.SystemEvents.dll
+C:\Users\JJ\Desktop\FNI INF\New folder\Software I\Helluz\bin\Debug\net9.0\QRCoder.dll
+C:\Users\JJ\Desktop\FNI INF\New folder\Software I\Helluz\bin\Debug\net9.0\System.Drawing.Common.dll
+C:\Users\JJ\Desktop\FNI INF\New folder\Software I\Helluz\bin\Debug\net9.0\runtimes\win\lib\net6.0\Microsoft.Win32.SystemEvents.dll
+C:\Users\JJ\Desktop\FNI INF\New folder\Software I\Helluz\bin\Debug\net9.0\runtimes\unix\lib\net6.0\System.Drawing.Common.dll
+C:\Users\JJ\Desktop\FNI INF\New folder\Software I\Helluz\bin\Debug\net9.0\runtimes\win\lib\net6.0\System.Drawing.Common.dll
