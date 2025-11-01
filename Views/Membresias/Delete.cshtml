@@ -1,0 +1,100 @@
+﻿@model Helluz.Models.Membresia
+
+@{
+    ViewData["Title"] = "Eliminar";
+}
+
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow border-danger">
+                <div class="card-header bg-danger text-white">
+                    <h4 class="mb-0">
+                        <i class="fas fa-exclamation-triangle"></i> Confirmar Eliminación
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-warning">
+                        <i class="fas fa-exclamation-circle"></i>
+                        ¿Estás seguro de que deseas eliminar este registro?
+                    </div>
+
+                    <dl class="row">
+                        <dt class="col-sm-4">Tipo:</dt>
+                        <dd class="col-sm-8">
+                            @if (Model.EsPromocion)
+                            {
+                                <span class="badge bg-warning text-dark">Promoción</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-info">Membresía</span>
+                            }
+                        </dd>
+
+                        <dt class="col-sm-4">Nombre:</dt>
+                        <dd class="col-sm-8">@Model.Nombre</dd>
+
+                        <dt class="col-sm-4">Costo:</dt>
+                        <dd class="col-sm-8">$@Model.Costo.ToString("N2")</dd>
+
+                        <dt class="col-sm-4">Sesiones:</dt>
+                        <dd class="col-sm-8">@Model.Nro_sesiones</dd>
+
+                        @if (Model.EsPromocion && Model.FechaActivo.HasValue)
+                        {
+                            <dt class="col-sm-4">Vigencia:</dt>
+                            <dd class="col-sm-8">
+                                @Model.FechaActivo.Value.ToString("dd MMM")
+                            </dd>
+}
+                        <dt class="col-sm-4">Estado:</dt>
+                        <dd class="col-sm-8">
+                            @if (Model.Estado)
+                            {
+                                <span class="badge bg-success">Activa</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-danger">Inactiva</span>
+                            }
+                        </dd>
+
+                        @if (Model.Inscripcion.Any())
+                        {
+                            <dt class="col-sm-4">Inscripciones:</dt>
+                            <dd class="col-sm-8">
+                                <span class="badge bg-danger">
+                                    @Model.Inscripcion.Count inscripciones asociadas
+                                </span>
+                            </dd>
+                        }
+                    </dl>
+
+                    @if (Model.Inscripcion.Any())
+                    {
+                        <div class="alert alert-danger">
+                            <i class="fas fa-times-circle"></i>
+                            <strong>No se puede eliminar:</strong> Este registro tiene inscripciones asociadas.
+                        </div>
+                    }
+
+                    <form asp-action="Delete">
+                        <input type="hidden" asp-for="IdMembresia" />
+                        <div class="d-flex justify-content-between">
+                            <a asp-action="Index" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left"></i> Cancelar
+                            </a>
+                            @if (!Model.Inscripcion.Any())
+                            {
+                                <button type="submit" class="btn btn-danger">
+                                    <i class="fas fa-trash"></i> Eliminar
+                                </button>
+                            }
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

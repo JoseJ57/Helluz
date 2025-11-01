@@ -1,6 +1,7 @@
 using Helluz.Contexto;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
+using TuProyecto.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +20,8 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     });
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<MembresiaService>();
+builder.Services.AddHostedService<ActualizadorPromocionesBgService>();
 
 var app = builder.Build();
 

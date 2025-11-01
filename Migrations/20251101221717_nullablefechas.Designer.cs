@@ -4,6 +4,7 @@ using Helluz.Contexto;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Helluz.Migrations
 {
     [DbContext(typeof(MyContext))]
-    partial class MyContextModelSnapshot : ModelSnapshot
+    [Migration("20251101221717_nullablefechas")]
+    partial class nullablefechas
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -307,10 +310,10 @@ namespace Helluz.Migrations
                     b.Property<bool>("Estado")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime?>("FechaActivo")
+                    b.Property<DateTime>("FechaActivo")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("FechaInactivo")
+                    b.Property<DateTime>("FechaInactivo")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Nombre")

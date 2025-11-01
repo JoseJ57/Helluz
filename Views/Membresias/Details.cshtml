@@ -1,0 +1,154 @@
+﻿@model Helluz.Models.Membresia
+
+@{
+    ViewData["Title"] = "Detalles";
+}
+
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-info text-white">
+                    <h4 class="mb-0">
+                        <i class="fas fa-info-circle"></i> Detalles
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <!-- Tipo -->
+                    <div class="mb-4 text-center">
+                        @if (Model.EsPromocion)
+                        {
+                            <h3>
+                                <span class="badge bg-warning text-dark fs-5">
+                                    <i class="fas fa-tag"></i> PROMOCIÓN
+                                </span>
+                            </h3>
+                        }
+                        else
+                        {
+                            <h3>
+                                <span class="badge bg-info fs-5">
+                                    <i class="fas fa-id-card"></i> MEMBRESÍA
+                                </span>
+                            </h3>
+                        }
+                    </div>
+
+                    <dl class="row">
+                        <dt class="col-sm-4">ID:</dt>
+                        <dd class="col-sm-8">#@Model.IdMembresia</dd>
+
+                        <dt class="col-sm-4">Nombre:</dt>
+                        <dd class="col-sm-8">
+                            <strong class="fs-5">@Model.Nombre</strong>
+                        </dd>
+
+                        <dt class="col-sm-4">Costo:</dt>
+                        <dd class="col-sm-8">
+                            <span class="text-success fs-4 fw-bold">
+                                $@Model.Costo.ToString("N2")
+                            </span>
+                        </dd>
+
+                        <dt class="col-sm-4">Número de Sesiones:</dt>
+                        <dd class="col-sm-8">
+                            <span class="badge bg-secondary fs-6">
+                                @Model.Nro_sesiones sesiones
+                            </span>
+                        </dd>
+
+                        @if (Model.EsPromocion)
+                        {
+                            <dt class="col-sm-4">Vigencia Anual:</dt>
+                            <dd class="col-sm-8">
+                                @if (Model.FechaActivo.HasValue && Model.FechaInactivo.HasValue)
+                                {
+                                    <div class="alert alert-info mb-0">
+                                        <i class="fas fa-calendar-alt"></i>
+                                        <strong>Desde:</strong> @Model.FechaActivo.Value.ToString("dd 'de' MMMM")
+                                        <br>
+                                        <strong>Hasta:</strong> @Model.FechaInactivo.Value.ToString("dd 'de' MMMM")
+                                        <br>
+                                        <small class="text-muted">
+                                            Esta promoción se activa automáticamente cada año en estas fechas
+                                        </small>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <span class="text-muted">No configurado</span>
+                                }
+                            </dd>
+                        }
+                        else
+                        {
+                            <dt class="col-sm-4">Vigencia:</dt>
+                            <dd class="col-sm-8">
+                                <span class="badge bg-success">
+                                    <i class="fas fa-infinity"></i> Todo el año
+                                </span>
+                            </dd>
+                        }
+
+                        <dt class="col-sm-4">Estado Actual:</dt>
+                        <dd class="col-sm-8">
+                            @if (Model.Estado)
+                            {
+                                <h4>
+                                    <span class="badge bg-success">
+                                        <i class="fas fa-check-circle"></i> ACTIVA
+                                    </span>
+                                </h4>
+                            }
+                            else
+                            {
+                                <h4>
+                                    <span class="badge bg-danger">
+                                        <i class="fas fa-times-circle"></i> INACTIVA
+                                    </span>
+                                </h4>
+                            }
+                            @if (Model.EsPromocion)
+                            {
+                                <small class="text-muted">
+                                    El estado se actualiza automáticamente según las fechas configuradas
+                                </small>
+                            }
+                        </dd>
+
+                        <dt class="col-sm-4">Inscripciones:</dt>
+                        <dd class="col-sm-8">
+                            @if (Model.Inscripcion.Any())
+                            {
+                                <span class="badge bg-primary fs-6">
+                                    @Model.Inscripcion.Count inscripciones registradas
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="text-muted">Sin inscripciones</span>
+                            }
+                        </dd>
+                    </dl>
+
+                    <hr>
+
+                    <!-- Botones de acción -->
+                    <div class="d-flex justify-content-between">
+                        <a asp-action="Index" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i> Volver al Listado
+                        </a>
+                        <div>
+                            <a asp-action="Edit" asp-route-id="@Model.IdMembresia" class="btn btn-warning me-2">
+                                <i class="fas fa-edit"></i> Editar
+                            </a>
+                            <a asp-action="Delete" asp-route-id="@Model.IdMembresia" class="btn btn-danger">
+                                <i class="fas fa-trash"></i> Eliminar
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

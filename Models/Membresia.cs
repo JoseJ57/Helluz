@@ -15,10 +15,10 @@ namespace Helluz.Models
         public float Costo { get; set; }
         [Required]
         public int Nro_sesiones { get; set; }
-        [Required]
-        public DateTime FechaActivo { get; set; }
-        [Required]
-        public DateTime FechaInactivo { get; set; }
+
+        public DateTime? FechaActivo { get; set; }
+
+        public DateTime? FechaInactivo { get; set; }
         [Required]
         public bool EsPromocion { get; set; }
         [Required]
