@@ -1,0 +1,64 @@
+﻿@model Helluz.Models.Inscripcion
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Inscripcion</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="IdInscripcion" />
+            <div class="form-group">
+                <label asp-for="FechaInicio" class="control-label"></label>
+                <input asp-for="FechaInicio" class="form-control" />
+                <span asp-validation-for="FechaInicio" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FechaFin" class="control-label"></label>
+                <input asp-for="FechaFin" class="form-control" />
+                <span asp-validation-for="FechaFin" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MetodoPago" class="control-label"></label>
+                <select asp-for="MetodoPago" class="form-control"></select>
+                <span asp-validation-for="MetodoPago" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NroPermisos" class="control-label"></label>
+                <input asp-for="NroPermisos" class="form-control" />
+                <span asp-validation-for="NroPermisos" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Estado" class="control-label"></label>
+                <select asp-for="Estado" class="form-control"></select>
+                <span asp-validation-for="Estado" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdAlumno" class="control-label"></label>
+                <select asp-for="IdAlumno" class="form-control" asp-items="ViewBag.IdAlumno"></select>
+                <span asp-validation-for="IdAlumno" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdMembresia" class="control-label"></label>
+                <select asp-for="IdMembresia" class="form-control" asp-items="ViewBag.IdMembresia"></select>
+                <span asp-validation-for="IdMembresia" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,21 +1,36 @@
 using System.Diagnostics;
 using Helluz.Models;
 using Microsoft.AspNetCore.Mvc;
+using Helluz.Contexto;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using Helluz.Models;
 
 namespace Helluz.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        private readonly MyContext _context;
+        public HomeController(MyContext context)
         {
-            _logger = logger;
+            _context = context;
         }
 
         public IActionResult Index()
         {
-            return View();
+            var model = new DashboardViewModel
+            {
+                TotalAlumnos = _context.Alumnos.Count(),
+                TotalUsuarios = _context.Usuarios.Count(),
+                TotalInstructores = _context.Instructors.Count()
+            };
+
+            return View(model);
         }
 
         public IActionResult Privacy()

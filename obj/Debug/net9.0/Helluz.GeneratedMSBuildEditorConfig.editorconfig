@@ -48,6 +48,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWx1bW5vZXNcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/JJ/Desktop/FNI INF/New folder/Software I/Helluz/Views/Asistencia/RegistrarAsistencia.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXNpc3RlbmNpYVxSZWdpc3RyYXJBc2lzdGVuY2lhLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/JJ/Desktop/FNI INF/New folder/Software I/Helluz/Views/Disciplinas/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGlzY2lwbGluYXNcQ3JlYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
@@ -96,6 +100,26 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9yYXJpb3NcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/JJ/Desktop/FNI INF/New folder/Software I/Helluz/Views/Inscripciones/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW5zY3JpcGNpb25lc1xDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/JJ/Desktop/FNI INF/New folder/Software I/Helluz/Views/Inscripciones/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW5zY3JpcGNpb25lc1xEZWxldGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/JJ/Desktop/FNI INF/New folder/Software I/Helluz/Views/Inscripciones/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW5zY3JpcGNpb25lc1xEZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/JJ/Desktop/FNI INF/New folder/Software I/Helluz/Views/Inscripciones/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW5zY3JpcGNpb25lc1xFZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/JJ/Desktop/FNI INF/New folder/Software I/Helluz/Views/Inscripciones/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW5zY3JpcGNpb25lc1xJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/JJ/Desktop/FNI INF/New folder/Software I/Helluz/Views/Instructors/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW5zdHJ1Y3RvcnNcQ3JlYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
@@ -118,30 +142,6 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/JJ/Desktop/FNI INF/New folder/Software I/Helluz/Views/Login/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTG9naW5cSW5kZXguY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/JJ/Desktop/FNI INF/New folder/Software I/Helluz/Views/Membresias/Create.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWVtYnJlc2lhc1xDcmVhdGUuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/JJ/Desktop/FNI INF/New folder/Software I/Helluz/Views/Membresias/Delete.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWVtYnJlc2lhc1xEZWxldGUuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/JJ/Desktop/FNI INF/New folder/Software I/Helluz/Views/Membresias/Details.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWVtYnJlc2lhc1xEZXRhaWxzLmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/JJ/Desktop/FNI INF/New folder/Software I/Helluz/Views/Membresias/Edit.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWVtYnJlc2lhc1xFZGl0LmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/JJ/Desktop/FNI INF/New folder/Software I/Helluz/Views/Membresias/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWVtYnJlc2lhc1xJbmRleC5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/JJ/Desktop/FNI INF/New folder/Software I/Helluz/Views/QR/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUVJcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/JJ/Desktop/FNI INF/New folder/Software I/Helluz/Views/Shared/Error.cshtml]

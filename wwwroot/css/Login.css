@@ -1,0 +1,41 @@
+﻿.login-container {
+    width: 600px;
+    height: 600px;
+    border-radius: 20px;
+    border: solid 1px #808080;
+    margin: auto;
+    margin-top: 80px;
+    box-shadow: 0 0 10px 0 #000000;
+    padding: 20px;
+    backdrop-filter:blur(10px);
+}
+
+body {
+    font-family:sans-serif;
+}
+
+input {
+    border-left: solid 1px #808080;
+    padding: 1px;
+    width: 90%;
+    border: none;
+    border-bottom: solid 1px #222;
+    margin: 10px;
+}
+
+label{
+    font-size:18px;
+}
+.btn{
+    border: solid 1px #808080;
+}
+.fade-in {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 2s ease, transform 2s ease;
+}
+
+    .fade-in.show {
+        opacity: 1;
+        transform: translateY(0);
+    }

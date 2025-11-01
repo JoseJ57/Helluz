@@ -20,6 +20,8 @@ namespace Helluz.Models
         [Required]
         public DateTime FechaInactivo { get; set; }
         [Required]
+        public bool EsPromocion { get; set; }
+        [Required]
         public bool Estado { get; set; }
         public ICollection<Inscripcion> Inscripcion { get; set; } = new List<Inscripcion>();
     }

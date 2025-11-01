@@ -46,6 +46,18 @@ namespace Helluz.Controllers
 
             return View(tokenQr);
         }
+        public IActionResult ObtenerQr(int id)
+        {
+            string qrPath = Path.Combine(_env.WebRootPath, "qr", $"qr_{id}.png");
+
+            if (!System.IO.File.Exists(qrPath))
+            {
+                return NotFound();
+            }
+
+            var image = System.IO.File.OpenRead(qrPath);
+            return File(image, "image/png");
+        }
         public async Task<IActionResult> GenerarQr()
         {
             // 1. Buscar el token activo anterior y desactivarlo
@@ -89,56 +101,7 @@ namespace Helluz.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // GET: TokenQrs/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
 
-        // POST: TokenQrs/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(TokenQr tokenQr)
-        {
-            if (ModelState.IsValid)
-            {
-                // 1️⃣ Generar token único
-                tokenQr.Token = Guid.NewGuid().ToString();
-                tokenQr.FechaGeneracion = DateOnly.FromDateTime(DateTime.Now);
-                tokenQr.Estado = true;
-
-                // 2️⃣ Guardar en base de datos
-                _context.Add(tokenQr);
-                await _context.SaveChangesAsync();
-
-                // 3️⃣ Generar el enlace que el QR abrirá
-                string urlAsistencia = Url.Action("RegistrarAsistencia", "Asistencia", new { token = tokenQr.Token }, protocol: Request.Scheme);
-
-                // 4️⃣ Crear el QR
-                using (QRCodeGenerator qrGenerator = new QRCodeGenerator())
-                {
-                    QRCodeData qrCodeData = qrGenerator.CreateQrCode(urlAsistencia, QRCodeGenerator.ECCLevel.Q);
-                    using (QRCode qrCode = new QRCode(qrCodeData))
-                    {
-                        using (Bitmap qrBitmap = qrCode.GetGraphic(20))
-                        {
-                            // 5️⃣ Guardar imagen en wwwroot/qr/
-                            string qrFolder = Path.Combine(_env.WebRootPath, "qr");
-                            if (!Directory.Exists(qrFolder))
-                                Directory.CreateDirectory(qrFolder);
-
-                            string filePath = Path.Combine(_env.WebRootPath, "qr", $"qr_{tokenQr.IdToken}.png");
-                            qrBitmap.Save(filePath, ImageFormat.Png);
-                        }
-                    }
-                }
-
-                return RedirectToAction(nameof(Index));
-            }
-            return View(tokenQr);
-        }
 
         // GET: TokenQrs/Edit/5
         public async Task<IActionResult> Edit(int? id)

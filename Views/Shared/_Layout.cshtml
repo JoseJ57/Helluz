@@ -8,57 +8,180 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Helluz.styles.css" asp-append-version="true" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            overflow-x: hidden;
+        }
+
+        .Encabezado {
+            height: 80px;
+            z-index: 1000;
+        }
+
+        .hover-zone {
+            position: fixed;
+            left: 0;
+            top: 80px;
+            width: 50px;
+            height: calc(100vh - 80px);
+            z-index: 998;
+        }
+
+        .sidebar-indicator {
+            position: fixed;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 5px;
+            height: 60px;
+            background: #343a40;
+            border-radius: 0 5px 5px 0;
+            opacity: 0.6;
+            transition: opacity 0.3s ease;
+            z-index: 997;
+        }
+
+        .sidebar-nav {
+            position: fixed;
+            left: -220px;
+            top: 80px;
+            width: 220px;
+            height: calc(100vh - 80px);
+            background-color: #343a40;
+            transition: left 0.3s ease;
+            z-index: 999;
+            overflow-y: auto;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+        }
+
+            .sidebar-nav.active {
+                left: 0;
+            }
+
+                .sidebar-nav.active ~ .sidebar-indicator {
+                    opacity: 0;
+                }
+
+            .sidebar-nav .navbar-brand {
+                color: white;
+                font-size: 1.3rem;
+                font-weight: 600;
+                padding: 15px 20px;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            }
+ 
+                .sidebar-nav .nav-link,
+                .sidebar-nav .nav-link:hover,
+                .sidebar-nav .nav-link:focus,
+                .sidebar-nav .nav-link:active {
+                    background-color: transparent !important;
+                    color: rgba(255, 255, 255, 0.85) !important;
+                    border-left-color: transparent !important;
+                    box-shadow: none !important;
+                }
+
+                  
+                    .sidebar-nav .nav-link:hover {
+                        color: white !important;
+                        border-left: 4px solid #F22 !important;
+                        padding-left: 30px;
+                        transition: all 0.3s ease;
+                    }
+
+                   
+                    .sidebar-nav .nav-link.active {
+                        background-color: rgba(255, 34, 34, 0.15) !important;
+                        border-left: 4px solid #F22 !important;
+                        color: white !important;
+                    }
+
+
+                
+
+                .sidebar-nav .nav-link i {
+                    margin-right: 10px;
+                    width: 20px;
+                    text-align: center;
+                }
+
+            .sidebar-nav::-webkit-scrollbar {
+                width: 6px;
+            }
+
+            .sidebar-nav::-webkit-scrollbar-track {
+                background: rgba(0, 0, 0, 0.1);
+            }
+
+            .sidebar-nav::-webkit-scrollbar-thumb {
+                background: rgba(255, 255, 255, 0.3);
+                border-radius: 3px;
+            }
+
+        main {
+            margin-left: 0;
+            margin-top: 120px;
+            padding: 20px;
+        }
+
+        footer {
+            margin-left: 0;
+        }
+    </style>
 </head>
 <body>
     <header class="Encabezado navbar navbar-dark bg-dark fixed-top">
         <div class="container-fluid d-flex align-items-center">
-            <img src="~/imagenes/HelluzLogo.jpeg" alt="Logo del sistema" width="60" height="60">
-            <h4 class="ms-3 mb-0 text-white">Helluz</h4>
+            <ul class="navbar-nav flex-row w-100">
+                <li> <img src="~/imagenes/HelluzLogo.jpeg" alt="Logo del sistema" width="60" height="60"></li>
+                <li> <h4 class="ms-3 mb-0 text-white">Helluz</h4></li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">
+                        <i class="fas fa-tachometer-alt"></i> Inicio
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-area="" asp-controller="Login" asp-action="Index"> Salir</a>
+                </li>
+            </ul>
         </div>
     </header>
-    <nav class="navbar navbar-expand-sm navbar-dark bg-dark flex-column align-items-start vh-100 position-fixed"
-         style="width: 220px; top: 80px; margin-top: 0;">
+    <div class="hover-zone"></div>
 
-        <div class="container-fluid flex-column align-items-start mt-3">
+    <div class="sidebar-indicator"></div>
 
-            <a class="navbar-brand mb-4" asp-area="" asp-controller="Home" asp-action="Index">Helluz</a>
-
-            <button class="navbar-toggler mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#sideMenu"
-                    aria-controls="sideMenu" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="collapse navbar-collapse w-100" id="sideMenu">
-                <ul class="navbar-nav flex-column w-100">
-                    
-                    <li class="nav-item">
-                        <a class="nav-link " asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link " asp-area="" asp-controller="Alumnoes" asp-action="Index">Alumnos</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link " asp-area="" asp-controller="Instructors" asp-action="Index">Instructores</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link " asp-area="" asp-controller="Membresias" asp-action="Index">Membresias</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link " asp-area="" asp-controller="Horarios" asp-action="Index">Horarios</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link " asp-area="" asp-controller="Disciplinas" asp-action="Index">Disciplnas</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link " asp-area="" asp-controller="TokenQrs" asp-action="Index">Qr</a>
-                    </li>
-                </ul>
-            </div>
+    <nav class="sidebar-nav navbar navbar-dark bg-dark flex-column align-items-start">
+        <div class="container-fluid flex-column align-items-start">
+            <ul class="navbar-nav flex-column w-100">
+                <li class="nav-item">
+                    <a class="nav-link " asp-area="" asp-controller="Alumnoes" asp-action="Index">Alumnos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " asp-area="" asp-controller="Instructors" asp-action="Index">Instructores</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " asp-area="" asp-controller="Membresias" asp-action="Index">Membresías</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " asp-area="" asp-controller="Horarios" asp-action="Index">Horarios</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " asp-area="" asp-controller="Disciplinas" asp-action="Index">Disciplinas</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " asp-area="" asp-controller="Disciplinas" asp-action="Index">Disciplinas</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " asp-area="" asp-controller="TokenQrs" asp-action="Index">Qr</a>
+                </li>
+            </ul>
         </div>
+
     </nav>
 
     <div class="container">
-        <main role="main" class="pb-3" margin-left: 220px; margin-top:120px;>
+        <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
@@ -68,9 +191,52 @@
             &copy; 2025 - Helluz - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+
+  
+    <script>
+    
+        const sidebar = document.querySelector('.sidebar-nav');
+        const hoverZone = document.querySelector('.hover-zone');
+        let timeoutId = null;
+
+    
+        hoverZone.addEventListener('mouseenter', () => {
+            clearTimeout(timeoutId);
+            sidebar.classList.add('active');
+        });
+
+      
+        sidebar.addEventListener('mouseleave', () => {
+            timeoutId = setTimeout(() => {
+                sidebar.classList.remove('active');
+            }, 300);
+        });
+
+        sidebar.addEventListener('mouseenter', () => {
+            clearTimeout(timeoutId);
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentPath = window.location.pathname;
+            const navLinks = document.querySelectorAll('.sidebar-nav .nav-link');
+
+            navLinks.forEach(link => {
+                if (link.getAttribute('href') === currentPath) {
+                    link.classList.add('active');
+                }
+
+                link.addEventListener('click', function() {
+                    navLinks.forEach(l => l.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+        });
+    </script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

@@ -14,8 +14,8 @@
 
     <style>
         body {
-            background: linear-gradient(135deg, #000 30%, #111 70%,#e63946 100%);
-            color: white;
+            background-color: white;
+            color:black;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             min-height: 100vh;
             margin: 0;
@@ -57,6 +57,12 @@
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
+            width:300px;
+            height: 600px;
+            margin:auto;
+            margin-top:100px;
+            
+
         }
         .login-icono{
             border-radius:100px;
@@ -68,25 +74,14 @@
             height: 400px;
         }
 
-
         label, h1 {
-            color: #ffffff;
+            color: #000;
         }
     </style>
 
 </head>
 <body>
-    <div class="container-fluid vh-100">
-        <div class="row h-100">
-            <div class="col-6 d-flex justify-content-center align-items-center">
-                <div>
-                    <div class="mb-3 text-center">
-                        <img src="~/imagenes/HelluzLogo.jpeg" alt="Helluz escudo" id="HelluzLogo"/>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-6 d-flex justify-content-center align-items-center">
+    
                 <form asp-controller="Login" asp-action="Login" method="post" class="w-75 fade-in login-container" id="login-form">
                     <div class="text-center mb-4">
                         <h1>Iniciar Sesión</h1>
@@ -110,10 +105,7 @@
                         <button type="submit" class="btn btn-outline-primary">Ingresar</button>
                     </div>
                 </form>
-            </div>
-        </div>
-    </div>
-    <script>
+     <script>
         function togglePassword() {
             const passwordInput = document.getElementById('exampleInputPassword1');
             const toggleIcon = document.getElementById('toggleIcon');

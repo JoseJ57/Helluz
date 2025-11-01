@@ -1,13 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Helluz.Contexto;
-using System.Threading.Tasks;
+﻿using Helluz.Contexto;
+using Helluz.Dto;
+using Helluz.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Helluz.Models;
-using Helluz.Dto;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 
 namespace Helluz.Controllers
 {
@@ -34,19 +35,52 @@ namespace Helluz.Controllers
 
         // POST que guarda la asistencia (puede diferenciar entre alumno o instructor)
         [HttpPost]
-        public async Task<IActionResult> MarcarAsistenciaAlumno(int idAlumno, string token)
+        public async Task<IActionResult> MarcarAsistencia(string carnet)
         {
-            var asistencia = new AsistenciaAlumno
-            {
-                Fecha = DateOnly.FromDateTime(DateTime.Now),
-                Hora = TimeOnly.FromDateTime(DateTime.Now),
-                Estado = EstadoAsistencia.presente,
-                IdAlumno = idAlumno
-            };
-            _context.AsistenciaAlumnos.Add(asistencia);
-            await _context.SaveChangesAsync();
 
-            return Content("Asistencia registrada correctamente ✅");
+            if (string.IsNullOrWhiteSpace(carnet))
+                return BadRequest("Debe ingresar un carnet válido.");
+
+            var fecha = DateOnly.FromDateTime(DateTime.Now);
+            var hora = TimeOnly.FromDateTime(DateTime.Now);
+
+            var alumno = await _context.Alumnos.FirstOrDefaultAsync(a => a.Carnet == carnet);
+            if (alumno != null)
+            {
+                var asistencia = new AsistenciaAlumno
+                {
+                    Fecha = fecha,
+                    Hora = hora,
+                    Estado = EstadoAsistencia.presente,
+                    IdAlumno=alumno.IdAlumno
+                };
+
+                _context.AsistenciaAlumnos.Add(asistencia);
+                await _context.SaveChangesAsync();
+
+                return Ok(new { mensaje = $"Asistencia registrada correctamente ✅ {alumno.Nombre} ({alumno.Carnet})" });
+            }
+
+            // Si no es alumno, buscar instructor
+            var instructor = await _context.Instructors.FirstOrDefaultAsync(i => i.Carnet == carnet);
+            if (instructor != null)
+            {
+                var asistencia = new AsistenciaInstructor
+                {
+                    Fecha = fecha,
+                    Hora = hora,
+                    Estado = EstadoAsistencia.presente,
+                    IdInstructor = instructor.IdInstructor
+                };
+
+                _context.AsistenciaInstructor.Add(asistencia);
+                await _context.SaveChangesAsync();
+
+                return Ok(new { mensaje = $"Asistencia registrada correctamente ✅{instructor.Nombre} ({instructor.Carnet})" });
+            }
+
+            // Si no se encuentra
+            return NotFound("No se encontró a nadie con este carnet.");
         }
     }
 }

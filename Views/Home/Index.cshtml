@@ -1,15 +1,35 @@
-﻿@{
+﻿@model Helluz.Models.DashboardViewModel
+
+@{
     ViewData["Title"] = "Home Page";
 }
 <head>
     <link href="~/css/Home.css" rel="stylesheet" />
 </head>
 
-<div class="text-center">
-    
-    <h1 class="display-4">SISTEMA DE GESTION 
-        <br />HELLUZ
-    </h1>
-    <img src="imagenes/HelluzLogo.jpeg" id="LogoInicio" alt="Logo Helluz"/>
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Panel de Control</h2>
 
+    <div class="row text-center">
+        <div class="col-md-4">
+            <div class="card">
+                <h3>@Model.TotalAlumnos</h3>
+                <p>Alumnos</p>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card">
+                <h3>@Model.TotalUsuarios</h3>
+                <p>Usuarios</p>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card">
+                <h3>@Model.TotalInstructores</h3>
+                <p>Instructores</p>
+            </div>
+        </div>
+    </div>
 </div>
