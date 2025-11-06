@@ -18,7 +18,7 @@ namespace Helluz.Models
         public Dias DiaSemana { set; get; }
         [Required]
         public int IdDisciplina { get; set; }
-        [ForeignKey("IdDicsiplina")]
+        [ForeignKey("IdDisciplina")]
         public Disciplina? Disciplina { get; set; }
         public ICollection<AlumnoHorario> AlumnoHorarios { get; set; }= new HashSet<AlumnoHorario>();
         public ICollection<AsistenciaInstructor> AsistenciaInstructors { get; set; }= new HashSet<AsistenciaInstructor>();

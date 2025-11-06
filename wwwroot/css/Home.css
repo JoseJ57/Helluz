@@ -1,5 +1,5 @@
 ﻿body {
-    color:#fff;
+    color:black;
     font-family:'Times New Roman', Times, serif;
     background-position:center;
     background-size:cover;
@@ -12,17 +12,17 @@
     justify-content: space-between;
 }box-shadow: rgba(0, 0, 0, 0.35) 0px 15px 20px;
     */
-.card {
+.card-home {
     margin: 20px;
     color: white;
-    background-color: #333;
+    font-family:'Sans Serif Collection';
+    background-color: #212529;
     border-radius: 5px;
     width: 250px;
     height: 150px;
     font-size: 25px;
-    border-color: rgb(38, 57, 77);
     text-align: center;
-    box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+    border:groove 5px rgb(0, 0, 0);
 }
 
 p,h3{

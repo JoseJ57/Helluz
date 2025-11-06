@@ -341,7 +341,7 @@ C:\Users\JJ\Desktop\FNI INF\New folder\Software I\Helluz\bin\Debug\net9.0\System
 C:\Users\JJ\Desktop\FNI INF\New folder\Software I\Helluz\bin\Debug\net9.0\runtimes\win\lib\net6.0\Microsoft.Win32.SystemEvents.dll
 C:\Users\JJ\Desktop\FNI INF\New folder\Software I\Helluz\bin\Debug\net9.0\runtimes\unix\lib\net6.0\System.Drawing.Common.dll
 C:\Users\JJ\Desktop\FNI INF\New folder\Software I\Helluz\bin\Debug\net9.0\runtimes\win\lib\net6.0\System.Drawing.Common.dll
-C:\Users\JJ\Desktop\FNI INF\New folder\Software I\Helluz\obj\Debug\net9.0\compressed\wsq9tzhbzg-1cdft31pet.gz
 C:\Users\JJ\Desktop\FNI INF\New folder\Software I\Helluz\obj\Debug\net9.0\compressed\2o32bzg72q-abpqkk6lo5.gz
-C:\Users\JJ\Desktop\FNI INF\New folder\Software I\Helluz\obj\Debug\net9.0\compressed\3p04x7uk5a-wcgmswfo5i.gz
-C:\Users\JJ\Desktop\FNI INF\New folder\Software I\Helluz\obj\Debug\net9.0\compressed\v48ljr5vn3-mi7lj8pmf2.gz
+C:\Users\JJ\Desktop\FNI INF\New folder\Software I\Helluz\obj\Debug\net9.0\compressed\wsq9tzhbzg-j82ye2lcvs.gz
+C:\Users\JJ\Desktop\FNI INF\New folder\Software I\Helluz\obj\Debug\net9.0\compressed\v48ljr5vn3-ugcdvcdras.gz
+C:\Users\JJ\Desktop\FNI INF\New folder\Software I\Helluz\obj\Debug\net9.0\compressed\3p04x7uk5a-m9khgui5cv.gz

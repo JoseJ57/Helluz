@@ -1,6 +1,9 @@
 html {
   font-size: 14px;
 }
+*{
+    font-family:'Sans Serif Collection';
+}
 
 @media (min-width: 768px) {
   html {
@@ -71,4 +74,58 @@ a:hover{
     align-items: center;
     justify-content: space-between;
     box-shadow: 0 2px 5px rgba(0,0,0,0.3); /* Sombra sutil */
+}
+
+.btn{
+    background:#fff;
+    color:#222;
+    border-radius:25px;
+    border:solid 2px #222;
+}
+    .btn:hover {
+        background: #212529;
+        color: white;
+        box-shadow: 0 0 10px 0 #222;
+        border-radius: 25px;
+        transition: 0.5s;
+    }
+
+h2{
+    color: #f00;
+    border-radius:10px;
+    border-left: solid 5px;
+    padding:15px;
+    background: #f5f5f5;
+}
+.text{
+    color:#222;
+    font-size:18px;
+}
+
+th {
+    background: #212529 !important;
+    border-bottom: solid 2px #f00 !important;
+    text-align: center;
+    color: white !important;
+}
+
+table {
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset !important;
+}
+.btn-delete:hover{
+    background:#f00;
+}
+
+
+.card-header{
+    background: #212529;
+    color:white;
+}
+
+.card {
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset !important;
+}
+input{
+    border-left:solid 5px #444 !important;
+    font-size:20px;
 }

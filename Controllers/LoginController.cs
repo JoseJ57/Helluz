@@ -29,7 +29,7 @@ public LoginController(MyContext context, IMemoryCache cache)
         {
             //        if (User.Identity.IsAuthenticated) 
             //       { 
-            //           if(User.IsInRole("Dir_carrera"))
+            //           if(User.IsInRole("administrador"))
             //           {
             //               return RedirectToAction("Index","awawawa");
             //           }
@@ -82,7 +82,7 @@ public LoginController(MyContext context, IMemoryCache cache)
             await SetUserCookie(usuario);
 
             if (usuario.Rol == Helluz.Dto.Roles.administrador)
-                return RedirectToAction("Index", "Administrador");
+                return RedirectToAction("Index", "Home");
             else
                 return RedirectToAction("Index", "Instructor");
         }

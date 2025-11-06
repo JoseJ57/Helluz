@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Helluz")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b7642b1100e23b5eb82a5ddd6098da6b7c8959fa")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9d8ffbf7e9a5f145a2582c53db90dcc8aed7cf18")]
 [assembly: System.Reflection.AssemblyProductAttribute("Helluz")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Helluz")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

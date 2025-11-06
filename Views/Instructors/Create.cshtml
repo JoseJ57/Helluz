@@ -5,6 +5,18 @@
 }
 
 <h1>Create</h1>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card ">
+                <div class="card-header">
+                    <h4 class="mb-0">
+                        <i class="fas fa-plus-circle"></i> Nueva Membresía/Promoción
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Create" id="formMembresia">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
 
 <h4>Instructor</h4>
 <hr />
@@ -59,7 +71,13 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Regresar</a>
+</div>
+</form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 @section Scripts {

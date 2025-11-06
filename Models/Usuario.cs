@@ -20,8 +20,6 @@ namespace Helluz.Models
         public bool Estado {  get; set; }
         [Required]
         public Roles Rol { get; set; }
-        [Required]
-        public bool Estados { get; set; }
         public Instructor? Instructor { get; set; }
     }
 }
