@@ -1,69 +1,76 @@
 ﻿@model Helluz.Models.Instructor
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Editar Instructor";
 }
 
-<h1>Edit</h1>
-
-<h4>Instructor</h4>
+<h1>Editar Instructor</h1>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-5">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="IdInstructor" />
-            <div class="form-group">
+
+            <div class="form-group mb-2">
                 <label asp-for="Nombre" class="control-label"></label>
                 <input asp-for="Nombre" class="form-control" />
                 <span asp-validation-for="Nombre" class="text-danger"></span>
             </div>
-            <div class="form-group">
+
+            <div class="form-group mb-2">
                 <label asp-for="Apellido" class="control-label"></label>
                 <input asp-for="Apellido" class="form-control" />
                 <span asp-validation-for="Apellido" class="text-danger"></span>
             </div>
-            <div class="form-group">
+
+            <div class="form-group mb-2">
                 <label asp-for="Carnet" class="control-label"></label>
                 <input asp-for="Carnet" class="form-control" />
                 <span asp-validation-for="Carnet" class="text-danger"></span>
             </div>
-            <div class="form-group">
+
+            <div class="form-group mb-2">
                 <label asp-for="FechaNacimiento" class="control-label"></label>
-                <input asp-for="FechaNacimiento" class="form-control" />
+                <input asp-for="FechaNacimiento" class="form-control" type="date" />
                 <span asp-validation-for="FechaNacimiento" class="text-danger"></span>
             </div>
-            <div class="form-group">
+
+            <div class="form-group mb-2">
                 <label asp-for="Correo" class="control-label"></label>
                 <input asp-for="Correo" class="form-control" />
                 <span asp-validation-for="Correo" class="text-danger"></span>
             </div>
-            <div class="form-group">
+
+            <div class="form-group mb-2">
                 <label asp-for="Celular" class="control-label"></label>
                 <input asp-for="Celular" class="form-control" />
                 <span asp-validation-for="Celular" class="text-danger"></span>
             </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Estado" /> @Html.DisplayNameFor(model => model.Estado)
-                </label>
+
+            <div class="form-group form-check mb-2">
+                <input class="form-check-input" asp-for="Estado" />
+                <label class="form-check-label" asp-for="Estado"></label>
             </div>
-            <div class="form-group">
+
+            <div class="form-group mb-3">
                 <label asp-for="UsuarioId" class="control-label"></label>
-                <select asp-for="UsuarioId" class="form-control" asp-items="ViewBag.UsuarioId"></select>
+                <select asp-for="UsuarioId" class="form-control" asp-items="ViewBag.UsuarioId">
+                    <option value="">-- Sin usuario asignado --</option>
+                </select>
                 <span asp-validation-for="UsuarioId" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Guardar" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-secondary ms-2">Volver</a>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

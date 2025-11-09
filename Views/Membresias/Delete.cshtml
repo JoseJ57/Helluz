@@ -38,8 +38,21 @@
                         <dt class="col-sm-4">Costo:</dt>
                         <dd class="col-sm-8">$@Model.Costo.ToString("N2")</dd>
 
-                        <dt class="col-sm-4">Sesiones:</dt>
-                        <dd class="col-sm-8">@Model.Nro_sesiones</dd>
+                        <dt class="col-sm-4">Días por Semana:</dt>
+                        <dd class="col-sm-8">
+                            <span class="badge bg-info">@Model.DiasPorSemana días/semana</span>
+                        </dd>
+
+                        <dt class="col-sm-4">Duración (Semanas):</dt>
+                        <dd class="col-sm-8">
+                            <span class="badge bg-info">@Model.DuracionSemanas semanas</span>
+                        </dd>
+
+                        <dt class="col-sm-4">Número de Sesiones:</dt>
+                        <dd class="col-sm-8">
+                            <span class="badge bg-secondary">@(Model.DiasPorSemana* Model.DuracionSemanas) sesiones</span>
+                        </dd>
+
 
                         @if (Model.EsPromocion && Model.FechaActivo.HasValue)
                         {

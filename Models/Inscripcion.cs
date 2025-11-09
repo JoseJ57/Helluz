@@ -12,8 +12,10 @@ namespace Helluz.Models
         public int IdInscripcion { get; set; }
         [Required]
         public DateOnly FechaInicio { get; set; }
+
         [Required]
-        public DateTime FechaFin { get; set; }
+        public DateOnly FechaFin { get; set; }
+
         [Required]
         public MetodosPagos MetodoPago { get; set; }
         [Required]

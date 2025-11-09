@@ -8,6 +8,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card shadow">
+<<<<<<< HEAD
                 <div class="card-header bg-warning text-dark">
                     <h4 class="mb-0">
                         <i class="fas fa-edit"></i> Editar Información del Alumno
@@ -18,6 +19,19 @@
                         <input type="hidden" asp-for="IdAlumno" />
                         <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
 
+=======
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">
+                        <i class="fas fa-user-graduate"></i> Editar Alumno
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Edit" method="post" id="formAlumno">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                        <input type="hidden" asp-for="IdAlumno" />
+
+>>>>>>> José
                         <!-- Nombre y Apellido -->
                         <div class="row">
                             <div class="col-md-6 mb-3">
@@ -40,9 +54,14 @@
                                 <span asp-validation-for="Carnet" class="text-danger"></span>
                             </div>
                             <div class="col-md-6 mb-3">
+<<<<<<< HEAD
                                 <label asp-for="FechaNacimiento" class="form-label fw-bold">Fecha de Nacimiento</label>
                                 <input asp-for="FechaNacimiento" class="form-control" type="date"
                                        value="@(Model.FechaNacimiento.ToString("yyyy-MM-dd"))" />
+=======
+                                <label asp-for="FechaNacimiento" class="form-label fw-bold"></label>
+                                <input asp-for="FechaNacimiento" class="form-control" type="date" />
+>>>>>>> José
                                 <span asp-validation-for="FechaNacimiento" class="text-danger"></span>
                             </div>
                         </div>
@@ -55,7 +74,11 @@
                                 <span asp-validation-for="Celular" class="text-danger"></span>
                             </div>
                             <div class="col-md-6 mb-3">
+<<<<<<< HEAD
                                 <label asp-for="NroEmergencia" class="form-label fw-bold">Nro. de Emergencia</label>
+=======
+                                <label asp-for="NroEmergencia" class="form-label fw-bold"></label>
+>>>>>>> José
                                 <input asp-for="NroEmergencia" class="form-control" />
                                 <span asp-validation-for="NroEmergencia" class="text-danger"></span>
                             </div>
@@ -68,6 +91,7 @@
                             <span asp-validation-for="Correo" class="text-danger"></span>
                         </div>
 
+<<<<<<< HEAD
                         <!-- Estado actual -->
                         <div class="alert @(Model.Estado ? "alert-success" : "alert-secondary")">
                             <strong>Estado actual:</strong>
@@ -82,6 +106,9 @@
                         </div>
 
                         <!-- Checkbox de estado -->
+=======
+                        <!-- Estado -->
+>>>>>>> José
                         <div class="form-check mb-4">
                             <input class="form-check-input" asp-for="Estado" />
                             <label class="form-check-label fw-bold">
@@ -106,9 +133,16 @@
         </div>
     </div>
 </div>
+<<<<<<< HEAD
 
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }
+=======
+@section Scripts {
+    @{ await Html.PartialAsync("_ValidationScriptsPartial"); }
+}
+
+>>>>>>> José

@@ -10,6 +10,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
 using System.Threading.Tasks;
+using static QRCoder.PayloadGenerator;
 
 namespace Helluz.Controllers
 {
@@ -24,9 +25,13 @@ namespace Helluz.Controllers
         }
 
         // GET: TokenQrs
+        // En el método Index de TokenQrs, verifica que el nuevo token aparezca
         public async Task<IActionResult> Index()
         {
-            return View(await _context.TokenQrs.ToListAsync());
+            var tokens = await _context.TokenQrs
+                .OrderByDescending(t => t.FechaGeneracion)
+                .ToListAsync();
+            return View(tokens);
         }
 
         // GET: TokenQrs/Details/5
@@ -60,7 +65,7 @@ namespace Helluz.Controllers
         }
         public async Task<IActionResult> GenerarQr()
         {
-            // 1. Buscar el token activo anterior y desactivarlo
+            // 1. Desactivar token activo anterior
             var tokenActivo = await _context.TokenQrs.FirstOrDefaultAsync(t => t.Estado == true);
             if (tokenActivo != null)
             {
@@ -68,7 +73,7 @@ namespace Helluz.Controllers
                 _context.Update(tokenActivo);
             }
 
-            // 2. Crear un nuevo token
+            // 2. Crear nuevo token
             var nuevoToken = new TokenQr
             {
                 Token = Guid.NewGuid().ToString(),
@@ -79,29 +84,37 @@ namespace Helluz.Controllers
             _context.Add(nuevoToken);
             await _context.SaveChangesAsync();
 
-            // 3. Generar el código QR
-            string qrDirectory = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/qr");
+            // 3. ⭐ GENERAR URL COMPLETA (esto faltaba)
+            string urlAsistencia = Url.Action(
+                "RegistrarAsistencia",
+                "Asistencia",
+                new { token = nuevoToken.Token },
+                protocol: Request.Scheme
+            );
+
+            // DEBUG: Ver qué URL se genera
+            Console.WriteLine($"URL en QR: {urlAsistencia}");
+
+            // 4. Crear directorio para QR
+            string qrDirectory = Path.Combine(_env.WebRootPath, "qr");
             if (!Directory.Exists(qrDirectory))
                 Directory.CreateDirectory(qrDirectory);
 
             string qrPath = Path.Combine(qrDirectory, $"qr_{nuevoToken.IdToken}.png");
 
-            // Puedes usar tu método actual para generar el QR, por ejemplo con QRCoder:
-            using (var qrGenerator = new QRCoder.QRCodeGenerator())
+            // 5. Generar QR con la URL completa
+            using (var qrGenerator = new QRCodeGenerator())
             {
-                var qrData = qrGenerator.CreateQrCode(nuevoToken.Token, QRCoder.QRCodeGenerator.ECCLevel.Q);
-                var qrCode = new QRCoder.QRCode(qrData);
+                var qrData = qrGenerator.CreateQrCode(urlAsistencia, QRCodeGenerator.ECCLevel.Q); // ← Cambio aquí
+                var qrCode = new QRCode(qrData);
                 using (var bitmap = qrCode.GetGraphic(20))
                 {
-                    bitmap.Save(qrPath, System.Drawing.Imaging.ImageFormat.Png);
+                    bitmap.Save(qrPath, ImageFormat.Png);
                 }
             }
 
-            // 4. Redirigir al Index
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index");
         }
-
-
 
         // GET: TokenQrs/Edit/5
         public async Task<IActionResult> Edit(int? id)

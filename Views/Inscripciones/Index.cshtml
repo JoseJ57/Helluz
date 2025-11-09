@@ -1,71 +1,117 @@
 ﻿@model IEnumerable<Helluz.Models.Inscripcion>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Inscripciones";
 }
 
-<h1>Instructores</h1>
+<div class="container-fluid py-4">
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <h2><i class="fas fa-file-signature"></i> Inscripciones</h2>
+        </div>
+        <div class="col-md-6 text-end">
+            <a asp-action="Create" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Nueva Inscripción
+            </a>
+        </div>
+    </div>
 
-<p>
-    <a asp-action="Create"> <i class="fas fa-plus"></i> Nuevo Instructor</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.FechaInicio)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FechaFin)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MetodoPago)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NroPermisos)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Estado)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Alumno)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Membresia)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.FechaInicio)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FechaFin)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MetodoPago)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NroPermisos)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Estado)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Alumno.Apellido)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Membresia.Nombre)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.IdInscripcion">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.IdInscripcion">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.IdInscripcion">Delete</a>
-            </td>
-        </tr>
+    <!-- Mensajes de éxito o error -->
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fas fa-check-circle"></i> @TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="fas fa-exclamation-circle"></i> @TempData["Error"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <!-- Tabla de inscripciones -->
+    <div class="card shadow">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover table-striped" id="tablaInscripciones">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Fecha Inicio</th>
+                            <th>Fecha Fin</th>
+                            <th>Método de Pago</th>
+                            <th>Nro. Permisos</th>
+                            <th>Estado</th>
+                            <th>Alumno</th>
+                            <th>Membresía</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.FechaInicio.ToString("dd/MM/yyyy")</td>
+                                <td>@item.FechaFin.ToString("dd/MM/yyyy")</td>
+                                <td>@item.MetodoPago</td>
+                                <td>@item.NroPermisos</td>
+                                <td>
+                                    @switch (item.Estado)
+                                    {
+                                        case Helluz.Dto.EstadoInscripcion.activa:
+                                            <span class="badge bg-success">
+                                                <i class="fas fa-check"></i> Activa
+                                            </span>
+                                            break;
+                                        case Helluz.Dto.EstadoInscripcion.venciada:
+                                            <span class="badge bg-danger">
+                                                <i class="fas fa-times"></i> Vencida
+                                            </span>
+                                            break;
+                                        default:
+                                            <span class="badge bg-secondary">Desconocido</span>
+                                            break;
+                                    }
+                                </td>
+                                <td>@item.Alumno?.Apellido</td>
+                                <td>@item.Membresia?.Nombre</td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <a asp-action="Details" asp-route-id="@item.IdInscripcion"
+                                           class="btn btn-sm btn-info" title="Ver detalles">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        <a asp-action="Edit" asp-route-id="@item.IdInscripcion"
+                                           class="btn btn-sm btn-warning" title="Editar">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a asp-action="Delete" asp-route-id="@item.IdInscripcion"
+                                           class="btn btn-sm btn-danger" title="Eliminar">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#tablaInscripciones').DataTable({
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json'
+                },
+                order: [[0, 'asc']]
+            });
+        });
+    </script>
 }
-    </tbody>
-</table>

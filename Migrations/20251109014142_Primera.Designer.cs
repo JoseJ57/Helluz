@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Helluz.Migrations
 {
     [DbContext(typeof(MyContext))]
-    [Migration("20251101221717_nullablefechas")]
-    partial class nullablefechas
+    [Migration("20251109014142_Primera")]
+    partial class Primera
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -182,27 +182,56 @@ namespace Helluz.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdHorario"));
 
-                    b.Property<int>("DiaSemana")
-                        .HasColumnType("int");
-
                     b.Property<TimeOnly>("HoraFin")
                         .HasColumnType("time");
 
                     b.Property<TimeOnly>("HoraInicio")
                         .HasColumnType("time");
 
-                    b.Property<int?>("IdDicsiplina")
+                    b.Property<int?>("IdDisciplinaJueves")
                         .HasColumnType("int");
 
-                    b.Property<int>("IdDisciplina")
+                    b.Property<int?>("IdDisciplinaLunes")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("IdDisciplinaMartes")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("IdDisciplinaMiercoles")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("IdDisciplinaViernes")
                         .HasColumnType("int");
 
                     b.Property<int>("IdInstructor")
                         .HasColumnType("int");
 
+                    b.Property<bool>("Jueves")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Lunes")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Martes")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Miercoles")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Viernes")
+                        .HasColumnType("bit");
+
                     b.HasKey("IdHorario");
 
-                    b.HasIndex("IdDicsiplina");
+                    b.HasIndex("IdDisciplinaJueves");
+
+                    b.HasIndex("IdDisciplinaLunes");
+
+                    b.HasIndex("IdDisciplinaMartes");
+
+                    b.HasIndex("IdDisciplinaMiercoles");
+
+                    b.HasIndex("IdDisciplinaViernes");
 
                     b.HasIndex("IdInstructor");
 
@@ -220,8 +249,8 @@ namespace Helluz.Migrations
                     b.Property<int>("Estado")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("FechaFin")
-                        .HasColumnType("datetime2");
+                    b.Property<DateOnly>("FechaFin")
+                        .HasColumnType("date");
 
                     b.Property<DateOnly>("FechaInicio")
                         .HasColumnType("date");
@@ -257,18 +286,19 @@ namespace Helluz.Migrations
 
                     b.Property<string>("Apellido")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Carnet")
                         .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("Celular")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Celular")
-                        .HasColumnType("int");
-
                     b.Property<string>("Correo")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("Estado")
@@ -279,16 +309,17 @@ namespace Helluz.Migrations
 
                     b.Property<string>("Nombre")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("UsuarioId")
+                    b.Property<int?>("UsuarioId")
                         .HasColumnType("int");
 
                     b.HasKey("IdInstructor");
 
                     b.HasIndex("UsuarioId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[UsuarioId] IS NOT NULL");
 
                     b.ToTable("Instructors");
                 });
@@ -304,16 +335,22 @@ namespace Helluz.Migrations
                     b.Property<float>("Costo")
                         .HasColumnType("real");
 
+                    b.Property<int>("DiasPorSemana")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DuracionSemanas")
+                        .HasColumnType("int");
+
                     b.Property<bool>("EsPromocion")
                         .HasColumnType("bit");
 
                     b.Property<bool>("Estado")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime>("FechaActivo")
+                    b.Property<DateTime?>("FechaActivo")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("FechaInactivo")
+                    b.Property<DateTime?>("FechaInactivo")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Nombre")
@@ -360,9 +397,6 @@ namespace Helluz.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdUsuario"));
 
                     b.Property<bool>("Estado")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Estados")
                         .HasColumnType("bit");
 
                     b.Property<string>("NombreUsuario")
@@ -430,9 +464,25 @@ namespace Helluz.Migrations
 
             modelBuilder.Entity("Helluz.Models.Horario", b =>
                 {
-                    b.HasOne("Helluz.Models.Disciplina", "Disciplina")
-                        .WithMany("Horarios")
-                        .HasForeignKey("IdDicsiplina");
+                    b.HasOne("Helluz.Models.Disciplina", "DisciplinaJueves")
+                        .WithMany()
+                        .HasForeignKey("IdDisciplinaJueves");
+
+                    b.HasOne("Helluz.Models.Disciplina", "DisciplinaLunes")
+                        .WithMany()
+                        .HasForeignKey("IdDisciplinaLunes");
+
+                    b.HasOne("Helluz.Models.Disciplina", "DisciplinaMartes")
+                        .WithMany()
+                        .HasForeignKey("IdDisciplinaMartes");
+
+                    b.HasOne("Helluz.Models.Disciplina", "DisciplinaMiercoles")
+                        .WithMany()
+                        .HasForeignKey("IdDisciplinaMiercoles");
+
+                    b.HasOne("Helluz.Models.Disciplina", "DisciplinaViernes")
+                        .WithMany()
+                        .HasForeignKey("IdDisciplinaViernes");
 
                     b.HasOne("Helluz.Models.Instructor", "Instructor")
                         .WithMany("Horarios")
@@ -440,7 +490,15 @@ namespace Helluz.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Disciplina");
+                    b.Navigation("DisciplinaJueves");
+
+                    b.Navigation("DisciplinaLunes");
+
+                    b.Navigation("DisciplinaMartes");
+
+                    b.Navigation("DisciplinaMiercoles");
+
+                    b.Navigation("DisciplinaViernes");
 
                     b.Navigation("Instructor");
                 });
@@ -468,9 +526,7 @@ namespace Helluz.Migrations
                 {
                     b.HasOne("Helluz.Models.Usuario", "Usuario")
                         .WithOne("Instructor")
-                        .HasForeignKey("Helluz.Models.Instructor", "UsuarioId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("Helluz.Models.Instructor", "UsuarioId");
 
                     b.Navigation("Usuario");
                 });
@@ -480,11 +536,6 @@ namespace Helluz.Migrations
                     b.Navigation("Asistencia_Alumnos");
 
                     b.Navigation("Inscripciones");
-                });
-
-            modelBuilder.Entity("Helluz.Models.Disciplina", b =>
-                {
-                    b.Navigation("Horarios");
                 });
 
             modelBuilder.Entity("Helluz.Models.Horario", b =>

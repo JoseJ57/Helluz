@@ -1,44 +1,78 @@
 ﻿@model Helluz.Models.Disciplina
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Editar Disciplina";
 }
 
-<h1>Editar</h1>
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-warning text-dark">
+                    <h4 class="mb-0">
+                        <i class="fas fa-edit"></i> Editar Disciplina
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Edit" id="formDisciplina">
+                        <input type="hidden" asp-for="IdDisciplina" />
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
 
-<h4>Disciplina</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="IdDisciplina" />
-            <div class="form-group">
-                <label asp-for="NombreDisciplina" class="control-label"></label>
-                <input asp-for="NombreDisciplina" class="form-control" />
-                <span asp-validation-for="NombreDisciplina" class="text-danger"></span>
+                        <!-- Nombre de Disciplina -->
+                        <div class="mb-3">
+                            <label asp-for="NombreDisciplina" class="form-label fw-bold"></label>
+                            <input asp-for="NombreDisciplina" class="form-control" autocomplete="off" />
+                            <span asp-validation-for="NombreDisciplina" class="text-danger"></span>
+                        </div>
+
+                        <!-- Descripción -->
+                        <div class="mb-3">
+                            <label asp-for="Descripcion" class="form-label fw-bold"></label>
+                            <input asp-for="Descripcion" class="form-control" autocomplete="off" />
+                            <span asp-validation-for="Descripcion" class="text-danger"></span>
+                        </div>
+
+                        <!-- Estado actual -->
+                        <div class="alert @(Model.Estado ? "alert-success" : "alert-secondary")">
+                            <strong>Estado actual:</strong>
+                            @if (Model.Estado)
+                            {
+                                <span><i class="fas fa-check"></i> Activo</span>
+                            }
+                            else
+                            {
+                                <span><i class="fas fa-times"></i> Inactivo</span>
+                            }
+                        </div>
+
+                        <!-- Checkbox de estado -->
+                        <div class="form-check mb-4">
+                            <input class="form-check-input" asp-for="Estado" />
+                            <label class="form-check-label fw-bold">
+                                @Html.DisplayNameFor(model => model.Estado)
+                            </label>
+                        </div>
+
+                        <hr>
+
+                        <!-- Botones -->
+                        <div class="d-flex justify-content-between">
+                            <a asp-action="Index" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left"></i> Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-success">
+                                <i class="fas fa-save"></i> Guardar Cambios
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Descripcion" class="control-label"></label>
-                <input asp-for="Descripcion" class="form-control" />
-                <span asp-validation-for="Descripcion" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Estado" /> @Html.DisplayNameFor(model => model.Estado)
-                </label>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Regresar</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

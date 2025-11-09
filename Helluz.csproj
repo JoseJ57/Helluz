@@ -20,4 +20,9 @@
     <PackageReference Include="QRCoder" Version="1.7.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+    <Folder Include="wwwroot\qr\" />
+  </ItemGroup>
+
 </Project>

@@ -48,9 +48,9 @@
                             <span asp-validation-for="Nombre" class="text-danger"></span>
                         </div>
 
-                        <!-- Costo y Sesiones -->
+                        <!-- Costo, Sesiones, Días por Semana y Semanas -->
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-3">
                                 <div class="mb-3">
                                     <label asp-for="Costo" class="form-label fw-bold"></label>
                                     <div class="input-group">
@@ -60,14 +60,30 @@
                                     <span asp-validation-for="Costo" class="text-danger"></span>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-3">
                                 <div class="mb-3">
                                     <label asp-for="Nro_sesiones" class="form-label fw-bold">Número de Sesiones</label>
-                                    <input asp-for="Nro_sesiones" class="form-control" type="number" min="1" />
+                                    <input asp-for="Nro_sesiones" id="Nro_sesiones" class="form-control" type="number" min="1" readonly />
                                     <span asp-validation-for="Nro_sesiones" class="text-danger"></span>
                                 </div>
                             </div>
+                            <div class="col-md-3">
+                                <div class="mb-3">
+                                    <label asp-for="DiasPorSemana" class="form-label fw-bold">Días por Semana</label>
+                                    <input asp-for="DiasPorSemana" id="DiasPorSemana" class="form-control" type="number" min="1" max="7" />
+                                    <span asp-validation-for="DiasPorSemana" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="mb-3">
+                                    <label asp-for="DuracionSemanas" class="form-label fw-bold">Duración (Semanas)</label>
+                                    <input asp-for="DuracionSemanas" id="DuracionSemanas" class="form-control" type="number" min="1" />
+                                    <span asp-validation-for="DuracionSemanas" class="text-danger"></span>
+                                </div>
+                            </div>
                         </div>
+
+
 
                         <!-- Fechas (solo para promociones) -->
                         <div id="seccionFechas" style="@(Model.EsPromocion ? "" : "display: none;")">
@@ -140,6 +156,7 @@
 
     <script>
         $(document).ready(function() {
+            // Mostrar/ocultar sección de fechas según el tipo
             $('input[name="EsPromocion"]').change(function() {
                 if ($(this).val() === 'true') {
                     $('#seccionFechas').slideDown();
@@ -150,6 +167,7 @@
                 }
             });
 
+            // Validación personalizada antes de enviar
             $('#formMembresia').submit(function(e) {
                 var esPromocion = $('input[name="EsPromocion"]:checked').val() === 'true';
 
@@ -164,6 +182,19 @@
                     }
                 }
             });
+
+            // --- Calcular Nro_sesiones automáticamente ---
+            function actualizarSesiones() {
+                var dias = parseInt($('#DiasPorSemana').val()) || 0;
+                var semanas = parseInt($('#DuracionSemanas').val()) || 0;
+                $('#Nro_sesiones').val(dias * semanas);
+            }
+
+            $('#DiasPorSemana, #DuracionSemanas').on('input change', actualizarSesiones);
+
+            // Inicializar al cargar la página
+            actualizarSesiones();
         });
     </script>
+
 }

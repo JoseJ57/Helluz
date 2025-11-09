@@ -50,27 +50,78 @@ namespace Helluz.Controllers
         public IActionResult Create()
         {
             ViewData["IdAlumno"] = new SelectList(_context.Alumnos, "IdAlumno", "Apellido");
-            ViewData["IdMembresia"] = new SelectList(_context.Membresias, "IdMembresia", "Nombre");
+
+            ViewBag.Membresias = _context.Membresias
+                .Select(m => new
+                {
+                    m.IdMembresia,
+                    m.Nombre,
+                    m.DiasPorSemana,
+                    m.DuracionSemanas
+                })
+                .ToList();
+
             return View();
         }
+
+
 
         // POST: Inscripciones/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IdInscripcion,FechaInicio,FechaFin,MetodoPago,NroPermisos,Estado,IdAlumno,IdMembresia")] Inscripcion inscripcion)
+        public async Task<IActionResult> Create([Bind("IdInscripcion,MetodoPago,NroPermisos,Estado,IdAlumno,IdMembresia")] Inscripcion inscripcion)
         {
             if (ModelState.IsValid)
             {
+                // Obtener la membresía seleccionada
+                var membresia = await _context.Membresias.FindAsync(inscripcion.IdMembresia);
+                if (membresia != null)
+                {
+                    // Fecha de inicio = hoy
+                    inscripcion.FechaInicio = DateOnly.FromDateTime(DateTime.Today);
+
+                    // Calcular fecha fin según días por semana y duración en semanas
+                    int totalDias = membresia.DiasPorSemana * membresia.DuracionSemanas;
+                    DateTime fechaTemp = DateTime.Today;
+                    int diasContados = 0;
+
+                    while (diasContados < totalDias)
+                    {
+                        fechaTemp = fechaTemp.AddDays(1);
+                        if (fechaTemp.DayOfWeek != DayOfWeek.Saturday && fechaTemp.DayOfWeek != DayOfWeek.Sunday)
+                        {
+                            diasContados++;
+                        }
+                    }
+
+                    // Convertimos a DateOnly
+                    inscripcion.FechaFin = DateOnly.FromDateTime(fechaTemp);
+                }
+
+                // Guardar en la base
                 _context.Add(inscripcion);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
+            // Si hay error, recargar los selects
             ViewData["IdAlumno"] = new SelectList(_context.Alumnos, "IdAlumno", "Apellido", inscripcion.IdAlumno);
-            ViewData["IdMembresia"] = new SelectList(_context.Membresias, "IdMembresia", "Nombre", inscripcion.IdMembresia);
+            ViewBag.Membresias = _context.Membresias
+                .Select(m => new
+                {
+                    m.IdMembresia,
+                    m.Nombre,
+                    m.Nro_sesiones,
+                    m.DiasPorSemana,
+                    m.DuracionSemanas
+                })
+                .ToList();
+
             return View(inscripcion);
         }
+
 
         // GET: Inscripciones/Edit/5
         public async Task<IActionResult> Edit(int? id)
