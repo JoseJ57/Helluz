@@ -1,64 +1,111 @@
 ﻿@model Helluz.Models.Inscripcion
+@using Helluz.Dto
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Editar Inscripción";
 }
 
-<h1>Edit</h1>
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">
+                        <i class="fas fa-edit"></i> Editar Inscripción
+                    </h4>
+                </div>
 
-<h4>Inscripcion</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="IdInscripcion" />
-            <div class="form-group">
-                <label asp-for="FechaInicio" class="control-label"></label>
-                <input asp-for="FechaInicio" class="form-control" />
-                <span asp-validation-for="FechaInicio" class="text-danger"></span>
+                <div class="card-body">
+                    <form asp-action="Edit" method="post" id="formInscripcion">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                        <input type="hidden" asp-for="IdInscripcion" />
+
+                        <!-- Fechas -->
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="FechaInicio" class="form-label fw-bold"></label>
+                                <input asp-for="FechaInicio" class="form-control" type="date"
+                                       value="@(Model.FechaInicio.ToString("yyyy-MM-dd"))" />
+                                <span asp-validation-for="FechaInicio" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="FechaFin" class="form-label fw-bold"></label>
+                                <input asp-for="FechaFin" class="form-control" type="date"
+                                       value="@(Model.FechaFin.ToString("yyyy-MM-dd"))" />
+                                <span asp-validation-for="FechaFin" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Método de pago y NroPermisos -->
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="MetodoPago" class="form-label fw-bold"></label>
+                                <select asp-for="MetodoPago" class="form-select"
+                                        asp-items="@(new SelectList(Enum.GetValues(typeof(MetodosPagos)), Model.MetodoPago))">
+                                    <option value="">Seleccione un método</option>
+                                </select>
+                                <span asp-validation-for="MetodoPago" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="NroPermisos" class="form-label fw-bold"></label>
+                                <input asp-for="NroPermisos" class="form-control" type="number" min="1" />
+                                <span asp-validation-for="NroPermisos" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Estado -->
+                        <div class="mb-3">
+                            <label asp-for="Estado" class="form-label fw-bold"></label>
+                            <select asp-for="Estado" class="form-select"
+                                    asp-items="@(new SelectList(Enum.GetValues(typeof(EstadoInscripcion)), Model.Estado))">
+                                <option value="">Seleccione un estado</option>
+                            </select>
+                            <span asp-validation-for="Estado" class="text-danger"></span>
+                        </div>
+
+                        <!-- Alumno y Membresía -->
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="IdAlumno" class="form-label fw-bold"></label>
+                                <select asp-for="IdAlumno" class="form-select"
+                                        asp-items="@(ViewData["IdAlumno"] as SelectList)">
+                                    <option value="">Seleccione un alumno</option>
+                                </select>
+                                <span asp-validation-for="IdAlumno" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="IdMembresia" class="form-label fw-bold"></label>
+                                <select asp-for="IdMembresia" class="form-select"
+                                        asp-items="@(ViewData["IdMembresia"] as SelectList)">
+                                    <option value="">Seleccione una membresía</option>
+                                </select>
+                                <span asp-validation-for="IdMembresia" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <!-- Botones -->
+                        <div class="d-flex justify-content-between">
+                            <a asp-action="Index" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left"></i> Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-success">
+                                <i class="fas fa-save"></i> Guardar Cambios
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="FechaFin" class="control-label"></label>
-                <input asp-for="FechaFin" class="form-control" />
-                <span asp-validation-for="FechaFin" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="MetodoPago" class="control-label"></label>
-                <select asp-for="MetodoPago" class="form-control"></select>
-                <span asp-validation-for="MetodoPago" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="NroPermisos" class="control-label"></label>
-                <input asp-for="NroPermisos" class="form-control" />
-                <span asp-validation-for="NroPermisos" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Estado" class="control-label"></label>
-                <select asp-for="Estado" class="form-control"></select>
-                <span asp-validation-for="Estado" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="IdAlumno" class="control-label"></label>
-                <select asp-for="IdAlumno" class="form-control" asp-items="ViewBag.IdAlumno"></select>
-                <span asp-validation-for="IdAlumno" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="IdMembresia" class="control-label"></label>
-                <select asp-for="IdMembresia" class="form-control" asp-items="ViewBag.IdMembresia"></select>
-                <span asp-validation-for="IdMembresia" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

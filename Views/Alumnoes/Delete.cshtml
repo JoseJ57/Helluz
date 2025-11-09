@@ -1,69 +1,74 @@
 ﻿@model Helluz.Models.Alumno
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Eliminar";
 }
 
-<h1>Eliminar</h1>
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow border-danger">
+                <div class="card-header bg-danger text-white">
+                    <h4 class="mb-0">
+                        <i class="fas fa-exclamation-triangle"></i> Confirmar Eliminación de Alumno
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-warning">
+                        <i class="fas fa-exclamation-circle"></i>
+                        ¿Estás seguro de que deseas eliminar este alumno?
+                    </div>
 
-<h3>Estás seguro de esliminar a este Alumno?</h3>
-<div>
-    <h4>Alumno</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Nombre)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Nombre)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Apellido)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Apellido)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Carnet)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Carnet)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FechaNacimiento)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FechaNacimiento)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Celular)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Celular)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.NroEmergencia)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.NroEmergencia)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Correo)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Correo)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Estado)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Estado)
-        </dd>
-    </dl>
-    
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="IdAlumno" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Regresar</a>
-    </form>
+                    <dl class="row">
+                        <dt class="col-sm-4">Nombre:</dt>
+                        <dd class="col-sm-8">@Model.Nombre</dd>
+
+                        <dt class="col-sm-4">Apellido:</dt>
+                        <dd class="col-sm-8">@Model.Apellido</dd>
+
+                        <dt class="col-sm-4">Carnet:</dt>
+                        <dd class="col-sm-8">@Model.Carnet</dd>
+
+                        <dt class="col-sm-4">Fecha de Nacimiento:</dt>
+                        <dd class="col-sm-8">
+                            @Model.FechaNacimiento.ToString("dd/MM/yyyy")
+                        </dd>
+
+                        <dt class="col-sm-4">Celular:</dt>
+                        <dd class="col-sm-8">@Model.Celular</dd>
+
+                        <dt class="col-sm-4">Nro. Emergencia:</dt>
+                        <dd class="col-sm-8">@Model.NroEmergencia</dd>
+
+                        <dt class="col-sm-4">Correo:</dt>
+                        <dd class="col-sm-8">@Model.Correo</dd>
+
+                        <dt class="col-sm-4">Estado:</dt>
+                        <dd class="col-sm-8">
+                            @if (Model.Estado)
+                            {
+                                <span class="badge bg-success">Activo</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">Inactivo</span>
+                            }
+                        </dd>
+                    </dl>
+
+                    <form asp-action="Delete">
+                        <input type="hidden" asp-for="IdAlumno" />
+                        <div class="d-flex justify-content-between">
+                            <a asp-action="Index" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left"></i> Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-danger">
+                                <i class="fas fa-trash"></i> Eliminar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

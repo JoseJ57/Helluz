@@ -28,7 +28,7 @@ namespace TuProyecto.Controllers
         public async Task<IActionResult> Index()
         {
             var membresias = await _context.Membresias
-                .OrderByDescending(m => m.IdMembresia)
+                .OrderBy(m => m.IdMembresia)
                 .ToListAsync();
 
             // Actualizar estados en tiempo real
@@ -72,8 +72,11 @@ namespace TuProyecto.Controllers
         // GET: Membresias/Create
         public IActionResult Create()
         {
-            return View();
+            // No necesitas ViewData para estos campos, simplemente pasamos la entidad vacía
+            var membresia = new Membresia();
+            return View(membresia);
         }
+
 
         // POST: Membresias/Create
         [HttpPost]
@@ -82,42 +85,50 @@ namespace TuProyecto.Controllers
         {
             if (ModelState.IsValid)
             {
+                // Validación de días y semanas
+                if (membresia.DiasPorSemana <= 0)
+                {
+                    ModelState.AddModelError(nameof(membresia.DiasPorSemana), "Debe ser mayor que 0.");
+                }
+                if (membresia.DuracionSemanas <= 0)
+                {
+                    ModelState.AddModelError(nameof(membresia.DuracionSemanas), "Debe ser mayor que 0.");
+                }
+
                 // Validación para promociones
                 if (membresia.EsPromocion)
                 {
                     if (!membresia.FechaActivo.HasValue || !membresia.FechaInactivo.HasValue)
                     {
                         ModelState.AddModelError("", "Las promociones deben tener fechas de inicio y fin.");
-                        return View(membresia);
                     }
-
-                    // Validar que la fecha de inicio sea antes que la de fin (en el mismo año)
-                    var inicioMesDia = new DateTime(2000, membresia.FechaActivo.Value.Month, membresia.FechaActivo.Value.Day);
-                    var finMesDia = new DateTime(2000, membresia.FechaInactivo.Value.Month, membresia.FechaInactivo.Value.Day);
-
-                    // Calcular el estado inicial basado en las fechas
-                    membresia.Estado = _membresiaService.ValidarEstadoPromocion(membresia);
+                    else
+                    {
+                        membresia.Estado = _membresiaService.ValidarEstadoPromocion(membresia);
+                    }
                 }
                 else
                 {
-                    // Membresías normales: siempre activas, sin fechas
                     membresia.Estado = true;
                     membresia.FechaActivo = null;
                     membresia.FechaInactivo = null;
                 }
 
-                _context.Add(membresia);
-                await _context.SaveChangesAsync();
+                if (ModelState.IsValid)
+                {
+                    _context.Add(membresia);
+                    await _context.SaveChangesAsync();
+                    TempData["Success"] = membresia.EsPromocion
+                        ? "Promoción creada exitosamente."
+                        : "Membresía creada exitosamente.";
 
-                TempData["Success"] = membresia.EsPromocion
-                    ? "Promoción creada exitosamente."
-                    : "Membresía creada exitosamente.";
-
-                return RedirectToAction(nameof(Index));
+                    return RedirectToAction(nameof(Index));
+                }
             }
 
             return View(membresia);
         }
+
 
         // GET: Membresias/Edit/5
         public async Task<IActionResult> Edit(int? id)

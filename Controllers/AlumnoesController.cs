@@ -54,16 +54,20 @@ namespace Helluz.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IdAlumno,Nombre,Apellido,Carnet,FechaNacimiento,Celular,NroEmergencia,Correo,Estado")] Alumno alumno)
+        public async Task<IActionResult> Create(Alumno alumno)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(alumno);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+
+                // Devuelve un pequeño script para cerrar y refrescar
+                return Content("<script>window.opener.location.reload(); window.close();</script>", "text/html");
             }
             return View(alumno);
         }
+
+
 
         // GET: Alumnoes/Edit/5
         public async Task<IActionResult> Edit(int? id)

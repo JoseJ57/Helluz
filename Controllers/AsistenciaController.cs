@@ -2,85 +2,96 @@
 using Helluz.Dto;
 using Helluz.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace Helluz.Controllers
 {
     public class AsistenciaController : Controller
     {
         private readonly MyContext _context;
-        public IActionResult Index()
+
+        public AsistenciaController(MyContext context)
+        {
+            _context = context ?? throw new ArgumentNullException(nameof(context));
+        }
+
+        // GET: /Asistencia
+        public async Task<IActionResult> Index()
+        {
+            // Trae asistencias con datos de alumno/instructor
+            var asistenciasAlumnos = await _context.AsistenciaAlumnos
+                .Include(a => a.Alumno)
+                .OrderByDescending(a => a.Fecha)
+                .ThenByDescending(a => a.Hora)
+                .ToListAsync();
+
+            var asistenciasInstructores = await _context.AsistenciaInstructor
+                .Include(i => i.Instructor)
+                .OrderByDescending(i => i.Fecha)
+                .ThenByDescending(i => i.Hora)
+                .ToListAsync();
+
+            ViewBag.AsistenciasAlumnos = asistenciasAlumnos;
+            ViewBag.AsistenciasInstructores = asistenciasInstructores;
+
+            return View();
+        }
+
+        // GET: /Asistencia/RegistroAsistencia
+        public IActionResult RegistroAsistencia()
         {
             return View();
         }
-        // Vista a la que el QR dirige
-        public async Task<IActionResult> RegistrarAsistencia(string token)
-        {
-            if (token == null)
-                return NotFound();
 
-            var tokenQr = await _context.TokenQrs.FirstOrDefaultAsync(t => t.Token == token && t.Estado == true);
-            if (tokenQr == null)
-                return Content("El QR no es válido o ya expiró.");
-
-            // Aquí puedes mostrar una vista con un botón “Marcar asistencia”
-            return View(tokenQr);
-        }
-
-        // POST que guarda la asistencia (puede diferenciar entre alumno o instructor)
+        // POST: /Asistencia/Registrar
         [HttpPost]
-        public async Task<IActionResult> MarcarAsistencia(string carnet)
+        public async Task<IActionResult> Registrar(string carnet)
         {
-
             if (string.IsNullOrWhiteSpace(carnet))
-                return BadRequest("Debe ingresar un carnet válido.");
+                return Json(new { mensaje = "Debe ingresar un carnet válido." });
 
             var fecha = DateOnly.FromDateTime(DateTime.Now);
             var hora = TimeOnly.FromDateTime(DateTime.Now);
 
+            // Buscar alumno
             var alumno = await _context.Alumnos.FirstOrDefaultAsync(a => a.Carnet == carnet);
             if (alumno != null)
             {
-                var asistencia = new AsistenciaAlumno
+                var asistenciaAlumno = new AsistenciaAlumno
                 {
+                    IdAlumno = alumno.IdAlumno,
                     Fecha = fecha,
                     Hora = hora,
-                    Estado = EstadoAsistencia.presente,
-                    IdAlumno=alumno.IdAlumno
+                    Estado = EstadoAsistencia.presente
                 };
-
-                _context.AsistenciaAlumnos.Add(asistencia);
+                _context.AsistenciaAlumnos.Add(asistenciaAlumno);
                 await _context.SaveChangesAsync();
 
-                return Ok(new { mensaje = $"Asistencia registrada correctamente ✅ {alumno.Nombre} ({alumno.Carnet})" });
+                return Json(new { mensaje = $"✅ Asistencia registrada correctamente para el alumno: {alumno.Nombre} ({alumno.Carnet})" });
             }
 
-            // Si no es alumno, buscar instructor
+            // Buscar instructor
             var instructor = await _context.Instructors.FirstOrDefaultAsync(i => i.Carnet == carnet);
             if (instructor != null)
             {
-                var asistencia = new AsistenciaInstructor
+                var asistenciaInstructor = new AsistenciaInstructor
                 {
+                    IdInstructor = instructor.IdInstructor,
                     Fecha = fecha,
                     Hora = hora,
-                    Estado = EstadoAsistencia.presente,
-                    IdInstructor = instructor.IdInstructor
+                    Estado = EstadoAsistencia.presente
                 };
-
-                _context.AsistenciaInstructor.Add(asistencia);
+                _context.AsistenciaInstructor.Add(asistenciaInstructor);
                 await _context.SaveChangesAsync();
 
-                return Ok(new { mensaje = $"Asistencia registrada correctamente ✅{instructor.Nombre} ({instructor.Carnet})" });
+                return Json(new { mensaje = $"✅ Asistencia registrada correctamente para el instructor: {instructor.Nombre} ({instructor.Carnet})" });
             }
 
-            // Si no se encuentra
-            return NotFound("No se encontró a nadie con este carnet.");
+            // No encontrado
+            return Json(new { mensaje = "❌ No se encontró ningún alumno o instructor con ese carnet." });
         }
     }
 }

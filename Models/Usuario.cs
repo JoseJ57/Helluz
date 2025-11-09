@@ -10,7 +10,7 @@ namespace Helluz.Models
         [Key]
         public int IdUsuario { get; set; }
         [Required]
-        [StringLength(20, ErrorMessage = "El Nombre del Usuario no puede tener mas de 20 caracteres.")]
+        [StringLength(20, ErrorMessage = "El Nombre del Alumno no puede tener mas de 20 caracteres.")]
         [RegularExpression(@"^[A-Za-z]+$", ErrorMessage = "El Nombre del Alumno solo puede contener letras.")]
         public string? NombreUsuario { get; set; }
         [Required]

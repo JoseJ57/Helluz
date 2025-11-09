@@ -1,59 +1,84 @@
-﻿@model IEnumerable<Helluz.Models.Horario>
+﻿@model IEnumerable<Helluz.Controllers.HorariosController.HorarioViewModel>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Horarios";
 }
 
-<h1>Index</h1>
+<div class="container py-4">
+    <div class="card shadow-lg">
+        <div class="card-header bg-danger text-white d-flex justify-content-between align-items-center">
+            <h4 class="mb-0">
+                <i class="fas fa-calendar-alt me-2"></i> Gestión de Horarios
+            </h4>
+            <a asp-action="Create" class="btn btn-light btn-sm fw-bold">
+                <i class="fas fa-plus-circle"></i> Nuevo Horario
+            </a>
+        </div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.HoraInicio)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.HoraFin)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DiaSemana)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IdDisciplina)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Instructor)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.HoraInicio)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.HoraFin)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DiaSemana)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IdDisciplina)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Instructor.Apellido)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.IdHorario">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.IdHorario">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.IdHorario">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+        <div class="card-body">
+            @if (!Model.Any())
+            {
+                <div class="alert alert-info text-center">
+                    <i class="fas fa-info-circle"></i> No hay horarios registrados.
+                </div>
+            }
+            else
+            {
+                <table class="table table-bordered table-hover text-center align-middle">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Horario</th>
+                            <th>Lunes</th>
+                            <th>Martes</th>
+                            <th>Miércoles</th>
+                            <th>Jueves</th>
+                            <th>Viernes</th>
+                            <th>Instructor</th>
+                            <th style="width: 170px;">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <!-- Horario -->
+                                <td>@item.Hora</td>
+
+                                <!-- Lunes -->
+                                <td>@item.DisciplinaLunes</td>
+
+                                <!-- Martes -->
+                                <td>@item.DisciplinaMartes</td>
+
+                                <!-- Miércoles -->
+                                <td>@item.DisciplinaMiercoles</td>
+
+                                <!-- Jueves -->
+                                <td>@item.DisciplinaJueves</td>
+
+                                <!-- Viernes -->
+                                <td>@item.DisciplinaViernes</td>
+
+                                <!-- Instructor -->
+                                <td>@item.Instructor</td>
+
+                                <!-- Acciones -->
+                                <td>
+                                    <a asp-action="Edit" asp-route-id="@item.IdHorario" class="btn btn-warning btn-sm me-1">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <a asp-action="Details" asp-route-id="@item.IdHorario" class="btn btn-info btn-sm me-1">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                    <a asp-action="Delete" asp-route-id="@item.IdHorario" class="btn btn-danger btn-sm">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+        </div>
+    </div>
+</div>

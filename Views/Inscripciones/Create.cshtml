@@ -1,61 +1,181 @@
 ﻿@model Helluz.Models.Inscripcion
+@using Helluz.Dto
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Registrar Inscripción";
 }
 
-<h1>Create</h1>
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">
+                        <i class="fas fa-clipboard-list"></i> Registrar Nueva Inscripción
+                    </h4>
+                </div>
 
-<h4>Inscripcion</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="FechaInicio" class="control-label"></label>
-                <input asp-for="FechaInicio" class="form-control" />
-                <span asp-validation-for="FechaInicio" class="text-danger"></span>
+                <div class="card-body">
+                    <form asp-action="Create" id="formInscripcion">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                        <!-- Método de pago y NroPermisos -->
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="MetodoPago" class="form-label fw-bold"></label>
+                                <select asp-for="MetodoPago" class="form-select">
+                                    <option value="">Seleccione un método</option>
+                                    @foreach (var metodo in Enum.GetValues(typeof(MetodosPagos)))
+                                    {
+                                        <option value="@metodo">@metodo</option>
+                                    }
+                                </select>
+                                <span asp-validation-for="MetodoPago" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="NroPermisos" class="form-label fw-bold"></label>
+                                <input asp-for="NroPermisos" class="form-control" type="number" value="3" readonly />
+                                <span asp-validation-for="NroPermisos" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Estado -->
+                        <div class="mb-3">
+                            <label asp-for="Estado" class="form-label fw-bold"></label>
+                            <select asp-for="Estado" class="form-select">
+                                <option value="">Seleccione un estado</option>
+                                @foreach (var estado in Enum.GetValues(typeof(EstadoInscripcion)))
+                                {
+                                    <option value="@estado">@estado</option>
+                                }
+                            </select>
+                            <span asp-validation-for="Estado" class="text-danger"></span>
+                        </div>
+
+                        <!-- Fechas -->
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="FechaInicio" class="form-label fw-bold"></label>
+                                <input asp-for="FechaInicio" class="form-control" type="date" id="FechaInicio" readonly />
+                                <span asp-validation-for="FechaInicio" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="FechaFin" class="form-label fw-bold"></label>
+                                <input asp-for="FechaFin" class="form-control" type="date" id="FechaFin" readonly />
+                                <span asp-validation-for="FechaFin" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Alumno y Membresía -->
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="IdAlumno" class="form-label fw-bold"></label>
+                                <div class="input-group">
+                                    <select asp-for="IdAlumno" class="form-select" asp-items="ViewBag.IdAlumno">
+                                        <option value="">Seleccione un alumno</option>
+                                    </select>
+                                    <button type="button" class="btn btn-outline-primary" onclick="abrirNuevoAlumno()">
+                                        <i class="fas fa-plus"></i> Nuevo
+                                    </button>
+                                </div>
+                                <span asp-validation-for="IdAlumno" class="text-danger"></span>
+                            </div>
+
+
+
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="IdMembresia" class="form-label fw-bold"></label>
+                                <select asp-for="IdMembresia" class="form-select" id="membresiaSelect">
+                                    <option value="">Seleccione una membresía</option>
+                                    @foreach (var m in (IEnumerable<dynamic>)ViewBag.Membresias)
+                                    {
+                                        <option value="@m.IdMembresia" data-dias="@m.DiasPorSemana" data-semanas="@m.DuracionSemanas">
+                                            @m.Nombre
+                                        </option>
+                                    }
+                                </select>
+                                <span asp-validation-for="IdMembresia" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <!-- Botones -->
+                        <div class="d-flex justify-content-between">
+                            <a asp-action="Index" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left"></i> Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-success">
+                                <i class="fas fa-save"></i> Guardar Inscripción
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="FechaFin" class="control-label"></label>
-                <input asp-for="FechaFin" class="form-control" />
-                <span asp-validation-for="FechaFin" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="MetodoPago" class="control-label"></label>
-                <select asp-for="MetodoPago" class="form-control"></select>
-                <span asp-validation-for="MetodoPago" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="NroPermisos" class="control-label"></label>
-                <input asp-for="NroPermisos" class="form-control" />
-                <span asp-validation-for="NroPermisos" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Estado" class="control-label"></label>
-                <select asp-for="Estado" class="form-control"></select>
-                <span asp-validation-for="Estado" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="IdAlumno" class="control-label"></label>
-                <select asp-for="IdAlumno" class ="form-control" asp-items="ViewBag.IdAlumno"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="IdMembresia" class="control-label"></label>
-                <select asp-for="IdMembresia" class ="form-control" asp-items="ViewBag.IdMembresia"></select>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+
+    <script>
+        // Función para abrir ventana emergente tipo Django Admin
+        function abrirNuevoAlumno() {
+            const ancho = 800;
+            const alto = 600;
+            const izquierda = (screen.width / 2) - (ancho / 2);
+            const arriba = (screen.height / 2) - (alto / 2);
+
+            const url = '@Url.Action("Create", "Alumnoes")';
+
+            window.open(
+                url,
+                "NuevoAlumno",
+                `width=${ancho},height=${alto},top=${arriba},left=${izquierda},resizable=yes,scrollbars=yes`
+            );
+        }
+
+        // Script de fechas y membresías
+        document.addEventListener("DOMContentLoaded", function () {
+            const membresiaSelect = document.getElementById("membresiaSelect");
+            const fechaInicioInput = document.getElementById("FechaInicio");
+            const fechaFinInput = document.getElementById("FechaFin");
+
+            // Fecha de inicio = hoy
+            const hoy = new Date();
+            fechaInicioInput.value = hoy.toISOString().split('T')[0];
+
+            function calcularFechaFin() {
+                const selectedOption = membresiaSelect.options[membresiaSelect.selectedIndex];
+                if (!selectedOption || !selectedOption.dataset.dias || !selectedOption.dataset.semanas) {
+                    fechaFinInput.value = "";
+                    return;
+                }
+
+                const duracionSemanas = parseInt(selectedOption.dataset.semanas);
+                const nroSesiones = parseInt(selectedOption.dataset.dias) * duracionSemanas;
+                const fecha = new Date(hoy);
+
+                if (nroSesiones <= 1) {
+                    let diasContados = 0;
+                    while (diasContados < 1) {
+                        fecha.setDate(fecha.getDate() + 1);
+                        const dia = fecha.getDay();
+                        if (dia !== 0 && dia !== 6) {
+                            diasContados++;
+                        }
+                    }
+                } else {
+                    fecha.setDate(fecha.getDate() + duracionSemanas * 7);
+                }
+
+                fechaFinInput.value = fecha.toISOString().split('T')[0];
+            }
+
+            membresiaSelect.addEventListener("change", calcularFechaFin);
+        });
+    </script>
 }

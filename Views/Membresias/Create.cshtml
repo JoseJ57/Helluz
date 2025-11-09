@@ -43,7 +43,7 @@
                         <!-- Nombre -->
                         <div class="mb-3">
                             <label asp-for="Nombre" class="form-label fw-bold"></label>
-                            <input asp-for="Nombre" class="form-control" placeholder="Ej: Membresía Premium, Promo Verano 2025" />
+                            <input asp-for="Nombre" class="form-control" placeholder="Ej: Membresía Premium, Promo Verano 2025" autocomplete="off"/>
                             <span asp-validation-for="Nombre" class="text-danger"></span>
                         </div>
 
@@ -59,14 +59,32 @@
                                     <span asp-validation-for="Costo" class="text-danger"></span>
                                 </div>
                             </div>
+                        </div>
+
+                        <!-- Dias, Semanas y Nro Sesiones-->
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="DiasPorSemana" class="form-label fw-bold"></label>
+                                <input asp-for="DiasPorSemana" id="DiasPorSemana" class="form-control" type="number" min="1" />
+                                <span asp-validation-for="DiasPorSemana" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="DuracionSemanas" class="form-label fw-bold"></label>
+                                <input asp-for="DuracionSemanas" id="DuracionSemanas" class="form-control" type="number" min="1" />
+                                <span asp-validation-for="DuracionSemanas" class="text-danger"></span>
+                            </div>
+
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label asp-for="Nro_sesiones" class="form-label fw-bold">Número de Sesiones</label>
-                                    <input asp-for="Nro_sesiones" class="form-control" type="number" min="1" />
+                                    <input asp-for="Nro_sesiones" id="Nro_sesiones" class="form-control" type="number" readonly />
                                     <span asp-validation-for="Nro_sesiones" class="text-danger"></span>
                                 </div>
                             </div>
+
                         </div>
+
 
                         <!-- Fechas (solo para promociones) -->
                         <div id="seccionFechas" style="display: none;">
@@ -153,6 +171,18 @@
                     }
                 }
             });
+
+            // --- NUEVO: Calcular Nro_sesiones automáticamente ---
+            function actualizarSesiones() {
+                var dias = parseInt($('#DiasPorSemana').val()) || 0;
+                var semanas = parseInt($('#DuracionSemanas').val()) || 0;
+                $('#Nro_sesiones').val(dias * semanas);
+            }
+
+            $('#DiasPorSemana, #DuracionSemanas').on('input change', actualizarSesiones);
+
+            // Ejecutar al cargar la página para inicializar
+            actualizarSesiones();
         });
     </script>
 }

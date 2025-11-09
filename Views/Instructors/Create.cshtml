@@ -1,85 +1,69 @@
 ﻿@model Helluz.Models.Instructor
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Registrar Instructor";
 }
 
-<h1>Create</h1>
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card ">
-                <div class="card-header">
-                    <h4 class="mb-0">
-                        <i class="fas fa-plus-circle"></i> Nueva Membresía/Promoción
-                    </h4>
-                </div>
-                <div class="card-body">
-                    <form asp-action="Create" id="formMembresia">
-                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+<h2>Registrar Nuevo Instructor</h2>
 
-<h4>Instructor</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Nombre" class="control-label"></label>
-                <input asp-for="Nombre" class="form-control" />
-                <span asp-validation-for="Nombre" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Apellido" class="control-label"></label>
-                <input asp-for="Apellido" class="form-control" />
-                <span asp-validation-for="Apellido" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Carnet" class="control-label"></label>
-                <input asp-for="Carnet" class="form-control" />
-                <span asp-validation-for="Carnet" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="FechaNacimiento" class="control-label"></label>
-                <input asp-for="FechaNacimiento" class="form-control" />
-                <span asp-validation-for="FechaNacimiento" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Correo" class="control-label"></label>
-                <input asp-for="Correo" class="form-control" />
-                <span asp-validation-for="Correo" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Celular" class="control-label"></label>
-                <input asp-for="Celular" class="form-control" />
-                <span asp-validation-for="Celular" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Estado" /> @Html.DisplayNameFor(model => model.Estado)
-                </label>
-            </div>
-            <div class="form-group">
-                <label asp-for="UsuarioId" class="control-label"></label>
-                <select asp-for="UsuarioId" class ="form-control" asp-items="ViewBag.UsuarioId"></select>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+<form asp-action="Create">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="mb-3">
+        <label asp-for="Nombre" class="form-label"></label>
+        <input asp-for="Nombre" class="form-control" />
+        <span asp-validation-for="Nombre" class="text-danger"></span>
     </div>
-</div>
 
-<div>
-    <a asp-action="Index">Regresar</a>
-</div>
+    <div class="mb-3">
+        <label asp-for="Apellido" class="form-label"></label>
+        <input asp-for="Apellido" class="form-control" />
+        <span asp-validation-for="Apellido" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Carnet" class="form-label"></label>
+        <input asp-for="Carnet" class="form-control" />
+        <span asp-validation-for="Carnet" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="FechaNacimiento" class="form-label"></label>
+        <input asp-for="FechaNacimiento" class="form-control" type="date" />
+        <span asp-validation-for="FechaNacimiento" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Correo" class="form-label"></label>
+        <input asp-for="Correo" class="form-control" type="email" />
+        <span asp-validation-for="Correo" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Celular" class="form-label"></label>
+        <input asp-for="Celular" class="form-control" />
+        <span asp-validation-for="Celular" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="UsuarioId" class="form-label"></label>
+        <select asp-for="UsuarioId" class="form-select" asp-items="ViewBag.UsuarioId">
+            <option value="">Seleccione un usuario</option>
+        </select>
+        <span asp-validation-for="UsuarioId" class="text-danger"></span>
+    </div>
+
+    <div class="form-check mb-3">
+        <input asp-for="Estado" class="form-check-input" />
+        <label asp-for="Estado" class="form-check-label">Activo</label>
+    </div>
+
+    <button type="submit" class="btn btn-success">Guardar</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
 </form>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

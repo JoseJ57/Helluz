@@ -1,52 +1,154 @@
 ﻿@model Helluz.Models.Horario
+@using Microsoft.AspNetCore.Mvc.Rendering
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Crear Horario";
 }
 
-<h1>Create</h1>
-
-<h4>Horario</h4>
+<h4>Crear Horario</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="HoraInicio" class="control-label"></label>
-                <input asp-for="HoraInicio" class="form-control" />
-                <span asp-validation-for="HoraInicio" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="HoraFin" class="control-label"></label>
-                <input asp-for="HoraFin" class="form-control" />
-                <span asp-validation-for="HoraFin" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DiaSemana" class="control-label"></label>
-                <select asp-for="DiaSemana" class="form-control"></select>
-                <span asp-validation-for="DiaSemana" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="IdDisciplina" class="control-label"></label>
-                <input asp-for="IdDisciplina" class="form-control" />
-                <span asp-validation-for="IdDisciplina" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="IdInstructor" class="control-label"></label>
-                <select asp-for="IdInstructor" class ="form-control" asp-items="ViewBag.IdInstructor"></select>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+<style>
+    table {
+        margin: 0 auto; /* centra la tabla */
+        max-width: 95%; /* no se salga del contenedor */
+        border-collapse: separate;
+        border-spacing: 0.5rem;
+    }
+
+    td, th {
+        min-width: 120px;
+        text-align: center;
+    }
+
+    table select.form-select {
+        width: 100%; /* ocupa toda la celda */
+        min-width: 120px; /* opcional */
+    }
+</style>
+
+<form asp-action="Create" method="post">
+    <table class="table table-bordered text-center align-middle">
+        <thead class="table-dark">
+            <tr>
+                <th>Horario</th>
+                <th>Lunes</th>
+                <th>Martes</th>
+                <th>Miércoles</th>
+                <th>Jueves</th>
+                <th>Viernes</th>
+                <th>Instructor</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <!-- Horario -->
+                <td class="px-4">
+                    <input asp-for="HoraInicio" class="form-control mb-1" type="time" />
+                    <input asp-for="HoraFin" class="form-control" type="time" />
+                    <span asp-validation-for="HoraInicio" class="text-danger"></span>
+                    <span asp-validation-for="HoraFin" class="text-danger"></span>
+                </td>
+
+                <!-- Lunes -->
+                <td class="px-4">
+                    <div id="Lunes-container" class="form-check p-2 border rounded" style="opacity:0.5;">
+                        <input type="checkbox" id="Lunes-check" class="form-check-input dia-toggle" data-target="Lunes" />
+                        <label for="Lunes-check" class="form-check-label fw-bold">Lunes</label>
+
+                        <select asp-for="IdDisciplinaLunes" class="form-select mt-1" asp-items="ViewBag.Disciplinas" disabled>
+                            <option value="">-- Seleccionar --</option>
+                        </select>
+                    </div>
+                </td>
+
+                <!-- Martes -->
+                <td class="px-4">
+                    <div id="Martes-container" class="form-check p-2 border rounded" style="opacity:0.5;">
+                        <input type="checkbox" id="Martes-check" class="form-check-input dia-toggle" data-target="Martes" />
+                        <label for="Martes-check" class="form-check-label fw-bold">Martes</label>
+
+                        <select asp-for="IdDisciplinaMartes" class="form-select mt-1" asp-items="ViewBag.Disciplinas" disabled>
+                            <option value="">-- Seleccionar --</option>
+                        </select>
+                    </div>
+                </td>
+
+                <!-- Miércoles -->
+                <td class="px-4">
+                    <div id="Miercoles-container" class="form-check p-2 border rounded" style="opacity:0.5;">
+                        <input type="checkbox" id="Miercoles-check" class="form-check-input dia-toggle" data-target="Miercoles" />
+                        <label for="Miercoles-check" class="form-check-label fw-bold">Miércoles</label>
+
+                        <select asp-for="IdDisciplinaMiercoles" class="form-select mt-1" asp-items="ViewBag.Disciplinas" disabled>
+                            <option value="">-- Seleccionar --</option>
+                        </select>
+                    </div>
+                </td>
+
+                <!-- Jueves -->
+                <td class="px-4">
+                    <div id="Jueves-container" class="form-check p-2 border rounded" style="opacity:0.5;">
+                        <input type="checkbox" id="Jueves-check" class="form-check-input dia-toggle" data-target="Jueves" />
+                        <label for="Jueves-check" class="form-check-label fw-bold">Jueves</label>
+
+                        <select asp-for="IdDisciplinaJueves" class="form-select mt-1" asp-items="ViewBag.Disciplinas" disabled>
+                            <option value="">-- Seleccionar --</option>
+                        </select>
+                    </div>
+                </td>
+
+                <!-- Viernes -->
+                <td class="px-4">
+                    <div id="Viernes-container" class="form-check p-2 border rounded" style="opacity:0.5;">
+                        <input type="checkbox" id="Viernes-check" class="form-check-input dia-toggle" data-target="Viernes" />
+                        <label for="Viernes-check" class="form-check-label fw-bold">Viernes</label>
+
+                        <select asp-for="IdDisciplinaViernes" class="form-select mt-1" asp-items="ViewBag.Disciplinas" disabled>
+                            <option value="">-- Seleccionar --</option>
+                        </select>
+                    </div>
+                </td>
+
+
+                <!-- Instructor -->
+                <td class="px-4">
+                    <select asp-for="IdInstructor" class="form-select" asp-items="ViewBag.Instructores">
+                        <option value="">-- Seleccionar --</option>
+                    </select>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="mt-3">
+        <button type="submit" class="btn btn-primary">
+            <i class="fas fa-plus-circle me-1"></i> Crear Horario
+        </button>
+        <a asp-action="Index" class="btn btn-secondary ms-2">Cancelar</a>
+    </div>
+</form>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+
+    <script>
+        // Activar/desactivar select según el checkbox
+        document.querySelectorAll(".dia-toggle").forEach(function(checkbox) {
+            checkbox.addEventListener("change", function() {
+                var dia = checkbox.getAttribute("data-target");
+                var container = document.getElementById(dia + "-container");
+                var select = container.querySelector("select");
+
+                if (checkbox.checked) {
+                    select.disabled = false;
+                    container.style.opacity = "1";
+                } else {
+                    select.disabled = true;
+                    select.value = "";
+                    container.style.opacity = "0.5";
+                }
+            });
+        });
+    </script>
 }

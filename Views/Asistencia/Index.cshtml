@@ -1,0 +1,95 @@
+﻿@{
+    ViewData["Title"] = "Lista de Asistencias";
+    var asistenciasAlumnos = ViewBag.AsistenciasAlumnos as List<Helluz.Models.AsistenciaAlumno>;
+    var asistenciasInstructores = ViewBag.AsistenciasInstructores as List<Helluz.Models.AsistenciaInstructor>;
+}
+
+<h2 class="mb-4">Registro de Asistencias</h2>
+
+<!-- Tabla de alumnos -->
+<div class="accordion mb-3" id="accordionAsistencia">
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="headingAlumnos">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAlumnos">
+                Asistencias de Alumnos
+            </button>
+        </h2>
+        <div id="collapseAlumnos" class="accordion-collapse collapse show">
+            <div class="accordion-body">
+                <table class="table table-bordered table-striped">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Alumno</th>
+                            <th>Carnet</th>
+                            <th>Fecha</th>
+                            <th>Hora</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (asistenciasAlumnos != null && asistenciasAlumnos.Any())
+                        {
+                            foreach (var a in asistenciasAlumnos)
+                            {
+                                <tr>
+                                    <td>@a.Alumno?.Nombre</td>
+                                    <td>@a.Alumno?.Carnet</td>
+                                    <td>@a.Fecha</td>
+                                    <td>@a.Hora</td>
+                                    <td>@a.Estado</td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr><td colspan="5" class="text-center">No hay asistencias registradas.</td></tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tabla de instructores -->
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="headingInstructores">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructores">
+                Asistencias de Instructores
+            </button>
+        </h2>
+        <div id="collapseInstructores" class="accordion-collapse collapse">
+            <div class="accordion-body">
+                <table class="table table-bordered table-striped">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Instructor</th>
+                            <th>Carnet</th>
+                            <th>Fecha</th>
+                            <th>Hora</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (asistenciasInstructores != null && asistenciasInstructores.Any())
+                        {
+                            foreach (var i in asistenciasInstructores)
+                            {
+                                <tr>
+                                    <td>@i.Instructor?.Nombre</td>
+                                    <td>@i.Instructor?.Carnet</td>
+                                    <td>@i.Fecha</td>
+                                    <td>@i.Hora</td>
+                                    <td>@i.Estado</td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr><td colspan="5" class="text-center">No hay asistencias registradas.</td></tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

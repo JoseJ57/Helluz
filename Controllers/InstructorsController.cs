@@ -1,12 +1,10 @@
 ﻿using Helluz.Contexto;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Helluz.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Helluz.Models;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Helluz.Controllers
 {
@@ -22,25 +20,20 @@ namespace Helluz.Controllers
         // GET: Instructors
         public async Task<IActionResult> Index()
         {
-            var myContext = _context.Instructors.Include(i => i.Usuario);
-            return View(await myContext.ToListAsync());
+            var instructors = _context.Instructors.Include(i => i.Usuario);
+            return View(await instructors.ToListAsync());
         }
 
         // GET: Instructors/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
             var instructor = await _context.Instructors
                 .Include(i => i.Usuario)
-                .FirstOrDefaultAsync(m => m.IdInstructor == id);
-            if (instructor == null)
-            {
-                return NotFound();
-            }
+                .FirstOrDefaultAsync(i => i.IdInstructor == id);
+
+            if (instructor == null) return NotFound();
 
             return View(instructor);
         }
@@ -53,18 +46,17 @@ namespace Helluz.Controllers
         }
 
         // POST: Instructors/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("IdInstructor,Nombre,Apellido,Carnet,FechaNacimiento,Correo,Celular,Estado,UsuarioId")] Instructor instructor)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(instructor);
+                _context.Add(instructor); // si UsuarioId es null, EF lo aceptará
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             ViewData["UsuarioId"] = new SelectList(_context.Usuarios, "IdUsuario", "NombreUsuario", instructor.UsuarioId);
             return View(instructor);
         }
@@ -72,71 +64,89 @@ namespace Helluz.Controllers
         // GET: Instructors/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
             var instructor = await _context.Instructors.FindAsync(id);
-            if (instructor == null)
-            {
-                return NotFound();
-            }
-            ViewData["UsuarioId"] = new SelectList(_context.Usuarios, "IdUsuario", "NombreUsuario", instructor.UsuarioId);
+            if (instructor == null) return NotFound();
+
+            var usuarios = await _context.Usuarios.ToListAsync();
+
+            // Creamos la lista con una opción vacía
+            ViewData["UsuarioId"] = new SelectList(
+                usuarios,
+                "IdUsuario",
+                "NombreUsuario",
+                instructor.UsuarioId
+            );
+
             return View(instructor);
         }
 
+
         // POST: Instructors/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("IdInstructor,Nombre,Apellido,Carnet,FechaNacimiento,Correo,Celular,Estado,UsuarioId")] Instructor instructor)
         {
-            if (id != instructor.IdInstructor)
+            if (id != instructor.IdInstructor) return NotFound();
+
+            if (!ModelState.IsValid)
             {
-                return NotFound();
+                var usuarios = await _context.Usuarios.ToListAsync();
+                ViewData["UsuarioId"] = new SelectList(usuarios, "IdUsuario", "NombreUsuario", instructor.UsuarioId);
+                return View(instructor);
             }
 
-            if (ModelState.IsValid)
+            try
             {
-                try
+                var instructorDb = await _context.Instructors.FindAsync(id);
+                if (instructorDb == null) return NotFound();
+
+                // Validar que el UsuarioId no esté duplicado
+                if (instructor.UsuarioId.HasValue)
                 {
-                    _context.Update(instructor);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!InstructorExists(instructor.IdInstructor))
+                    var existe = await _context.Instructors
+                        .AnyAsync(i => i.UsuarioId == instructor.UsuarioId && i.IdInstructor != id);
+                    if (existe)
                     {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
+                        ModelState.AddModelError("UsuarioId", "Este usuario ya está asignado a otro instructor.");
+                        var usuarios = await _context.Usuarios.ToListAsync();
+                        ViewData["UsuarioId"] = new SelectList(usuarios, "IdUsuario", "NombreUsuario", instructor.UsuarioId);
+                        return View(instructor);
                     }
                 }
-                return RedirectToAction(nameof(Index));
+
+                // Actualizar propiedades
+                instructorDb.Nombre = instructor.Nombre;
+                instructorDb.Apellido = instructor.Apellido;
+                instructorDb.Carnet = instructor.Carnet;
+                instructorDb.FechaNacimiento = instructor.FechaNacimiento;
+                instructorDb.Correo = instructor.Correo;
+                instructorDb.Celular = instructor.Celular;
+                instructorDb.Estado = instructor.Estado;
+                instructorDb.UsuarioId = instructor.UsuarioId;
+
+                await _context.SaveChangesAsync();
             }
-            ViewData["UsuarioId"] = new SelectList(_context.Usuarios, "IdUsuario", "NombreUsuario", instructor.UsuarioId);
-            return View(instructor);
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!_context.Instructors.Any(e => e.IdInstructor == id)) return NotFound();
+                else throw;
+            }
+
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Instructors/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
             var instructor = await _context.Instructors
                 .Include(i => i.Usuario)
-                .FirstOrDefaultAsync(m => m.IdInstructor == id);
-            if (instructor == null)
-            {
-                return NotFound();
-            }
+                .FirstOrDefaultAsync(i => i.IdInstructor == id);
+
+            if (instructor == null) return NotFound();
 
             return View(instructor);
         }
@@ -150,9 +160,9 @@ namespace Helluz.Controllers
             if (instructor != null)
             {
                 _context.Instructors.Remove(instructor);
+                await _context.SaveChangesAsync();
             }
 
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
