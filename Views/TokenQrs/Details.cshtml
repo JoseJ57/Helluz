@@ -7,11 +7,16 @@
 <h1>Details</h1>
 
 <div>
-    <h4>TokenQr</h4>
     <hr />
-    <dl class="row">
-        <img src="@Url.Action("ObtenerQr", "TokenQrs", new { id = Model.IdToken })" alt="QR para marcar asistencia"/>
-    </dl>
+    <dt class="col-sm-3">Código QR</dt>
+    <dd class="col-sm-9">
+        <!-- ⭐ CAMBIO AQUÍ: Usar la imagen guardada -->
+        <img src="~/qr/qr_@(Model.IdToken).png"
+             alt="QR para marcar asistencia"
+             width="300"
+             height="300"
+             class="border border-dark p-2" />
+    </dd>
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.IdToken">Edit</a> |

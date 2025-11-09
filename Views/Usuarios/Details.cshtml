@@ -1,0 +1,91 @@
+﻿@model Helluz.Models.Usuario
+
+@{
+    ViewData["Title"] = "Detalles";
+}
+
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="mb-0">
+                        <i class="fas fa-info-circle"></i> Detalles
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <!-- Tipo -->
+                    <div class="mb-4 text-center">
+                            <h3>
+                                <span class="text">
+                                    <i class="fas fa-id-card"></i> Usuario
+                                </span>
+                            </h3>
+                        
+                    </div>
+
+                    <dl class="row">
+                        <dt class=" text col-sm-4">ID:</dt>
+                        <dd class="text col-sm-8">#@Model.IdUsuario</dd>
+
+                        <dt class="text col-sm-4">Nombre:</dt>
+                        <dd class="col-sm-8">
+                            <strong class="fs-5">@Model.NombreUsuario</strong>
+                        </dd>
+
+                        <dt class="text col-sm-4">Contraseña:</dt>
+                        <dd class="col-sm-8">
+                            <span class="text-success fs-4 fw-bold">
+                                $@Model.Password
+                            </span>
+                        </dd>
+
+                        <dt class="col-sm-4">Estado Actual:</dt>
+                        <dd class="col-sm-8">
+                            @if (Model.Estado)
+                            {
+                                <h4>
+                                    <span class="badge bg-success">
+                                        <i class="fas fa-check-circle"></i> ACTIVO
+                                    </span>
+                                </h4>
+                            }
+                            else
+                            {
+                                <h4>
+                                    <span class="badge bg-danger">
+                                        <i class="fas fa-times-circle"></i> INACTIVO
+                                    </span>
+                                </h4>
+                            }
+                        </dd>
+
+                        <dt class="col-sm-4">Rol:</dt>
+                        <dd class="col-sm-8">
+                            <span class="badge bg-secondary fs-6">
+                                @Model.Rol
+                            </span>
+                        </dd>
+                    </dl>
+
+                    <hr>
+
+                    <!-- Botones de acción -->
+                    <div class="d-flex justify-content-between">
+                        <a asp-action="Index" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i> Volver al Listado
+                        </a>
+                        <div>
+                            <a asp-action="Edit" asp-route-id="@Model.IdUsuario" class="btn btn-warning me-2">
+                                <i class="fas fa-edit"></i> Editar
+                            </a>
+                            <a asp-action="Delete" asp-route-id="@Model.IdUsuario" class="btn btn-danger">
+                                <i class="fas fa-trash"></i> Eliminar
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
