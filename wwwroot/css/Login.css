@@ -1,8 +1,9 @@
 ﻿
+/* Centrar todo el contenido del body */
 body {
     color: white;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    min-height: 100vh;
+    height: 100vh;
     margin: 0;
     padding: 0;
     background: #0A0A0A;
@@ -10,6 +11,9 @@ body {
     background-position: center;
     background-repeat: no-repeat;
     background-size: 800px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 
@@ -46,6 +50,7 @@ body {
         font-size:18px;
     }
 
+/* Contenedor principal centrado vertical y horizontalmente */
 .login-container {
     background-color: rgba(255, 255, 255, 0.05);
     padding: 30px;
@@ -54,11 +59,12 @@ body {
     -webkit-backdrop-filter: blur(8px);
     width: 600px !important;
     height: 600px;
-    margin: auto;
-    margin-top: 60px;
-    border:solid 1px #ccc;
-    box-shadow:0 0 10px 0 #fff;
-    align-items:center;
+    border: solid 1px #ccc;
+    box-shadow: 0 0 10px 0 #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 

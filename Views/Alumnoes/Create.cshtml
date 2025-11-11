@@ -110,13 +110,15 @@
 
                         <div class="mb-4">
                             <div class="form-check">
-                                <input class="form-check-input" asp-for="Estado" checked />
+                                <!-- Checkbox deshabilitado para que siempre esté activo -->
+                                <input class="form-check-input" asp-for="Estado" checked disabled />
                                 <label class="form-check-label" asp-for="Estado">
                                     <i class="fas fa-check-circle text-success"></i> Alumno Activo
-                                    <small class="text-muted d-block">El alumno podrá inscribirse a clases y acceder al gimnasio</small>
+                                    <small class="text-muted d-block">El alumno podrá inscribirse a clases y acceder a la academia</small>
                                 </label>
                             </div>
                         </div>
+
 
                         <hr>
 

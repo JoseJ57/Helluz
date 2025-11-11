@@ -1,14 +1,21 @@
-﻿/* Fondo con imagen */
+﻿/* --- ESTRUCTURA GLOBAL --- */
+html, body {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Fondo con imagen */
 body {
-    background-color:#000;
+    background-color: #000;
     background-image: url("/imagenes/HelluzLogo.jpg");
     background-repeat: no-repeat;
     background-position: center;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
+    background-size: 800px;
     color: #fff;
-    background-size: 800px ;
+    position: relative;
+    flex: 1;
 }
 
 /* Capa oscura para contraste */
@@ -19,12 +26,13 @@ body {
     z-index: 1;
 }
 
-/* Hero principal */
+/* --- SECCIÓN HERO --- */
 .hero {
     position: relative;
     z-index: 2;
     text-align: center;
     padding: 8rem 2rem;
+    flex: 1 0 auto; /* Permite que empuje el footer hacia abajo */
 }
 
     .hero h1 {
@@ -40,7 +48,7 @@ body {
         margin-top: 1rem;
     }
 
-/* Botones */
+/* --- BOTONES --- */
 .btn-primary {
     background-color: #dc3545;
     border: none;
@@ -53,12 +61,13 @@ body {
         transform: scale(1.05);
     }
 
-/* Sección informativa */
+/* --- SECCIÓN FEATURES --- */
 .features {
     z-index: 2;
     position: relative;
     padding: 4rem 2rem;
     background: rgba(0, 0, 0, 0.8);
+    flex: 1 0 auto; /* también empuja el footer */
 }
 
 .feature-icon {
@@ -66,15 +75,19 @@ body {
     color: #ff1e1e;
 }
 
+/* --- FOOTER --- */
 footer {
+    flex-shrink: 0;
     text-align: center;
     padding: 1.5rem;
     color: #ccc;
     background: #111;
     z-index: 2;
     position: relative;
+    width: 100%;
 }
 
-.conteiner{
-    flex:1;
+/* --- CORRECCIÓN DE CLASE MAL ESCRITA --- */
+.container {
+    flex: 1;
 }

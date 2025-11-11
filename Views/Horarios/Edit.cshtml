@@ -5,92 +5,187 @@
     ViewData["Title"] = "Editar Horario";
 }
 
-<div class="container py-4">
-    <div class="row justify-content-center">
-        <div class="col-md-10">
-            <div class="card">
-                <div class="card-header card-edit">
-                    <h4 class="mb-0">
-                        <i class="fas fa-clock"></i> Editar Horario
-                    </h4>
-                </div>
-                <div class="card-body">
-                    <form asp-action="Edit" method="post">
-                        <input type="hidden" asp-for="IdHorario" />
+<h4>Editar Horario</h4>
+<hr />
 
-                        <div class="table-responsive">
-                            <table class="table table-bordered text-center align-middle">
-                                <thead class="table-dark">
-                                    <tr>
-                                        <th>Horario</th>
-                                        <th>Lunes</th>
-                                        <th>Martes</th>
-                                        <th>Miércoles</th>
-                                        <th>Jueves</th>
-                                        <th>Viernes</th>
-                                        <th>Instructor</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <!-- Horario -->
-                                        <td class="px-2">
-                                            <input asp-for="HoraInicio" class="form-control mb-1" type="time" />
-                                            <input asp-for="HoraFin" class="form-control" type="time" />
-                                            <span asp-validation-for="HoraInicio" class="text-danger"></span>
-                                            <span asp-validation-for="HoraFin" class="text-danger"></span>
-                                        </td>
+<style>
+    table {
+        margin: 0 auto;
+        max-width: 95%;
+        border-collapse: separate;
+        border-spacing: 0.5rem;
+    }
 
-                                        <!-- Días -->
-                                        @foreach (var dia in new[] { "Lunes", "Martes", "Miercoles", "Jueves", "Viernes" })
-                                        {
-                                            var propertyChecked = Model.GetType().GetProperty(dia).GetValue(Model) as bool? ?? false;
-                                            var propertyDisciplina = "IdDisciplina" + dia;
+    td, th {
+        min-width: 120px;
+        text-align: center;
+    }
 
-                                            <td class="px-2">
-                                                <div id="@dia-container" class="form-check p-2 border rounded" style="opacity:@(propertyChecked ? "1" : "0.5")">
-                                                    <input type="checkbox" id="@dia-check" class="form-check-input dia-toggle" data-target="@dia"
-                                                           @(propertyChecked ? "checked" : null) />
-                                                    <label for="@dia-check" class="form-check-label fw-bold">@dia</label>
+    table select.form-select {
+        width: 100%;
+        min-width: 120px;
+    }
+</style>
 
-                                                    <select asp-for="@propertyDisciplina" class="form-select mt-1" 
-                                                            asp-items="ViewBag"["Disciplinas" + dia]")>
-                                                        <option value="">-- Seleccionar --</option>
-                                                    </select>
-                                                </div>
-                                            </td>
-                                        }
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="IdHorario" />
+    <table class="table table-bordered text-center align-middle">
+        <thead class="table-dark">
+            <tr>
+                <th>Horario</th>
+                <th>Lunes</th>
+                <th>Martes</th>
+                <th>Miércoles</th>
+                <th>Jueves</th>
+                <th>Viernes</th>
+                <th>Instructor</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <!-- Horario -->
+                <td class="px-4">
+                    <input asp-for="HoraInicio" class="form-control mb-1" type="time" />
+                    <input asp-for="HoraFin" class="form-control" type="time" />
+                    <span asp-validation-for="HoraInicio" class="text-danger"></span>
+                    <span asp-validation-for="HoraFin" class="text-danger"></span>
+                </td>
 
-                                        <!-- Instructor -->
-                                        <td class="px-2">
-                                            <select asp-for="IdInstructor" class="form-select" asp-items="ViewBag.Instructores">
-                                                <option value="">-- Seleccionar --</option>
-                                            </select>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                <!-- Lunes -->
+                <td class="px-4">
+                    <div id="Lunes-container" class="form-check p-2 border rounded" style="opacity:@(Model.Lunes ? "1" : "0.5")">
+                        <input type="checkbox" id="Lunes-check" class="form-check-input dia-toggle" data-target="Lunes"
+                               @(Model.Lunes ? "checked" : null) />
+                        <label for="Lunes-check" class="form-check-label fw-bold">Lunes</label>
 
-                        <div class="mt-3 d-flex justify-content-between">
-                            <a asp-action="Index" class="btn btn-back">
-                                <i class="fas fa-arrow-left"></i> Cancelar
-                            </a>
-                            <button type="submit" class="btn btn-save">
-                                <i class="fas fa-save me-1"></i> Guardar cambios
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
+                        @if (Model.Lunes)
+                        {
+                            <select asp-for="IdDisciplinaLunes" class="form-select mt-1" asp-items="ViewBag.DisciplinasLunes">
+                                <option value="">-- Seleccionar --</option>
+                            </select>
+                        }
+                        else
+                        {
+                            <select asp-for="IdDisciplinaLunes" class="form-select mt-1" asp-items="ViewBag.DisciplinasLunes" disabled>
+                                <option value="">-- Seleccionar --</option>
+                            </select>
+                        }
+
+                    </div>
+                </td>
+
+                <!-- Martes -->
+                <td class="px-4">
+                    <div id="Martes-container" class="form-check p-2 border rounded" style="opacity:@(Model.Martes ? "1" : "0.5")">
+                        <input type="checkbox" id="Martes-check" class="form-check-input dia-toggle" data-target="Martes"
+                               @(Model.Martes ? "checked" : null) />
+                        <label for="Martes-check" class="form-check-label fw-bold">Martes</label>
+
+                        @if (Model.Martes)
+                        {
+                            <select asp-for="IdDisciplinaMartes" class="form-select mt-1" asp-items="ViewBag.DisciplinasMartes">
+                                <option value="">-- Seleccionar --</option>
+                            </select>
+                        }
+                        else
+                        {
+                            <select asp-for="IdDisciplinaMartes" class="form-select mt-1" asp-items="ViewBag.DisciplinasMartes" disabled>
+                                <option value="">-- Seleccionar --</option>
+                            </select>
+                        }
+
+                    </div>
+                </td>
+
+                <!-- Miércoles -->
+                <td class="px-4">
+                    <div id="Miercoles-container" class="form-check p-2 border rounded" style="opacity:@(Model.Miercoles ? "1" : "0.5")">
+                        <input type="checkbox" id="Miercoles-check" class="form-check-input dia-toggle" data-target="Miercoles"
+                               @(Model.Miercoles ? "checked" : null) />
+                        <label for="Miercoles-check" class="form-check-label fw-bold">Miércoles</label>
+
+                        @if (Model.Miercoles)
+                        {
+                            <select asp-for="IdDisciplinaMiercoles" class="form-select mt-1" asp-items="ViewBag.DisciplinasMiercoles">
+                                <option value="">-- Seleccionar --</option>
+                            </select>
+                        }
+                        else
+                        {
+                            <select asp-for="IdDisciplinaMiercoles" class="form-select mt-1" asp-items="ViewBag.DisciplinasMiercoles" disabled>
+                                <option value="">-- Seleccionar --</option>
+                            </select>
+                        }
+                    </div>
+                </td>
+
+                <!-- Jueves -->
+                <td class="px-4">
+                    <div id="Jueves-container" class="form-check p-2 border rounded" style="opacity:@(Model.Jueves ? "1" : "0.5")">
+                        <input type="checkbox" id="Jueves-check" class="form-check-input dia-toggle" data-target="Jueves"
+                               @(Model.Jueves ? "checked" : null) />
+                        <label for="Jueves-check" class="form-check-label fw-bold">Jueves</label>
+
+                        @if (Model.Jueves)
+                        {
+                            <select asp-for="IdDisciplinaJueves" class="form-select mt-1" asp-items="ViewBag.DisciplinasJueves">
+                                <option value="">-- Seleccionar --</option>
+                            </select>
+                        }
+                        else
+                        {
+                            <select asp-for="IdDisciplinaJueves" class="form-select mt-1" asp-items="ViewBag.DisciplinasJueves" disabled>
+                                <option value="">-- Seleccionar --</option>
+                            </select>
+                        }
+                    </div>
+                </td>
+
+                <!-- Viernes -->
+                <td class="px-4">
+                    <div id="Viernes-container" class="form-check p-2 border rounded" style="opacity:@(Model.Viernes ? "1" : "0.5")">
+                        <input type="checkbox" id="Viernes-check" class="form-check-input dia-toggle" data-target="Viernes"
+                               @(Model.Viernes ? "checked" : null) />
+                        <label for="Viernes-check" class="form-check-label fw-bold">Viernes</label>
+
+                        @if (Model.Viernes)
+                        {
+                            <select asp-for="IdDisciplinaViernes" class="form-select mt-1" asp-items="ViewBag.DisciplinasViernes">
+                                <option value="">-- Seleccionar --</option>
+                            </select>
+                        }
+                        else
+                        {
+                            <select asp-for="IdDisciplinaViernes" class="form-select mt-1" asp-items="ViewBag.DisciplinasViernes" disabled>
+                                <option value="">-- Seleccionar --</option>
+                            </select>
+                        }
+                    </div>
+                </td>
+
+                <!-- Instructor -->
+                <td class="px-4">
+                    <select asp-for="IdInstructor" class="form-select" asp-items="ViewBag.Instructores">
+                        <option value="">-- Seleccionar --</option>
+                    </select>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="mt-3">
+        <button type="submit" class="btn btn-primary">
+            <i class="fas fa-save me-1"></i> Guardar cambios
+        </button>
+        <a asp-action="Index" class="btn btn-secondary ms-2">Cancelar</a>
     </div>
-</div>
+</form>
 
 @section Scripts {
     @await Html.PartialAsync("_ValidationScriptsPartial")
 
     <script>
+        // Activar/desactivar select según el checkbox
         document.querySelectorAll(".dia-toggle").forEach(function(checkbox) {
             checkbox.addEventListener("change", function() {
                 var dia = checkbox.getAttribute("data-target");
@@ -98,11 +193,13 @@
                 var select = container.querySelector("select");
 
                 if (checkbox.checked) {
-                    select.disabled = false;
+                    if (select) select.disabled = false;
                     container.style.opacity = "1";
                 } else {
-                    select.disabled = true;
-                    select.value = "";
+                    if (select) {
+                        select.disabled = true;
+                        select.value = "";
+                    }
                     container.style.opacity = "0.5";
                 }
             });
