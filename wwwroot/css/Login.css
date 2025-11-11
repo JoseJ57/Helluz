@@ -58,6 +58,7 @@ body {
     margin-top: 60px;
     border:solid 1px #ccc;
     box-shadow:0 0 10px 0 #fff;
+    align-items:center;
 }
 
 

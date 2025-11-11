@@ -241,7 +241,8 @@ namespace Helluz.Migrations
                     Estado = table.Column<int>(type: "int", nullable: false),
                     IdAlumno = table.Column<int>(type: "int", nullable: false),
                     IdMembresia = table.Column<int>(type: "int", nullable: false),
-                    IdHorario = table.Column<int>(type: "int", nullable: false)
+                    IdHorario = table.Column<int>(type: "int", nullable: false),
+                    ControlDias = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {

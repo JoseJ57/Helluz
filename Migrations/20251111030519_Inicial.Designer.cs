@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Helluz.Migrations
 {
     [DbContext(typeof(MyContext))]
-    [Migration("20251110005511_AgregarControlDiasEnInscripcion")]
-    partial class AgregarControlDiasEnInscripcion
+    [Migration("20251111030519_Inicial")]
+    partial class Inicial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

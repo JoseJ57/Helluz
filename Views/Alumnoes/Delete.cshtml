@@ -31,7 +31,11 @@
                         <dd class="col-sm-8">@Model.Carnet</dd>
 
                         <dt class="col-sm-4"><i class="fas fa-calendar-alt"></i> Fecha de Nacimiento:</dt>
-                        <dd class="col-sm-8">@Model.FechaNacimiento.ToString("dd/MM/yyyy")</dd>
+                        <dd class="col-sm-8">
+                            @(Model.FechaNacimiento.HasValue
+                                                        ? Model.FechaNacimiento.Value.ToString("dd/MM/yyyy")
+                                                        : "Sin fecha")
+                        </dd>
 
                         <dt class="col-sm-4"><i class="fas fa-phone"></i> Celular:</dt>
                         <dd class="col-sm-8">@Model.Celular</dd>

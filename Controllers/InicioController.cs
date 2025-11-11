@@ -8,5 +8,10 @@ namespace Helluz.Controllers
         {
             return View();
         }
+
+        public IActionResult Informacion()
+        {
+            return View();
+        }
     }
 }

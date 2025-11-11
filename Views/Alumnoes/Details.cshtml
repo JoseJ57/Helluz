@@ -42,8 +42,9 @@
 
                         <dt class="col-sm-4">Fecha de Nacimiento:</dt>
                         <dd class="col-sm-8">
-                            <i class="fas fa-calendar-alt"></i>
-                            @Model.FechaNacimiento.ToString("dd 'de' MMMM 'de' yyyy")
+                            @(Model.FechaNacimiento.HasValue
+                                                        ? Model.FechaNacimiento.Value.ToString("dd/MM/yyyy")
+                                                        : "Sin fecha")
                         </dd>
 
                         <dt class="col-sm-4">Celular:</dt>

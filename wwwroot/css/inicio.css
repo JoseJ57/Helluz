@@ -75,3 +75,6 @@ footer {
     position: relative;
 }
 
+.conteiner{
+    flex:1;
+}
