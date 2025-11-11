@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Helluz.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Helluz.Controllers
 {
+    [Authorize]
     public class AlumnoesController : Controller
     {
         private readonly MyContext _context;

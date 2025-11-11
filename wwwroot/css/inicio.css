@@ -1,0 +1,77 @@
+﻿/* Fondo con imagen */
+body {
+    background-color:#000;
+    background-image: url("/imagenes/HelluzLogo.jpg");
+    background-repeat: no-repeat;
+    background-position: center;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    color: #fff;
+    background-size: 800px ;
+}
+
+/* Capa oscura para contraste */
+.overlay {
+    background-color: rgba(0, 0, 0, 0.7);
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+}
+
+/* Hero principal */
+.hero {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    padding: 8rem 2rem;
+}
+
+    .hero h1 {
+        font-weight: 800;
+        font-size: 3rem;
+        color: #ff1e1e;
+        text-shadow: 0 0 20px rgba(255, 0, 0, 0.4);
+    }
+
+    .hero p {
+        font-size: 1.2rem;
+        color: #f8f9fa;
+        margin-top: 1rem;
+    }
+
+/* Botones */
+.btn-primary {
+    background-color: #dc3545;
+    border: none;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+    .btn-primary:hover {
+        background-color: #ff1e1e;
+        transform: scale(1.05);
+    }
+
+/* Sección informativa */
+.features {
+    z-index: 2;
+    position: relative;
+    padding: 4rem 2rem;
+    background: rgba(0, 0, 0, 0.8);
+}
+
+.feature-icon {
+    font-size: 2rem;
+    color: #ff1e1e;
+}
+
+footer {
+    text-align: center;
+    padding: 1.5rem;
+    color: #ccc;
+    background: #111;
+    z-index: 2;
+    position: relative;
+}
+

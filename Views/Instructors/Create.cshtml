@@ -4,63 +4,130 @@
     ViewData["Title"] = "Registrar Instructor";
 }
 
-<h2>Registrar Nuevo Instructor</h2>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="mb-0">
+                        <i class="fas fa-user-plus"></i> Registrar Nuevo Instructor
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Create" id="formInstructor">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
 
-<form asp-action="Create">
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <!-- Información Personal -->
+                        <h5 class="mb-3">
+                            <i class="fas fa-user text-primary"></i> Información Personal
+                        </h5>
 
-    <div class="mb-3">
-        <label asp-for="Nombre" class="form-label"></label>
-        <input asp-for="Nombre" class="form-control" />
-        <span asp-validation-for="Nombre" class="text-danger"></span>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="Nombre" class="form-label fw-bold"></label>
+                                    <input asp-for="Nombre" class="form-control" placeholder="Ingrese el nombre" autocomplete="off" />
+                                    <span asp-validation-for="Nombre" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="Apellido" class="form-label fw-bold"></label>
+                                    <input asp-for="Apellido" class="form-control" placeholder="Ingrese el apellido" autocomplete="off" />
+                                    <span asp-validation-for="Apellido" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="Carnet" class="form-label fw-bold"></label>
+                                    <input asp-for="Carnet" class="form-control" placeholder="Ej: 12345678" autocomplete="off" />
+                                    <span asp-validation-for="Carnet" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="FechaNacimiento" class="form-label fw-bold"></label>
+                                    <input asp-for="FechaNacimiento" class="form-control" type="date" />
+                                    <span asp-validation-for="FechaNacimiento" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <!-- Información de Contacto -->
+                        <h5 class="mb-3">
+                            <i class="fas fa-address-book text-success"></i> Información de Contacto
+                        </h5>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="Correo" class="form-label fw-bold"></label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                                        <input asp-for="Correo" class="form-control" type="email" placeholder="ejemplo@correo.com" autocomplete="off" />
+                                    </div>
+                                    <span asp-validation-for="Correo" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="Celular" class="form-label fw-bold"></label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                                        <input asp-for="Celular" class="form-control" placeholder="Ej: 70123456" autocomplete="off" />
+                                    </div>
+                                    <span asp-validation-for="Celular" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <!-- Asignación de Usuario -->
+                        <h5 class="mb-3">
+                            <i class="fas fa-user-cog text-info"></i> Asignación de Usuario
+                        </h5>
+
+                        <div class="mb-3">
+                            <label asp-for="UsuarioId" class="form-label fw-bold"></label>
+                            <select asp-for="UsuarioId" class="form-select" asp-items="ViewBag.UsuarioId">
+                                <option value="">Seleccione un usuario</option>
+                            </select>
+                            <span asp-validation-for="UsuarioId" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <div class="form-check">
+                                <input asp-for="Estado" class="form-check-input" checked />
+                                <label asp-for="Estado" class="form-check-label">
+                                    <i class="fas fa-check-circle text-success"></i> Instructor Activo
+                                    <small class="text-muted d-block">El instructor podrá dar clases inmediatamente</small>
+                                </label>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <!-- Botones -->
+                        <div class="d-flex justify-content-between">
+                            <a asp-action="Index" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left"></i> Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-success">
+                                <i class="fas fa-save"></i> Guardar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <div class="mb-3">
-        <label asp-for="Apellido" class="form-label"></label>
-        <input asp-for="Apellido" class="form-control" />
-        <span asp-validation-for="Apellido" class="text-danger"></span>
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="Carnet" class="form-label"></label>
-        <input asp-for="Carnet" class="form-control" />
-        <span asp-validation-for="Carnet" class="text-danger"></span>
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="FechaNacimiento" class="form-label"></label>
-        <input asp-for="FechaNacimiento" class="form-control" type="date" />
-        <span asp-validation-for="FechaNacimiento" class="text-danger"></span>
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="Correo" class="form-label"></label>
-        <input asp-for="Correo" class="form-control" type="email" />
-        <span asp-validation-for="Correo" class="text-danger"></span>
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="Celular" class="form-label"></label>
-        <input asp-for="Celular" class="form-control" />
-        <span asp-validation-for="Celular" class="text-danger"></span>
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="UsuarioId" class="form-label"></label>
-        <select asp-for="UsuarioId" class="form-select" asp-items="ViewBag.UsuarioId">
-            <option value="">Seleccione un usuario</option>
-        </select>
-        <span asp-validation-for="UsuarioId" class="text-danger"></span>
-    </div>
-
-    <div class="form-check mb-3">
-        <input asp-for="Estado" class="form-check-input" />
-        <label asp-for="Estado" class="form-check-label">Activo</label>
-    </div>
-
-    <button type="submit" class="btn btn-success">Guardar</button>
-    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
-</form>
+</div>
 
 @section Scripts {
     @{

@@ -5,7 +5,11 @@ body {
     min-height: 100vh;
     margin: 0;
     padding: 0;
-    background:white;
+    background: #0A0A0A;
+    background-image: url("/imagenes/HelluzLogo.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 800px;
 }
 
 
@@ -35,11 +39,15 @@ body {
     .btn-outline-primary:hover {
         background-color: #f00;
         color: #fff;
-        border-color: #000
+        border-color: #000;
+        box-shadow: 0 0 10px 0 #f00;
+      
+        transition:0.2s;
+        font-size:18px;
     }
 
 .login-container {
-    background-color: #;
+    background-color: rgba(255, 255, 255, 0.05);
     padding: 30px;
     border-radius: 20px;
     backdrop-filter: blur(8px);
@@ -47,10 +55,11 @@ body {
     width: 600px !important;
     height: 600px;
     margin: auto;
-    margin-top: 100px;
+    margin-top: 60px;
     border:solid 1px #ccc;
-    box-shadow:0 0 10px 0 #f00;
+    box-shadow:0 0 10px 0 #fff;
 }
+
 
 .login-icono {
     border-radius: 100px;
@@ -63,14 +72,14 @@ body {
 }
 
 label, h2,p {
-    color: #000;
+    color: #fff;
     text-align:center;
 }
 p{
     margin:10px;
 }
 h1{
-    color:#000;
+    color:#fff;
     font-size:40px;
     font-family:"Robot",'Sans Serif Collection';
 }

@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿
+@using System.Security.Claims
+
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -139,6 +143,16 @@
                 <li class="nav-item">
                     <a class="nav-link text-white" asp-area="" asp-controller="TokenQrs" asp-action="Index">
                         <i class="fas fa-qrcode"></i> Qr
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" asp-area="" asp-controller="ReporteEstadosMembresias" asp-action="Index">
+                        <i class="fas fa-qrcode"></i> Estados Inscripciones
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" asp-area="" asp-controller="ReportesFinancieros" asp-action="Index">
+                        <i class="fas fa-qrcode"></i> Finanzas
                     </a>
                 </li>
             </ul>

@@ -2,13 +2,15 @@
 using Helluz.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Security.Claims;
 using Microsoft.Extensions.Caching.Memory;
+using System.Security.Claims;
 
 namespace Laboratorios.Controllers
 {
+   
     public class LoginController : Controller
     {
         private readonly MyContext _context;
@@ -27,19 +29,22 @@ public LoginController(MyContext context, IMemoryCache cache)
 
         public IActionResult Index()
         {
-            //        if (User.Identity.IsAuthenticated) 
-            //       { 
-            //           if(User.IsInRole("administrador"))
-            //           {
-            //               return RedirectToAction("Index","awawawa");
-            //           }
-            //           else
-            //           {
-            //               return RedirectToAction("Index", "awawa");
-            //           }
-            //       }
+            //if (User.Identity.IsAuthenticated)
+            //{
+            //    // Redirigir según el rol del usuario
+            //    if (User.IsInRole("administrador"))
+            //    {
+            //        return RedirectToAction("Index", "Home");
+            //    }
+            //    else
+            //    {
+            //        return RedirectToAction("Index", "Instructor");
+            //    }
+            //}
+
             return View();
         }
+
         [HttpPost]
         public async Task<IActionResult> Login(string Nombre_usuario, string Contraseña)
         {

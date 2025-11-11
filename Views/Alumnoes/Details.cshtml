@@ -1,34 +1,39 @@
 ﻿@model Helluz.Models.Alumno
 
 @{
-    ViewData["Title"] = "Detalles";
+    ViewData["Title"] = "Detalles del Alumno";
 }
 
 <div class="container py-4">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card shadow">
-                <div class="card-header bg-info text-white">
+                <div class="card-header bg-primary text-white">
                     <h4 class="mb-0">
                         <i class="fas fa-user-graduate"></i> Detalles del Alumno
                     </h4>
                 </div>
 
                 <div class="card-body">
-                    <!-- Encabezado -->
+                    <!-- Encabezado principal -->
                     <div class="text-center mb-4">
-                        <h3 class="fw-bold text-primary">
+                        <i class="fas fa-user-circle fa-5x text-primary mb-3"></i>
+                        <h3 class="fw-bold text-dark">
                             @Model.Nombre @Model.Apellido
                         </h3>
-                        <p class="text-muted mb-0">
-                            <i class="fas fa-id-card"></i> Carnet: <strong>@Model.Carnet</strong>
+                        <p class="text-muted mb-1">
+                            <i class="fas fa-id-card"></i> Carnet:
+                            <strong class="text-dark">@Model.Carnet</strong>
+                        </p>
+                        <p class="mb-0">
+                            <span class="badge bg-info text-dark fs-6">
+                                <i class="fas fa-user-tag"></i> ID: #@Model.IdAlumno
+                            </span>
                         </p>
                     </div>
 
+                    <!-- Detalles -->
                     <dl class="row">
-                        <dt class="col-sm-4">ID:</dt>
-                        <dd class="col-sm-8">#@Model.IdAlumno</dd>
-
                         <dt class="col-sm-4">Nombre:</dt>
                         <dd class="col-sm-8">@Model.Nombre</dd>
 
@@ -37,7 +42,8 @@
 
                         <dt class="col-sm-4">Fecha de Nacimiento:</dt>
                         <dd class="col-sm-8">
-                            @Model.FechaNacimiento?.ToString("yyyy-MM-dd") ?? ""
+                            <i class="fas fa-calendar-alt"></i>
+                            @Model.FechaNacimiento.ToString("dd 'de' MMMM 'de' yyyy")
                         </dd>
 
                         <dt class="col-sm-4">Celular:</dt>
@@ -61,15 +67,15 @@
                             {
                                 <h5>
                                     <span class="badge bg-success">
-                                        <i class="fas fa-check-circle"></i> Activo
+                                        <i class="fas fa-check-circle"></i> ACTIVO
                                     </span>
                                 </h5>
                             }
                             else
                             {
                                 <h5>
-                                    <span class="badge bg-secondary">
-                                        <i class="fas fa-times-circle"></i> Inactivo
+                                    <span class="badge bg-danger">
+                                        <i class="fas fa-times-circle"></i> INACTIVO
                                     </span>
                                 </h5>
                             }
@@ -81,17 +87,18 @@
                     <!-- Botones de acción -->
                     <div class="d-flex justify-content-between">
                         <a asp-action="Index" class="btn btn-secondary">
-                            <i class="fas fa-arrow-left"></i> Volver al Listado
+                            <i class="fas btn-back fa-arrow-left"></i> Volver al Listado
                         </a>
                         <div>
                             <a asp-action="Edit" asp-route-id="@Model.IdAlumno" class="btn btn-warning me-2">
-                                <i class="fas fa-edit"></i> Editar
+                                <i class="fas btn-edit fa-edit"></i> Editar
                             </a>
                             <a asp-action="Delete" asp-route-id="@Model.IdAlumno" class="btn btn-danger">
-                                <i class="fas fa-trash"></i> Eliminar
+                                <i class="fas btn-delete fa-trash"></i> Eliminar
                             </a>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>

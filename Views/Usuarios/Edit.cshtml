@@ -1,79 +1,124 @@
 ﻿@model Helluz.Models.Usuario
 
 @{
-    ViewData["Title"] = "Editar";
+    ViewData["Title"] = "Editar Usuario";
 }
 
-<div class="container py-4">
+<div class="container-fluid px-3 px-md-4 py-3 py-md-4">
     <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card ">
-                <div class="card-header">
-                    <h4 class="mb-0">
-                        <i class="fas fa-edit"></i> Editar Usuario
+        <div class="col-12 col-sm-11 col-md-10 col-lg-8 col-xl-7">
+            <div class="card shadow-sm">
+                <div class="card-header card-edit">
+                    <h4 class="mb-0 fs-5 fs-md-4">
+                        <i class="fas fa-user-edit me-2"></i> Editar Usuario
                     </h4>
                 </div>
-                <div class="card-body">
-                    <form asp-action="Edit" id="formMembresia">
+
+                <div class="card-body p-3 p-md-4">
+                    <form asp-action="Edit" id="formUsuario">
                         <input type="hidden" asp-for="IdUsuario" />
+
                         <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
 
-                        <div class="mb-4">
-                            <label class=" text form-label fw-bold">Tipo</label>
-                        </div>
-
-                        <hr>
-
-                        <!-- Nombre -->
+                        <!-- Nombre de Usuario -->
                         <div class="mb-3">
-                            <label asp-for="NombreUsuario" class="form-label fw-bold"></label>
-                            <input asp-for="NombreUsuario" class="form-control" />
-                            <span asp-validation-for="NombreUsuario" class="text-danger"></span>
+                            <label asp-for="NombreUsuario" class="form-label fw-bold">
+                                <i class="fas fa-user text-primary me-1"></i>
+                                Nombre de Usuario
+                            </label>
+                            <input asp-for="NombreUsuario" class="form-control" placeholder="Ejemplo: jlopez23" />
+                            <span asp-validation-for="NombreUsuario" class="text-danger small"></span>
                         </div>
 
-                        <!-- Costo y Sesiones -->
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label asp-for="Password" class="form-label fw-bold"></label>
-                                    <div class="input-group">
-                                        <span class="input-group-text">$</span>
-                                        <input asp-for="Password" class="form-control" type="text" step="0.01" min="0" />
-                                    </div>
-                                    <span asp-validation-for="Password" class="text-danger"></span>
+                        <!-- Contraseña -->
+                        <div class="mb-3">
+                            <label asp-for="Password" class="form-label fw-bold">
+                                <i class="fas fa-key text-warning me-1"></i>
+                                Contraseña
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fas fa-lock"></i>
+                                </span>
+                                <input asp-for="Password"
+                                       class="form-control"
+                                       type="password"
+                                       placeholder="Nueva contraseña"
+                                       id="passwordInput" />
+                                <button class="btn btn-outline-secondary"
+                                        type="button"
+                                        id="togglePassword"
+                                        aria-label="Mostrar contraseña">
+                                    <i class="fas fa-eye" id="eyeIcon"></i>
+                                </button>
+                            </div>
+                            <small class="form-text text-muted">
+                                Deja en blanco si no deseas cambiar la contraseña
+                            </small>
+                            <span asp-validation-for="Password" class="text-danger small d-block"></span>
+                        </div>
+
+                        <!-- Rol -->
+                        <div class="mb-3">
+                            <label asp-for="Rol" class="form-label fw-bold">
+                                <i class="fas fa-user-tag text-info me-1"></i>
+                                Rol del Usuario
+                            </label>
+                            <select asp-for="Rol" class="form-select" asp-items="ViewBag.Roles">
+                                <option value="">-- Seleccione un rol --</option>
+                            </select>
+                            <span asp-validation-for="Rol" class="text-danger small"></span>
+                        </div>
+
+                        <hr class="my-3">
+
+                        <!-- Estado actual (informativo) -->
+                        <div class="alert @(Model.Estado ? "alert-success" : "alert-secondary") small">
+                            <strong>Estado actual:</strong>
+                            @if (Model.Estado)
+                            {
+                                <span><i class="fas fa-check-circle me-1"></i> Activo</span>
+                            }
+                            else
+                            {
+                                <span><i class="fas fa-times-circle me-1"></i> Inactivo</span>
+                            }
+                        </div>
+
+                        <!-- Estado (activo/inactivo) con Switch -->
+                        <div class="card border-primary mb-3">
+                            <div class="card-body p-3">
+                                <div class="form-check form-switch">
+                                    <input asp-for="Estado"
+                                           class="form-check-input"
+                                           type="checkbox"
+                                           id="estadoUsuario"
+                                           role="switch" />
+                                    <label class="form-check-label fw-bold" for="estadoUsuario" id="labelEstado">
+                                        @if (Model.Estado)
+                                        {
+                                            <i class="fas fa-check-circle text-success me-1"></i>
+                                            <span>Usuario Activo</span>
+                                        }
+                                        else
+                                        {
+                                            <i class="fas fa-times-circle text-secondary me-1"></i>
+                                            <span>Usuario Inactivo</span>
+                                        }
+                                    </label>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Estado actual (informativo) -->
-                        <div class="alert @(Model.Estado ? "alert-success" : "alert-secondary")">
-                            <strong>Estado actual:</strong>
-                            @if (Model.Estado)
-                            {
-                                <span><i class="fas fa-check"></i> Activa</span>
-                            }
-                            else
-                            {
-                                <span><i class="fas fa-times"></i> Inactiva</span>
-                            }
-                        </div>
-
-                        <input asp-for="Estado" type="hidden" />
-                        <div class="mb-3">
-                            <label asp-for="Rol" class="form-label fw-bold"></label>
-                            <input asp-for="Rol" class="form-control" />
-                            <span asp-validation-for="Rol" class="text-danger"></span>
-                        </div>
-
-                        <hr>
+                        <hr class="my-3">
 
                         <!-- Botones -->
-                        <div class="d-flex justify-content-between">
-                            <a asp-action="Index" class="btn btn-secondary">
-                                <i class="fas fa-arrow-left"></i> Cancelar
+                        <div class="d-flex flex-column flex-sm-row justify-content-between gap-2">
+                            <a asp-action="Index" class="btn btn-back order-2 order-sm-1">
+                                <i class="fas fa-arrow-left me-1"></i> Cancelar
                             </a>
-                            <button type="submit" class="btn btn-success">
-                                <i class="fas fa-save"></i> Guardar Cambios
+                            <button type="submit" class="btn btn-save order-1 order-sm-2">
+                                <i class="fas fa-save me-1"></i> Guardar Cambios
                             </button>
                         </div>
                     </form>
@@ -89,80 +134,64 @@
     }
 
     <script>
-        $(document).ready(function() {
-            $('input[name="EsPromocion"]').change(function() {
-                if ($(this).val() === 'true') {
-                    $('#seccionFechas').slideDown();
+        $(document).ready(function () {
+
+            // Toggle para mostrar/ocultar contraseña
+            $('#togglePassword').on('click', function() {
+                const passwordInput = $('#passwordInput');
+                const eyeIcon = $('#eyeIcon');
+
+                if (passwordInput.attr('type') === 'password') {
+                    passwordInput.attr('type', 'text');
+                    eyeIcon.removeClass('fa-eye').addClass('fa-eye-slash');
                 } else {
-                    $('#seccionFechas').slideUp();
-                    $('input[name="FechaActivo"]').val('');
-                    $('input[name="FechaInactivo"]').val('');
+                    passwordInput.attr('type', 'password');
+                    eyeIcon.removeClass('fa-eye-slash').addClass('fa-eye');
                 }
             });
 
-            $('#formMembresia').submit(function(e) {
-                var esPromocion = $('input[name="EsPromocion"]:checked').val() === 'true';
+            // Mostrar texto dinámico según el estado del switch
+            $('#estadoUsuario').on('change', function () {
+                const isChecked = $(this).is(':checked');
+                const labelHtml = isChecked
+                    ? '<i class="fas fa-check-circle text-success me-1"></i><span>Usuario Activo</span>'
+                    : '<i class="fas fa-times-circle text-secondary me-1"></i><span>Usuario Inactivo</span>';
 
-                if (esPromocion) {
-                    var fechaInicio = $('input[name="FechaActivo"]').val();
-                    var fechaFin = $('input[name="FechaInactivo"]').val();
+                $('#labelEstado').html(labelHtml);
+            });
 
-                    if (!fechaInicio || !fechaFin) {
-                        e.preventDefault();
-                        alert('Las promociones deben tener fechas de inicio y fin.');
-                        return false;
-                    }
+            // Validar campos obligatorios
+            $('#formUsuario').on('submit', function (e) {
+                const nombre = $('input[name="NombreUsuario"]').val().trim();
+                const rol = $('select[name="Rol"]').val();
+
+                if (!nombre) {
+                    e.preventDefault();
+                    alert('El nombre de usuario es obligatorio.');
+                    $('input[name="NombreUsuario"]').focus();
+                    return false;
+                }
+
+                if (!rol) {
+                    e.preventDefault();
+                    alert('Debe seleccionar un rol para el usuario.');
+                    $('select[name="Rol"]').focus();
+                    return false;
+                }
+
+                // Validar longitud del nombre de usuario
+                if (nombre.length < 4) {
+                    e.preventDefault();
+                    alert('El nombre de usuario debe tener al menos 4 caracteres.');
+                    $('input[name="NombreUsuario"]').focus();
+                    return false;
                 }
             });
+
+            // Prevenir zoom en iOS en inputs
+            if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+                $('input[type="text"], input[type="password"], select').css('font-size', '16px');
+            }
         });
     </script>
 }
-@* @model Helluz.Models.Usuario
-
-@{
-    ViewData["Title"] = "Edit";
-}
-
-<h1>Edit</h1>
-
-<h4>Usuario</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="IdUsuario" />
-            <div class="form-group">
-                <label asp-for="NombreUsuario" class="control-label"></label>
-                <input asp-for="NombreUsuario" class="form-control" />
-                <span asp-validation-for="NombreUsuario" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" class="form-control" />
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Estado" /> @Html.DisplayNameFor(model => model.Estado)
-                </label>
-            </div>
-            <div class="form-group">
-                <label asp-for="Rol" class="control-label"></label>
-                <select asp-for="Rol" class="form-control"></select>
-                <span asp-validation-for="Rol" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-} *@

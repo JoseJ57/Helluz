@@ -1,0 +1,57 @@
+﻿@{
+    ViewData["Title"] = "Reporte Financiero";
+    var registros = Model as IEnumerable<dynamic>;
+}
+
+<h2>Reporte Financiero</h2>
+
+<form method="get" class="mb-3">
+    <div class="row g-3 align-items-end">
+        <div class="col-md-3">
+            <label for="fechaInicio" class="form-label">Fecha inicio</label>
+            <input type="date" name="fechaInicio" id="fechaInicio"
+                   value="@ViewBag.FechaInicio" class="form-control" />
+        </div>
+        <div class="col-md-3">
+            <label for="fechaFin" class="form-label">Fecha fin</label>
+            <input type="date" name="fechaFin" id="fechaFin"
+                   value="@ViewBag.FechaFin" class="form-control" />
+        </div>
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-primary w-100">Filtrar</button>
+        </div>
+    </div>
+</form>
+
+<table class="table table-bordered table-striped mt-4">
+    <thead class="table-dark">
+        <tr>
+            <th>Alumno</th>
+            <th>Tipo</th>
+            <th>Nombre</th>
+            <th>Costo</th>
+            <th>Fecha Inicio</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (registros != null)
+        {
+            foreach (var item in registros)
+            {
+                <tr>
+                    <td>@item.NombreCompleto</td>
+                    <td>@item.Tipo</td>
+                    <td>@item.NombreTipo</td>
+                    <td>@item.Costo.ToString("C")</td>
+                    <td>@item.FechaInicio</td>
+                </tr>
+            }
+        }
+    </tbody>
+    <tfoot class="table-secondary">
+        <tr>
+            <th colspan="3" class="text-end">Total</th>
+            <th colspan="2">@ViewBag.Total.ToString("C")</th>
+        </tr>
+    </tfoot>
+</table>
