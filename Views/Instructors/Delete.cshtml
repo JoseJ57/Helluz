@@ -32,9 +32,7 @@
 
                         <dt class="col-sm-4">Fecha de Nacimiento:</dt>
                         <dd class="col-sm-8">
-                            @(Model.FechaNacimiento.HasValue
-                                                        ? Model.FechaNacimiento.Value.ToString("dd/MM/yyyy")
-                                                        : "Sin fecha")
+                            @Model.FechaNacimiento?.ToString("yyyy-MM-dd") ?? ""
                         </dd>
 
 
