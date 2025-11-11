@@ -1,4 +1,4 @@
-using Helluz.Contexto;
+﻿using Helluz.Contexto;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using TuProyecto.Services;
@@ -35,14 +35,14 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseRouting();
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapStaticAssets();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}")
+    pattern: "{controller=Inicio}/{action=Index}/{id?}")
     .WithStaticAssets();
 
 

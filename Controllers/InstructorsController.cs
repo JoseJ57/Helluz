@@ -1,5 +1,6 @@
 ﻿using Helluz.Contexto;
 using Helluz.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace Helluz.Controllers
 {
+    [Authorize]
     public class InstructorsController : Controller
     {
         private readonly MyContext _context;

@@ -1,5 +1,6 @@
 ﻿using Helluz.Contexto;
 using Helluz.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -14,6 +15,7 @@ using static QRCoder.PayloadGenerator;
 
 namespace Helluz.Controllers
 {
+    [Authorize]
     public class TokenQrsController : Controller
     {
         private readonly MyContext _context;

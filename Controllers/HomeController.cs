@@ -1,18 +1,20 @@
-using System.Diagnostics;
-using Helluz.Models;
-using Microsoft.AspNetCore.Mvc;
 using Helluz.Contexto;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Helluz.Models;
+using Helluz.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Helluz.Models;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Helluz.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly MyContext _context;

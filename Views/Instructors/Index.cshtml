@@ -5,12 +5,12 @@
 }
 
 <div class="container-fluid py-4">
-    <div class="row mb-4">
+    <div class="row mb-4 align-items-center">
         <div class="col-md-6">
             <h2><i class="fas fa-chalkboard-teacher"></i> Instructores</h2>
         </div>
         <div class="col-md-6 text-end">
-            <a asp-action="Create" class="btn btn-primary">
+            <a asp-action="Create" class="btn">
                 <i class="fas fa-plus"></i> Registrar Nuevo
             </a>
         </div>
@@ -32,80 +32,89 @@
         </div>
     }
 
-    <div class="card shadow">
+    <div class="card shadow-lg">
         <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-hover table-striped" id="tablaInstructores">
-                    <thead class="table-dark">
-                        <tr>
-                            <th>Nombre</th>
-                            <th>Apellido</th>
-                            <th>Carnet</th>
-                            <th>Fecha Nacimiento</th>
-                            <th>Correo</th>
-                            <th>Celular</th>
-                            <th>Estado</th>
-                            <th>Usuario</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model)
-                        {
+            @if (!Model.Any())
+            {
+                <div class="alert alert-info text-center">
+                    <i class="fas fa-info-circle"></i> No hay instructores registrados.
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle" id="tablaInstructores">
+                        <thead>
                             <tr>
-                                <td>@item.Nombre</td>
-                                <td>@item.Apellido</td>
-                                <td>@item.Carnet</td>
-                                <td>@item.FechaNacimiento.ToString("dd/MM/yyyy")</td>
-                                <td>@item.Correo</td>
-                                <td>@item.Celular</td>
-                                <td>
-                                    @if (item.Estado)
-                                    {
-                                        <span class="badge bg-success">
-                                            <i class="fas fa-check"></i> Activo
-                                        </span>
-                                    }
-                                    else
-                                    {
-                                        <span class="badge bg-danger">
-                                            <i class="fas fa-times"></i> Inactivo
-                                        </span>
-                                    }
-                                </td>
-                                <td>
-                                    @if (item.Usuario != null)
-                                    {
-                                        <span class="badge bg-info text-dark">
-                                            <i class="fas fa-user"></i> @item.Usuario.NombreUsuario
-                                        </span>
-                                    }
-                                    else
-                                    {
-                                        <span class="text-muted">Sin usuario</span>
-                                    }
-                                </td>
-                                <td>
-                                    <div class="btn-group" role="group">
-                                        <a asp-action="Details" asp-route-id="@item.IdInstructor"
-                                           class="btn btn-sm btn-info" title="Ver detalles">
-                                            <i class="fas fa-eye"></i>
-                                        </a>
-                                        <a asp-action="Edit" asp-route-id="@item.IdInstructor"
-                                           class="btn btn-sm btn-warning" title="Editar">
-                                            <i class="fas fa-edit"></i>
-                                        </a>
-                                        <a asp-action="Delete" asp-route-id="@item.IdInstructor"
-                                           class="btn btn-sm btn-danger" title="Eliminar">
-                                            <i class="fas fa-trash"></i>
-                                        </a>
-                                    </div>
-                                </td>
+                                <th>Nombre</th>
+                                <th>Apellido</th>
+                                <th>Carnet</th>
+                                <th>Fecha Nacimiento</th>
+                                <th>Correo</th>
+                                <th>Celular</th>
+                                <th>Estado</th>
+                                <th>Usuario</th>
+                                <th>Acciones</th>
                             </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@item.Nombre</td>
+                                    <td>@item.Apellido</td>
+                                    <td>@item.Carnet</td>
+                                    <td>@item.FechaNacimiento.ToString("dd/MM/yyyy")</td>
+                                    <td>@item.Correo</td>
+                                    <td>@item.Celular</td>
+                                    <td>
+                                        @if (item.Estado)
+                                        {
+                                            <span class="badge bg-success">
+                                                <i class="fas fa-check"></i> Activo
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-danger">
+                                                <i class="fas fa-times"></i> Inactivo
+                                            </span>
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (item.Usuario != null)
+                                        {
+                                            <span class="badge bg-info text-dark">
+                                                <i class="fas fa-user"></i> @item.Usuario.NombreUsuario
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">Sin usuario</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <div class="btn-group" role="group">
+                                            <a asp-action="Details" asp-route-id="@item.IdInstructor"
+                                               class="btn btn-details" title="Ver detalles">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                            <a asp-action="Edit" asp-route-id="@item.IdInstructor"
+                                               class="btn btn-edit" title="Editar">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <a asp-action="Delete" asp-route-id="@item.IdInstructor"
+                                               class="btn btn-delete" title="Eliminar">
+                                                <i class="fas fa-trash"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
         </div>
     </div>
 </div>
@@ -117,7 +126,8 @@
                 language: {
                     url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json'
                 },
-                order: [[0, 'asc']]
+                order: [[0, 'asc']],
+                pageLength: 10
             });
         });
     </script>

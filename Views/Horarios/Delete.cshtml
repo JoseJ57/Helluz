@@ -1,41 +1,114 @@
 ﻿@model Helluz.Controllers.HorariosController.HorarioViewModel
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Eliminar Horario";
 }
 
-<h1>Delete</h1>
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-7">
+            <div class="card shadow">
+                <div class="card-header card-delete">
+                    <h4 class="mb-0">
+                        <i class="fas fa-exclamation-triangle"></i> Confirmar Eliminación
+                    </h4>
+                </div>
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>Horario</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">Hora</dt>
-        <dd class="col-sm-10">@Model.Hora</dd>
+                <div class="card-body">
+                    <div class="alert alert-warning">
+                        <i class="fas fa-exclamation-circle"></i>
+                        ¿Estás seguro de que deseas eliminar este horario? Esta acción no se puede deshacer.
+                    </div>
 
-        <dt class="col-sm-2">Instructor</dt>
-        <dd class="col-sm-10">@Model.Instructor</dd>
+                    <dl class="row">
+                        <dt class="col-sm-4">Hora:</dt>
+                        <dd class="col-sm-8">
+                            <i class="fas fa-clock text-primary"></i> @Model.Hora
+                        </dd>
 
-        <dt class="col-sm-2">Lunes</dt>
-        <dd class="col-sm-10">@Model.DisciplinaLunes</dd>
+                        <dt class="col-sm-4">Instructor:</dt>
+                        <dd class="col-sm-8">
+                            <i class="fas fa-user-tie text-primary"></i> @Model.Instructor
+                        </dd>
 
-        <dt class="col-sm-2">Martes</dt>
-        <dd class="col-sm-10">@Model.DisciplinaMartes</dd>
+                        <dt class="col-sm-4">Lunes:</dt>
+                        <dd class="col-sm-8">
+                            @if (!string.IsNullOrEmpty(Model.DisciplinaLunes))
+                            {
+                                <span class="badge bg-info">@Model.DisciplinaLunes</span>
+                            }
+                            else
+                            {
+                                <span class="text-muted">—</span>
+                            }
+                        </dd>
 
-        <dt class="col-sm-2">Miércoles</dt>
-        <dd class="col-sm-10">@Model.DisciplinaMiercoles</dd>
+                        <dt class="col-sm-4">Martes:</dt>
+                        <dd class="col-sm-8">
+                            @if (!string.IsNullOrEmpty(Model.DisciplinaMartes))
+                            {
+                                <span class="badge bg-info">@Model.DisciplinaMartes</span>
+                            }
+                            else
+                            {
+                                <span class="text-muted">—</span>
+                            }
+                        </dd>
 
-        <dt class="col-sm-2">Jueves</dt>
-        <dd class="col-sm-10">@Model.DisciplinaJueves</dd>
+                        <dt class="col-sm-4">Miércoles:</dt>
+                        <dd class="col-sm-8">
+                            @if (!string.IsNullOrEmpty(Model.DisciplinaMiercoles))
+                            {
+                                <span class="badge bg-info">@Model.DisciplinaMiercoles</span>
+                            }
+                            else
+                            {
+                                <span class="text-muted">—</span>
+                            }
+                        </dd>
 
-        <dt class="col-sm-2">Viernes</dt>
-        <dd class="col-sm-10">@Model.DisciplinaViernes</dd>
-    </dl>
+                        <dt class="col-sm-4">Jueves:</dt>
+                        <dd class="col-sm-8">
+                            @if (!string.IsNullOrEmpty(Model.DisciplinaJueves))
+                            {
+                                <span class="badge bg-info">@Model.DisciplinaJueves</span>
+                            }
+                            else
+                            {
+                                <span class="text-muted">—</span>
+                            }
+                        </dd>
 
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="IdHorario" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
-    </form>
+                        <dt class="col-sm-4">Viernes:</dt>
+                        <dd class="col-sm-8">
+                            @if (!string.IsNullOrEmpty(Model.DisciplinaViernes))
+                            {
+                                <span class="badge bg-info">@Model.DisciplinaViernes</span>
+                            }
+                            else
+                            {
+                                <span class="text-muted">—</span>
+                            }
+                        </dd>
+                    </dl>
+
+                    <hr />
+
+                    <form asp-action="Delete">
+                        <input type="hidden" asp-for="IdHorario" />
+                        <div class="d-flex justify-content-between">
+                            <a asp-action="Index" class="btn btn-back">
+                                <i class="fas fa-arrow-left"></i> Cancelar
+                            </a>
+
+                            <button type="submit" class="btn btn-delete">
+                                <i class="fas fa-trash"></i> Eliminar
+                            </button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

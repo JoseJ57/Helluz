@@ -1,61 +1,78 @@
 ﻿@model Helluz.Models.Usuario
 
 @{
-    ViewData["Title"] = "Eliminar";
+    ViewData["Title"] = "Eliminar Usuario";
 }
 
 <div class="container py-4">
     <div class="row justify-content-center">
         <div class="col-md-6">
-            <div class="card ">
-                <div class="card-header">
+            <div class="card shadow">
+                <div class="card-header card-delete">
                     <h4 class="mb-0">
                         <i class="fas fa-exclamation-triangle"></i> Confirmar Eliminación
                     </h4>
                 </div>
+
                 <div class="card-body">
                     <div class="alert alert-warning">
                         <i class="fas fa-exclamation-circle"></i>
-                        ¿Estás seguro de que deseas eliminar este registro?
+                        ¿Estás seguro de que deseas eliminar este usuario?
                     </div>
 
                     <dl class="row">
+                        <dt class="col-sm-4">ID:</dt>
+                        <dd class="col-sm-8">#@Model.IdUsuario</dd>
 
-                        <dt class="col-sm-4">Nombre:</dt>
-                        <dd class="col-sm-8">@Model.NombreUsuario</dd>
+                        <dt class="col-sm-4">Nombre de Usuario:</dt>
+                        <dd class="col-sm-8">
+                            <i class="fas fa-user"></i> @Model.NombreUsuario
+                        </dd>
 
-                        <dt class="col-sm-4">Costo:</dt>
-                        <dd class="col-sm-8">$@Model.Password</dd>
+                        <dt class="col-sm-4">Rol:</dt>
+                        <dd class="col-sm-8">
+                            <span class="badge bg-info text-dark">
+                                <i class="fas fa-user-tag"></i> @Model.Rol
+                            </span>
+                        </dd>
+
+                        <dt class="col-sm-4">Contraseña:</dt>
+                        <dd class="col-sm-8 text-muted">
+                            <i class="fas fa-lock"></i> @Model.Password
+                        </dd>
 
                         <dt class="col-sm-4">Estado:</dt>
                         <dd class="col-sm-8">
                             @if (Model.Estado)
                             {
-                                <span class="badge bg-success">Activo</span>
+                                <span class="badge bg-success">
+                                    <i class="fas fa-check-circle"></i> Activo
+                                </span>
                             }
                             else
                             {
-                                <span class="badge bg-danger">Inactivo</span>
+                                <span class="badge bg-danger">
+                                    <i class="fas fa-times-circle"></i> Inactivo
+                                </span>
                             }
                         </dd>
-                        <dt class="col-sm-4">Sesiones:</dt>
-                        <dd class="col-sm-8">@Model.Rol</dd>
-
                     </dl>
+
+                    <hr />
 
                     <form asp-action="Delete">
                         <input type="hidden" asp-for="IdUsuario" />
                         <div class="d-flex justify-content-between">
-                            <a asp-action="Index" class="btn btn-secondary">
+                            <a asp-action="Index" class="btn btn-back">
                                 <i class="fas fa-arrow-left"></i> Cancelar
                             </a>
-                            
-                                <button type="submit" class="btn btn-delete">
-                                    <i class="fas fa-trash"></i> Eliminar
-                                </button>
-                            
+
+                            <button type="submit" class="btn btn-delete">
+                                <i class="fas fa-trash"></i> Eliminar
+                            </button>
                         </div>
                     </form>
+
                 </div>
             </div>
         </div>

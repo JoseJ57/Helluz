@@ -1,83 +1,87 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Helluz.Contexto;
+using Helluz.Models;
+using Microsoft.AspNetCore.Authorization;
+using Helluz.Contexto;
+using Helluz.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Helluz.Controllers
 {
+    [Authorize]
     public class ReporteEstadosMembresias : Controller
     {
+        private readonly MyContext _context;
+        public ReporteEstadosMembresias(MyContext context)
+        {
+            _context = context;
+        }
         // GET: ReporteEstadosMembresias
         public ActionResult Index()
         {
             return View();
         }
+        
+        // Agregar este método a tu InscripcionesController existente
 
-        // GET: ReporteEstadosMembresias/Details/5
-        public ActionResult Details(int id)
+        // GET: Inscripciones/Reporte
+        public async Task<IActionResult> Reporte(string busqueda, DateTime? fechaDesde, DateTime? fechaHasta, Helluz.Dto.EstadoInscripcion? estado)
         {
-            return View();
-        }
+            var query = _context.Inscripcions
+                .Include(i => i.Alumno)
+                .Include(i => i.Membresia)
+                .AsQueryable();
 
-        // GET: ReporteEstadosMembresias/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: ReporteEstadosMembresias/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
+            // Filtro de búsqueda por nombre, apellido o carnet del alumno
+            if (!string.IsNullOrWhiteSpace(busqueda))
             {
-                return RedirectToAction(nameof(Index));
+                var searchTerm = busqueda.Trim().ToLower();
+                query = query.Where(i =>
+                    i.Alumno.Nombre.ToLower().Contains(searchTerm) ||
+                    i.Alumno.Apellido.ToLower().Contains(searchTerm) ||
+                    i.Alumno.Carnet.ToLower().Contains(searchTerm)
+                );
             }
-            catch
-            {
-                return View();
-            }
-        }
 
-        // GET: ReporteEstadosMembresias/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
+            // Filtro de fechas - inscripciones entre fechas
+            if (fechaDesde.HasValue)
+            {
+                var fechaDesdeDateOnly = DateOnly.FromDateTime(fechaDesde.Value);
+                query = query.Where(i => i.FechaInicio >= fechaDesdeDateOnly);
+            }
 
-        // POST: ReporteEstadosMembresias/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
+            if (fechaHasta.HasValue)
             {
-                return RedirectToAction(nameof(Index));
+                var fechaHastaDateOnly = DateOnly.FromDateTime(fechaHasta.Value);
+                query = query.Where(i => i.FechaInicio <= fechaHastaDateOnly);
             }
-            catch
-            {
-                return View();
-            }
-        }
 
-        // GET: ReporteEstadosMembresias/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
+            // Filtro por estado de inscripción
+            if (estado.HasValue)
+            {
+                query = query.Where(i => i.Estado == estado.Value);
+            }
 
-        // POST: ReporteEstadosMembresias/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            var inscripciones = await query
+                .OrderByDescending(i => i.FechaInicio)
+                .ToListAsync();
+
+            // Pasar los filtros actuales a la vista para mantenerlos en el formulario
+            ViewBag.Busqueda = busqueda;
+            ViewBag.FechaDesde = fechaDesde;
+            ViewBag.FechaHasta = fechaHasta;
+            ViewBag.EstadoFiltro = estado;
+
+            // Estadísticas para el reporte
+            ViewBag.TotalInscripciones = inscripciones.Count;
+            ViewBag.InscripcionesActivas = inscripciones.Count(i => i.Estado == Dto.EstadoInscripcion.activa);
+            ViewBag.InscripcionesVencidas = inscripciones.Count(i => i.Estado == Dto.EstadoInscripcion.venciada);
+
+            return View(inscripciones);
         }
     }
 }

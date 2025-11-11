@@ -4,17 +4,40 @@
     ViewData["Title"] = "Horarios";
 }
 
-<div class="container py-4">
-    <div class="card shadow-lg">
-        <div class="card-header bg-danger text-white d-flex justify-content-between align-items-center">
-            <h4 class="mb-0">
-                <i class="fas fa-calendar-alt me-2"></i> Gestión de Horarios
-            </h4>
-            <a asp-action="Create" class="btn btn-light btn-sm fw-bold">
-                <i class="fas fa-plus-circle"></i> Nuevo Horario
+<div class="container-fluid py-4">
+    <!-- Encabezado -->
+    <div class="row mb-4 align-items-center">
+        <div class="col-md-6">
+            <h2 class="mb-0">
+                <i class="fas fa-calendar-alt"></i> Gestión de Horarios
+            </h2>
+        </div>
+        <div class="col-md-6 text-end">
+            <a asp-action="Create" class="btn btn-register shadow-sm">
+                <i class="fas fa-plus"></i> Nuevo Horario
             </a>
         </div>
+    </div>
 
+    <!-- Alertas -->
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fas fa-check-circle"></i> @TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="fas fa-exclamation-circle"></i> @TempData["Error"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <!-- Tabla -->
+    <div class="card shadow-lg">
         <div class="card-body">
             @if (!Model.Any())
             {
@@ -24,61 +47,69 @@
             }
             else
             {
-                <table class="table table-bordered table-hover text-center align-middle">
-                    <thead class="table-dark">
-                        <tr>
-                            <th>Horario</th>
-                            <th>Lunes</th>
-                            <th>Martes</th>
-                            <th>Miércoles</th>
-                            <th>Jueves</th>
-                            <th>Viernes</th>
-                            <th>Instructor</th>
-                            <th style="width: 170px;">Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model)
-                        {
+                <div class="table-responsive">
+                    <table class="table table-hover table-striped align-middle" id="tablaHorarios">
+                        <thead class="table-dark">
                             <tr>
-                                <!-- Horario -->
-                                <td>@item.Hora</td>
-
-                                <!-- Lunes -->
-                                <td>@item.DisciplinaLunes</td>
-
-                                <!-- Martes -->
-                                <td>@item.DisciplinaMartes</td>
-
-                                <!-- Miércoles -->
-                                <td>@item.DisciplinaMiercoles</td>
-
-                                <!-- Jueves -->
-                                <td>@item.DisciplinaJueves</td>
-
-                                <!-- Viernes -->
-                                <td>@item.DisciplinaViernes</td>
-
-                                <!-- Instructor -->
-                                <td>@item.Instructor</td>
-
-                                <!-- Acciones -->
-                                <td>
-                                    <a asp-action="Edit" asp-route-id="@item.IdHorario" class="btn btn-warning btn-sm me-1">
-                                        <i class="fas fa-edit"></i>
-                                    </a>
-                                    <a asp-action="Details" asp-route-id="@item.IdHorario" class="btn btn-info btn-sm me-1">
-                                        <i class="fas fa-eye"></i>
-                                    </a>
-                                    <a asp-action="Delete" asp-route-id="@item.IdHorario" class="btn btn-danger btn-sm">
-                                        <i class="fas fa-trash-alt"></i>
-                                    </a>
-                                </td>
+                                <th>Horario</th>
+                                <th>Lunes</th>
+                                <th>Martes</th>
+                                <th>Miércoles</th>
+                                <th>Jueves</th>
+                                <th>Viernes</th>
+                                <th>Instructor</th>
+                                <th>Acciones</th>
                             </tr>
-                        }
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@item.Hora</td>
+                                    <td>@Html.Raw(string.IsNullOrEmpty(item.DisciplinaLunes) ? "<span class='text-muted'>—</span>" : item.DisciplinaLunes)</td>
+                                    <td>@Html.Raw(string.IsNullOrEmpty(item.DisciplinaMartes) ? "<span class='text-muted'>—</span>" : item.DisciplinaMartes)</td>
+                                    <td>@Html.Raw(string.IsNullOrEmpty(item.DisciplinaMiercoles) ? "<span class='text-muted'>—</span>" : item.DisciplinaMiercoles)</td>
+                                    <td>@Html.Raw(string.IsNullOrEmpty(item.DisciplinaJueves) ? "<span class='text-muted'>—</span>" : item.DisciplinaJueves)</td>
+                                    <td>@Html.Raw(string.IsNullOrEmpty(item.DisciplinaViernes) ? "<span class='text-muted'>—</span>" : item.DisciplinaViernes)</td>
+                                    <td>@Html.Raw(string.IsNullOrEmpty(item.Instructor) ? "<span class='text-muted'>Sin asignar</span>" : item.Instructor)</td>
+                                    <td>
+                                        <div class="btn-group" role="group">
+                                            <a asp-action="Details" asp-route-id="@item.IdHorario"
+                                               class="btn btn-sm btn-details" title="Ver detalles">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                            <a asp-action="Edit" asp-route-id="@item.IdHorario"
+                                               class="btn btn-sm btn-edit" title="Editar">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <a asp-action="Delete" asp-route-id="@item.IdHorario"
+                                               class="btn btn-sm btn-delete" title="Eliminar">
+                                                <i class="fas fa-trash"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
             }
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#tablaHorarios').DataTable({
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json'
+                },
+                order: [[0, 'asc']],
+                pageLength: 10,
+                lengthMenu: [5, 10, 25, 50],
+                responsive: true
+            });
+        });
+    </script>
+}

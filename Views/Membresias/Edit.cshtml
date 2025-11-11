@@ -8,7 +8,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card ">
-                <div class="card-header">
+                <div class="card-header card-edit">
                     <h4 class="mb-0">
                         <i class="fas fa-edit"></i> Editar @(Model.EsPromocion ? "Promoción" : "Membresía")
                     </h4>
@@ -135,10 +135,10 @@
 
                         <!-- Botones -->
                         <div class="d-flex justify-content-between">
-                            <a asp-action="Index" class="btn btn-secondary">
+                            <a asp-action="Index" class="btn btn-back">
                                 <i class="fas fa-arrow-left"></i> Cancelar
                             </a>
-                            <button type="submit" class="btn btn-success">
+                            <button type="submit" class="btn btn-save">
                                 <i class="fas fa-save"></i> Guardar Cambios
                             </button>
                         </div>

@@ -1,39 +1,136 @@
 ﻿@model Helluz.Controllers.HorariosController.HorarioViewModel
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Detalles del Horario";
 }
 
-<h1>Detalle del Horario</h1>
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header card-details">
+                    <h4 class="mb-0">
+                        <i class="fas fa-clock"></i> Detalles del Horario
+                    </h4>
+                </div>
 
-<div>
-    <h4>Horario</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">Hora</dt>
-        <dd class="col-sm-10">@Model.Hora</dd>
+                <div class="card-body">
+                    <!-- Encabezado -->
+                    <div class="text-center mb-4">
+                        <i class="fas fa-calendar-week fa-5x text-primary mb-2"></i>
+                        <h3 class="fw-bold text-dark mb-0">
+                            Horario @Model.Hora
+                        </h3>
+                        <span class="text-muted">
+                            Instructor: @Model.Instructor
+                        </span>
+                    </div>
 
-        <dt class="col-sm-2">Instructor</dt>
-        <dd class="col-sm-10">@Model.Instructor</dd>
+                    <dl class="row">
+                        <dt class="col-sm-4 text">Hora:</dt>
+                        <dd class="col-sm-8">
+                            <span class="badge bg-info text-dark fs-6">
+                                <i class="fas fa-clock"></i> @Model.Hora
+                            </span>
+                        </dd>
 
-        <dt class="col-sm-2">Lunes</dt>
-        <dd class="col-sm-10">@(string.IsNullOrEmpty(Model.DisciplinaLunes) ? "No asignado" : Model.DisciplinaLunes)</dd>
+                        <dt class="col-sm-4 text">Instructor:</dt>
+                        <dd class="col-sm-8">
+                            <span class="badge bg-primary fs-6">
+                                <i class="fas fa-user-tie"></i> @Model.Instructor
+                            </span>
+                        </dd>
 
-        <dt class="col-sm-2">Martes</dt>
-        <dd class="col-sm-10">@(string.IsNullOrEmpty(Model.DisciplinaMartes) ? "No asignado" : Model.DisciplinaMartes)</dd>
+                        <dt class="col-sm-4 text">Lunes:</dt>
+                        <dd class="col-sm-8">
+                            @if (string.IsNullOrEmpty(Model.DisciplinaLunes))
+                            {
+                                <span class="text-muted">No asignado</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-success fs-6">
+                                    <i class="fas fa-dumbbell"></i> @Model.DisciplinaLunes
+                                </span>
+                            }
+                        </dd>
 
-        <dt class="col-sm-2">Miércoles</dt>
-        <dd class="col-sm-10">@(string.IsNullOrEmpty(Model.DisciplinaMiercoles) ? "No asignado" : Model.DisciplinaMiercoles)</dd>
+                        <dt class="col-sm-4 text">Martes:</dt>
+                        <dd class="col-sm-8">
+                            @if (string.IsNullOrEmpty(Model.DisciplinaMartes))
+                            {
+                                <span class="text-muted">No asignado</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-success fs-6">
+                                    <i class="fas fa-dumbbell"></i> @Model.DisciplinaMartes
+                                </span>
+                            }
+                        </dd>
 
-        <dt class="col-sm-2">Jueves</dt>
-        <dd class="col-sm-10">@(string.IsNullOrEmpty(Model.DisciplinaJueves) ? "No asignado" : Model.DisciplinaJueves)</dd>
+                        <dt class="col-sm-4 text">Miércoles:</dt>
+                        <dd class="col-sm-8">
+                            @if (string.IsNullOrEmpty(Model.DisciplinaMiercoles))
+                            {
+                                <span class="text-muted">No asignado</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-success fs-6">
+                                    <i class="fas fa-dumbbell"></i> @Model.DisciplinaMiercoles
+                                </span>
+                            }
+                        </dd>
 
-        <dt class="col-sm-2">Viernes</dt>
-        <dd class="col-sm-10">@(string.IsNullOrEmpty(Model.DisciplinaViernes) ? "No asignado" : Model.DisciplinaViernes)</dd>
-    </dl>
-</div>
+                        <dt class="col-sm-4 text">Jueves:</dt>
+                        <dd class="col-sm-8">
+                            @if (string.IsNullOrEmpty(Model.DisciplinaJueves))
+                            {
+                                <span class="text-muted">No asignado</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-success fs-6">
+                                    <i class="fas fa-dumbbell"></i> @Model.DisciplinaJueves
+                                </span>
+                            }
+                        </dd>
 
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.IdHorario" class="btn btn-primary">Editar</a>
-    <a asp-action="Index" class="btn btn-secondary">Volver</a>
+                        <dt class="col-sm-4 text">Viernes:</dt>
+                        <dd class="col-sm-8">
+                            @if (string.IsNullOrEmpty(Model.DisciplinaViernes))
+                            {
+                                <span class="text-muted">No asignado</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-success fs-6">
+                                    <i class="fas fa-dumbbell"></i> @Model.DisciplinaViernes
+                                </span>
+                            }
+                        </dd>
+                    </dl>
+
+                    <hr>
+
+                    <!-- Botones de acción -->
+                    <div class="d-flex justify-content-between">
+                        <a asp-action="Index" class="btn btn-back">
+                            <i class="fas fa-arrow-left"></i> Volver al Listado
+                        </a>
+                        <div>
+                            <a asp-action="Edit" asp-route-id="@Model.IdHorario" class="btn btn-edit me-2">
+                                <i class="fas fa-edit"></i> Editar
+                            </a>
+                            <a asp-action="Delete" asp-route-id="@Model.IdHorario" class="btn btn-delete">
+                                <i class="fas fa-trash"></i> Eliminar
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

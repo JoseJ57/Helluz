@@ -1,60 +1,125 @@
 ﻿@model Helluz.Models.Inscripcion
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Detalles de Inscripción";
 }
 
-<h1>Details</h1>
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">
+                        <i class="fas fa-file-signature"></i> Detalles de Inscripción
+                    </h4>
+                </div>
+                <div class="card-body">
 
-<div>
-    <h4>Inscripcion</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FechaInicio)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FechaInicio)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FechaFin)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FechaFin)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.MetodoPago)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.MetodoPago)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.NroPermisos)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.NroPermisos)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Estado)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Estado)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Alumno)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Alumno.Apellido)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Membresia)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Membresia.Nombre)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.IdInscripcion">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+                    <!-- Encabezado -->
+                    <div class="text-center mb-4">
+                        <i class="fas fa-id-badge fa-5x text-primary mb-2"></i>
+                        <h3 class="fw-bold text-dark mb-0">
+                            Inscripción #@Model.IdInscripcion
+                        </h3>
+                        <span class="text-muted">
+                            Alumno: @Model.Alumno?.Nombre @Model.Alumno?.Apellido
+                        </span>
+                    </div>
+
+                    <dl class="row">
+                        <dt class="col-sm-4 text">Fecha de Inicio:</dt>
+                        <dd class="col-sm-8">
+                            <i class="fas fa-calendar-alt text-success"></i>
+                            @Model.FechaInicio.ToString("dd 'de' MMMM 'de' yyyy")
+                        </dd>
+
+                        <dt class="col-sm-4 text">Fecha de Fin:</dt>
+                        <dd class="col-sm-8">
+                            <i class="fas fa-calendar-check text-danger"></i>
+                            @Model.FechaFin.ToString("dd 'de' MMMM 'de' yyyy")
+                        </dd>
+
+                        <dt class="col-sm-4 text">Método de Pago:</dt>
+                        <dd class="col-sm-8">
+                            <span class="badge bg-info text-dark fs-6">
+                                <i class="fas fa-credit-card"></i> @Model.MetodoPago
+                            </span>
+                        </dd>
+
+                        <dt class="col-sm-4 text">Número de Permisos:</dt>
+                        <dd class="col-sm-8">
+                            <span class="badge bg-secondary fs-6">@Model.NroPermisos</span>
+                        </dd>
+
+                        <dt class="col-sm-4 text">Estado:</dt>
+                        <dd class="col-sm-8">
+                            @if (Model.Estado==Helluz.Dto.EstadoInscripcion.activa)
+                            {
+                                <h5>
+                                    <span class="badge bg-success">
+                                        <i class="fas fa-check-circle"></i> ACTIVA
+                                    </span>
+                                </h5>
+                            }
+                            else
+                            {
+                                <h5>
+                                    <span class="badge bg-danger">
+                                        <i class="fas fa-times-circle"></i> INACTIVA
+                                    </span>
+                                </h5>
+                            }
+                        </dd>
+
+                        <dt class="col-sm-4 text">Alumno:</dt>
+                        <dd class="col-sm-8">
+                            @if (Model.Alumno != null)
+                            {
+                                <span class="badge bg-primary fs-6">
+                                    <i class="fas fa-user-graduate"></i>
+                                    @Model.Alumno.Nombre @Model.Alumno.Apellido
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="text-muted">No asignado</span>
+                            }
+                        </dd>
+
+                        <dt class="col-sm-4 text">Membresía:</dt>
+                        <dd class="col-sm-8">
+                            @if (Model.Membresia != null)
+                            {
+                                <span class="badge bg-warning text-dark fs-6">
+                                    <i class="fas fa-id-card-alt"></i> @Model.Membresia.Nombre
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="text-muted">No asignada</span>
+                            }
+                        </dd>
+                    </dl>
+
+                    <hr>
+
+                    <!-- Botones de acción -->
+                    <div class="d-flex justify-content-between">
+                        <a asp-action="Index" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i> Volver al Listado
+                        </a>
+                        <div>
+                            <a asp-action="Edit" asp-route-id="@Model.IdInscripcion" class="btn btn-warning me-2">
+                                <i class="fas fa-edit"></i> Editar
+                            </a>
+                            <a asp-action="Delete" asp-route-id="@Model.IdInscripcion" class="btn btn-danger">
+                                <i class="fas fa-trash"></i> Eliminar
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

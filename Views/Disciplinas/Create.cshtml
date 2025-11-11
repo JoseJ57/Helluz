@@ -4,11 +4,11 @@
     ViewData["Title"] = "Registrar Disciplina";
 }
 
-<div class="container py-4">
+<div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <div class="card shadow">
-                <div class="card-header bg-primary text-white">
+            <div class="card">
+                <div class="card-header card-register">
                     <h4 class="mb-0">
                         <i class="fas fa-dumbbell"></i> Registrar Nueva Disciplina
                     </h4>
@@ -17,26 +17,43 @@
                     <form asp-action="Create" id="formDisciplina">
                         <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
 
+                        <!-- Información de la Disciplina -->
+                        <h5 class="mb-3">
+                            <i class="fas fa-info-circle text-primary"></i> Información de la Disciplina
+                        </h5>
+
                         <!-- Nombre de la Disciplina -->
                         <div class="mb-3">
                             <label asp-for="NombreDisciplina" class="form-label fw-bold"></label>
-                            <input asp-for="NombreDisciplina" class="form-control" autocomplete="off" />
+                            <input asp-for="NombreDisciplina" class="form-control" placeholder="Ej: Yoga, Pilates, CrossFit" autocomplete="off" />
                             <span asp-validation-for="NombreDisciplina" class="text-danger"></span>
                         </div>
 
                         <!-- Descripción -->
                         <div class="mb-3">
                             <label asp-for="Descripcion" class="form-label fw-bold"></label>
-                            <textarea asp-for="Descripcion" class="form-control" rows="3" autocomplete="off"></textarea>
+                            <textarea asp-for="Descripcion" class="form-control" rows="4" placeholder="Describe las características, beneficios o información relevante de esta disciplina..." autocomplete="off"></textarea>
                             <span asp-validation-for="Descripcion" class="text-danger"></span>
+                            <small class="form-text text-muted">
+                                <i class="fas fa-lightbulb"></i> Opcional: Agrega una descripción para ayudar a los usuarios a conocer más sobre esta disciplina.
+                            </small>
                         </div>
 
+                        <hr>
+
                         <!-- Estado -->
-                        <div class="form-check mb-4">
-                            <input class="form-check-input" asp-for="Estado" checked />
-                            <label class="form-check-label fw-bold">
-                                @Html.DisplayNameFor(model => model.Estado)
-                            </label>
+                        <h5 class="mb-3">
+                            <i class="fas fa-toggle-on text-success"></i> Estado
+                        </h5>
+
+                        <div class="mb-4">
+                            <div class="form-check">
+                                <input class="form-check-input" asp-for="Estado" checked />
+                                <label class="form-check-label" asp-for="Estado">
+                                    <i class="fas fa-check-circle text-success"></i> Disciplina Activa
+                                    <small class="text-muted d-block">La disciplina estará disponible para asignar a horarios y clases</small>
+                                </label>
+                            </div>
                         </div>
 
                         <hr>
@@ -44,10 +61,10 @@
                         <!-- Botones -->
                         <div class="d-flex justify-content-between">
                             <a asp-action="Index" class="btn btn-secondary">
-                                <i class="fas fa-arrow-left"></i> Cancelar
+                                <i class="fas btn-back fa-arrow-left"></i> Cancelar
                             </a>
                             <button type="submit" class="btn btn-success">
-                                <i class="fas fa-save"></i> Guardar
+                                <i class="fas btn-save fa-save"></i> Guardar
                             </button>
                         </div>
                     </form>
