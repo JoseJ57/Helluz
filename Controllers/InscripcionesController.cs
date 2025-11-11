@@ -1,6 +1,7 @@
 ﻿using Helluz.Contexto;
 using Helluz.Dto;
 using Helluz.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace Helluz.Controllers
 {
+    [Authorize]
     public class InscripcionesController : Controller
     {
         private readonly MyContext _context;
