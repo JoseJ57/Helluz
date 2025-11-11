@@ -52,12 +52,27 @@ namespace Helluz.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(instructor); // si UsuarioId es null, EF lo aceptará
+                // ---- Validar duplicado de carnet en Instructores ----
+                bool carnetEnInstructores = await _context.Instructors.AnyAsync(i => i.Carnet == instructor.Carnet);
+
+                // ---- Validar duplicado de carnet en Alumnos ----
+                bool carnetEnAlumnos = await _context.Alumnos.AnyAsync(a => a.Carnet == instructor.Carnet);
+
+                if (carnetEnInstructores || carnetEnAlumnos)
+                {
+                    ModelState.AddModelError("Carnet", $"❌ El carnet {instructor.Carnet} ya está registrado en otro instructor o alumno.");
+                    var listaUsuarios = await _context.Usuarios.ToListAsync();
+                    ViewData["UsuarioId"] = new SelectList(listaUsuarios, "IdUsuario", "NombreUsuario", instructor.UsuarioId);
+                    return View(instructor);
+                }
+
+                _context.Add(instructor);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewData["UsuarioId"] = new SelectList(_context.Usuarios, "IdUsuario", "NombreUsuario", instructor.UsuarioId);
+            var usuariosLista = await _context.Usuarios.ToListAsync();
+            ViewData["UsuarioId"] = new SelectList(usuariosLista, "IdUsuario", "NombreUsuario", instructor.UsuarioId);
             return View(instructor);
         }
 
@@ -92,8 +107,8 @@ namespace Helluz.Controllers
 
             if (!ModelState.IsValid)
             {
-                var usuarios = await _context.Usuarios.ToListAsync();
-                ViewData["UsuarioId"] = new SelectList(usuarios, "IdUsuario", "NombreUsuario", instructor.UsuarioId);
+                var usuariosLista = await _context.Usuarios.ToListAsync();
+                ViewData["UsuarioId"] = new SelectList(usuariosLista, "IdUsuario", "NombreUsuario", instructor.UsuarioId);
                 return View(instructor);
             }
 
@@ -102,18 +117,20 @@ namespace Helluz.Controllers
                 var instructorDb = await _context.Instructors.FindAsync(id);
                 if (instructorDb == null) return NotFound();
 
-                // Validar que el UsuarioId no esté duplicado
-                if (instructor.UsuarioId.HasValue)
+                // ---- Validar duplicado de carnet en Instructores (excepto este) ----
+                bool carnetEnInstructores = await _context.Instructors
+                    .AnyAsync(i => i.Carnet == instructor.Carnet && i.IdInstructor != id);
+
+                // ---- Validar duplicado de carnet en Alumnos ----
+                bool carnetEnAlumnos = await _context.Alumnos
+                    .AnyAsync(a => a.Carnet == instructor.Carnet);
+
+                if (carnetEnInstructores || carnetEnAlumnos)
                 {
-                    var existe = await _context.Instructors
-                        .AnyAsync(i => i.UsuarioId == instructor.UsuarioId && i.IdInstructor != id);
-                    if (existe)
-                    {
-                        ModelState.AddModelError("UsuarioId", "Este usuario ya está asignado a otro instructor.");
-                        var usuarios = await _context.Usuarios.ToListAsync();
-                        ViewData["UsuarioId"] = new SelectList(usuarios, "IdUsuario", "NombreUsuario", instructor.UsuarioId);
-                        return View(instructor);
-                    }
+                    ModelState.AddModelError("Carnet", $"❌ El carnet {instructor.Carnet} ya está registrado en otro instructor o alumno.");
+                    var usuariosLista = await _context.Usuarios.ToListAsync();
+                    ViewData["UsuarioId"] = new SelectList(usuariosLista, "IdUsuario", "NombreUsuario", instructor.UsuarioId);
+                    return View(instructor);
                 }
 
                 // Actualizar propiedades

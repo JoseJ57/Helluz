@@ -35,7 +35,7 @@
                     </div>
 
                     <dl class="row">
-                        <dt class=" text col-sm-4">ID:</dt>
+                        <dt class="text col-sm-4">ID:</dt>
                         <dd class="text col-sm-8">#@Model.IdMembresia</dd>
 
                         <dt class="text col-sm-4">Nombre:</dt>
@@ -57,24 +57,23 @@
                             </span>
                         </dd>
 
-                        <dt class="col-sm-4">Duración (Semanas):</dt>
+                        <dt class="col-sm-4">Duración:</dt>
                         <dd class="col-sm-8">
                             <span class="badge bg-info fs-6">
-                                @Model.DuracionSemanas semanas
+                                @Model.Duracion @Model.UnidadTiempo
                             </span>
                         </dd>
 
                         <dt class="col-sm-4">Número de Sesiones:</dt>
                         <dd class="col-sm-8">
                             <span class="badge bg-secondary fs-6">
-                                @(Model.DiasPorSemana* Model.DuracionSemanas) sesiones
+                                @((Model.DiasPorSemana) * (Model.Duracion)) sesiones
                             </span>
                         </dd>
 
-
                         @if (Model.EsPromocion)
                         {
-                            <dt class="col-sm-4">Vigencia Anual:</dt>
+                            <dt class="col-sm-4">Vigencia:</dt>
                             <dd class="col-sm-8">
                                 @if (Model.FechaActivo.HasValue && Model.FechaInactivo.HasValue)
                                 {
@@ -85,7 +84,7 @@
                                         <strong>Hasta:</strong> @Model.FechaInactivo.Value.ToString("dd 'de' MMMM")
                                         <br>
                                         <small class="text-muted">
-                                            Esta promoción se activa automáticamente cada año en estas fechas
+                                            Esta promoción se activa automáticamente cada año
                                         </small>
                                     </div>
                                 }

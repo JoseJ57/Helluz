@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Helluz.Contexto;
+using Helluz.Dto;
+using Helluz.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Helluz.Contexto;
-using Helluz.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 
 namespace TuProyecto.Controllers
@@ -72,9 +73,8 @@ namespace TuProyecto.Controllers
         // GET: Membresias/Create
         public IActionResult Create()
         {
-            // No necesitas ViewData para estos campos, simplemente pasamos la entidad vacía
-            var membresia = new Membresia();
-            return View(membresia);
+            ViewData["UnidadTiempoList"] = new SelectList(Enum.GetValues(typeof(UnidadTiempo)));
+            return View(new Membresia());
         }
 
 
@@ -85,27 +85,18 @@ namespace TuProyecto.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Validación de días y semanas
                 if (membresia.DiasPorSemana <= 0)
-                {
                     ModelState.AddModelError(nameof(membresia.DiasPorSemana), "Debe ser mayor que 0.");
-                }
-                if (membresia.DuracionSemanas <= 0)
-                {
-                    ModelState.AddModelError(nameof(membresia.DuracionSemanas), "Debe ser mayor que 0.");
-                }
 
-                // Validación para promociones
+                if (membresia.Duracion <= 0)
+                    ModelState.AddModelError(nameof(membresia.Duracion), "Debe ser mayor que 0.");
+
                 if (membresia.EsPromocion)
                 {
                     if (!membresia.FechaActivo.HasValue || !membresia.FechaInactivo.HasValue)
-                    {
                         ModelState.AddModelError("", "Las promociones deben tener fechas de inicio y fin.");
-                    }
                     else
-                    {
                         membresia.Estado = _membresiaService.ValidarEstadoPromocion(membresia);
-                    }
                 }
                 else
                 {
@@ -121,11 +112,11 @@ namespace TuProyecto.Controllers
                     TempData["Success"] = membresia.EsPromocion
                         ? "Promoción creada exitosamente."
                         : "Membresía creada exitosamente.";
-
                     return RedirectToAction(nameof(Index));
                 }
             }
 
+            ViewData["UnidadTiempoList"] = new SelectList(Enum.GetValues(typeof(UnidadTiempo)), membresia.UnidadTiempo);
             return View(membresia);
         }
 
@@ -134,17 +125,13 @@ namespace TuProyecto.Controllers
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
             var membresia = await _context.Membresias.FindAsync(id);
-
             if (membresia == null)
-            {
                 return NotFound();
-            }
 
+            ViewData["UnidadTiempoList"] = new SelectList(Enum.GetValues(typeof(UnidadTiempo)), membresia.UnidadTiempo);
             return View(membresia);
         }
 
@@ -154,29 +141,29 @@ namespace TuProyecto.Controllers
         public async Task<IActionResult> Edit(int id, Membresia membresia)
         {
             if (id != membresia.IdMembresia)
-            {
                 return NotFound();
-            }
 
             if (ModelState.IsValid)
             {
                 try
                 {
-                    // Validación para promociones
+                    if (membresia.DiasPorSemana <= 0)
+                        ModelState.AddModelError(nameof(membresia.DiasPorSemana), "Debe ser mayor que 0.");
+                    if (membresia.Duracion <= 0)
+                        ModelState.AddModelError(nameof(membresia.Duracion), "Debe ser mayor que 0.");
+
                     if (membresia.EsPromocion)
                     {
                         if (!membresia.FechaActivo.HasValue || !membresia.FechaInactivo.HasValue)
                         {
                             ModelState.AddModelError("", "Las promociones deben tener fechas de inicio y fin.");
+                            ViewData["UnidadTiempoList"] = new SelectList(Enum.GetValues(typeof(UnidadTiempo)), membresia.UnidadTiempo);
                             return View(membresia);
                         }
-
-                        // Recalcular el estado basado en las fechas
                         membresia.Estado = _membresiaService.ValidarEstadoPromocion(membresia);
                     }
                     else
                     {
-                        // Membresías normales
                         membresia.Estado = true;
                         membresia.FechaActivo = null;
                         membresia.FechaInactivo = null;
@@ -184,23 +171,19 @@ namespace TuProyecto.Controllers
 
                     _context.Update(membresia);
                     await _context.SaveChangesAsync();
-
                     TempData["Success"] = "Registro actualizado exitosamente.";
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!MembresiaExists(membresia.IdMembresia))
-                    {
+                    if (!_context.Membresias.Any(e => e.IdMembresia == membresia.IdMembresia))
                         return NotFound();
-                    }
                     else
-                    {
                         throw;
-                    }
                 }
                 return RedirectToAction(nameof(Index));
             }
 
+            ViewData["UnidadTiempoList"] = new SelectList(Enum.GetValues(typeof(UnidadTiempo)), membresia.UnidadTiempo);
             return View(membresia);
         }
 

@@ -1,10 +1,22 @@
-﻿namespace Helluz.Dto
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Helluz.Dto
 {
     public enum EstadoAsistencia
     {
-        presente=0,
-        tarde=1,
-        falta=2,
-        permiso=3
+        [Display(Name = "Presente")]
+        presente = 0,
+
+        [Display(Name = "Tarde")]
+        tarde = 1,
+
+        [Display(Name = "Falta")]
+        falta = 2,
+
+        [Display(Name = "Permiso")]
+        permiso = 3,
+
+        [Display(Name = "Otro horario")]
+        otro = 4
     }
 }

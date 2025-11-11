@@ -11,7 +11,6 @@ namespace Helluz.Contexto
 
         // tablas
         public DbSet<Alumno> Alumnos { get; set; }
-        public DbSet<AlumnoHorario> AlumnoHorarios { get; set; }
         public DbSet<AsistenciaAlumno> AsistenciaAlumnos { get; set; }
         public DbSet<AsistenciaInstructor> AsistenciaInstructor { get; set; }
         public DbSet<Disciplina> Disciplinas { get; set; }

@@ -43,12 +43,12 @@ namespace Helluz.Models
         public virtual Disciplina? DisciplinaViernes { get; set; }
 
 
-        [Required]
-        public int IdInstructor { get; set; }
+        //[Required]
+        //public int IdInstructor { get; set; }
+        public int? IdInstructor { get; set; }
         [ForeignKey("IdInstructor")]
         public Instructor? Instructor { get; set; }
 
-        public ICollection<AlumnoHorario> AlumnoHorarios { get; set; } = new HashSet<AlumnoHorario>();
         public ICollection<AsistenciaInstructor> AsistenciaInstructors { get; set; } = new HashSet<AsistenciaInstructor>();
     }
 }

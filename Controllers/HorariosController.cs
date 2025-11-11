@@ -142,20 +142,53 @@ namespace Helluz.Controllers
             return View();
         }
 
-        // POST: Horarios/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
+        // Create: POST: Horarios/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("IdHorario,HoraInicio,HoraFin,Lunes,Martes,Miercoles,Jueves,Viernes,IdDisciplinaLunes,IdDisciplinaMartes,IdDisciplinaMiercoles,IdDisciplinaJueves,IdDisciplinaViernes,IdInstructor")] Horario horario)
         {
+            if (horario.HoraInicio >= horario.HoraFin)
+            {
+                ModelState.AddModelError("HoraFin", "La hora de fin debe ser mayor que la hora de inicio.");
+            }
+
+            // 🔹 Validar solapamiento con otros horarios (GLOBAL)
+            var existeSolapamiento = await _context.Horarios
+                .AnyAsync(h =>
+                    (
+                        (horario.HoraInicio < h.HoraFin) &&  // comienza antes de que termine el otro
+                        (horario.HoraFin > h.HoraInicio)     // termina después de que empieza el otro
+                    )
+                );
+
+            if (existeSolapamiento)
+            {
+                ModelState.AddModelError("HoraInicio", "Ya existe un horario que se solapa con el intervalo especificado.");
+            }
+
             if (ModelState.IsValid)
             {
                 _context.Add(horario);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdInstructor"] = new SelectList(_context.Instructors, "IdInstructor", "Apellido", horario.IdInstructor);
+
+            // Volver a cargar los selects si hay error
+            var disciplinas = _context.Disciplinas
+                .Where(d => d.Estado)
+                .Select(d => new { d.IdDisciplina, d.NombreDisciplina })
+                .ToList();
+
+            ViewBag.Disciplinas = new SelectList(disciplinas, "IdDisciplina", "NombreDisciplina");
+
+            var instructores = _context.Instructors
+                .Where(i => i.Estado)
+                .Select(i => new { i.IdInstructor, NombreCompleto = i.Apellido + ", " + i.Nombre })
+                .ToList();
+
+            ViewBag.Instructores = new SelectList(instructores, "IdInstructor", "NombreCompleto", horario.IdInstructor);
+
             return View(horario);
         }
 
@@ -199,12 +232,34 @@ namespace Helluz.Controllers
                 return NotFound();
             }
 
+            // 🔸 Validar que la hora de inicio sea menor que la de fin
+            if (horario.HoraInicio >= horario.HoraFin)
+            {
+                ModelState.AddModelError("HoraFin", "La hora de fin debe ser mayor que la hora de inicio.");
+            }
+
+            // 🔸 Validar solapamiento con otros horarios (GLOBAL, ignorando el actual)
+            var existeSolapamiento = await _context.Horarios
+                .AnyAsync(h =>
+                    h.IdHorario != horario.IdHorario && // ignorar el horario que estamos editando
+                    (
+                        (horario.HoraInicio < h.HoraFin) &&  // empieza antes de que termine el otro
+                        (horario.HoraFin > h.HoraInicio)     // termina después de que empieza el otro
+                    )
+                );
+
+            if (existeSolapamiento)
+            {
+                ModelState.AddModelError("HoraInicio", "Ya existe un horario que se solapa con el intervalo especificado.");
+            }
+
             if (ModelState.IsValid)
             {
                 try
                 {
                     _context.Update(horario);
                     await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -217,9 +272,23 @@ namespace Helluz.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
             }
-            ViewData["IdInstructor"] = new SelectList(_context.Instructors, "IdInstructor", "Apellido", horario.IdInstructor);
+
+            // 🔸 Si hay errores, recargamos los select lists
+            var disciplinas = _context.Disciplinas
+                .Where(d => d.Estado)
+                .Select(d => new { d.IdDisciplina, d.NombreDisciplina })
+                .ToList();
+
+            ViewBag.Disciplinas = new SelectList(disciplinas, "IdDisciplina", "NombreDisciplina");
+
+            var instructores = _context.Instructors
+                .Where(i => i.Estado)
+                .Select(i => new { i.IdInstructor, NombreCompleto = i.Apellido + ", " + i.Nombre })
+                .ToList();
+
+            ViewBag.Instructores = new SelectList(instructores, "IdInstructor", "NombreCompleto", horario.IdInstructor);
+
             return View(horario);
         }
 

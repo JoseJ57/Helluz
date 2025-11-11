@@ -42,8 +42,10 @@
                         <tr>
                             <th>Fecha Inicio</th>
                             <th>Fecha Fin</th>
+                            <th>Horario</th>
                             <th>Método de Pago</th>
                             <th>Nro. Permisos</th>
+                           
                             <th>Estado</th>
                             <th>Alumno</th>
                             <th>Membresía</th>
@@ -56,17 +58,31 @@
                             <tr>
                                 <td>@item.FechaInicio.ToString("dd/MM/yyyy")</td>
                                 <td>@item.FechaFin.ToString("dd/MM/yyyy")</td>
+
+                                <!-- Mostrar hora inicio y fin -->
+                                <td>
+                                    @if (item.Horario != null)
+                                    {
+                                        @($"{item.Horario.HoraInicio:HH\\:mm} - {item.Horario.HoraFin:HH\\:mm}")
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">Sin horario</span>
+                                    }
+                                </td>
+
                                 <td>@item.MetodoPago</td>
                                 <td>@item.NroPermisos</td>
+
                                 <td>
                                     @switch (item.Estado)
                                     {
-                                        case Helluz.Dto.EstadoInscripcion.activa:
+                                        case Helluz.Dto.EstadoInscripcion.Activa:
                                             <span class="badge bg-success">
                                                 <i class="fas fa-check"></i> Activa
                                             </span>
                                             break;
-                                        case Helluz.Dto.EstadoInscripcion.venciada:
+                                        case Helluz.Dto.EstadoInscripcion.Vencida:
                                             <span class="badge bg-danger">
                                                 <i class="fas fa-times"></i> Vencida
                                             </span>
@@ -76,6 +92,7 @@
                                             break;
                                     }
                                 </td>
+
                                 <td>@item.Alumno?.Apellido</td>
                                 <td>@item.Membresia?.Nombre</td>
                                 <td>

@@ -1,10 +1,20 @@
-﻿namespace Helluz.Dto
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Helluz.Dto
 {
     public enum MetodosPagos
     {
-        Efectivo=0,
-        Qr=1,
-        Transferencia=2,
-        Tarjeta=3
+        [Display(Name = "Efectivo")]
+        Efectivo = 0,
+
+        [Display(Name = "Pago por QR")]
+        Qr = 1,
+
+        [Display(Name = "Transferencia Bancaria")]
+        Transferencia = 2,
+
+        [Display(Name = "Tarjeta de Crédito/Débito")]
+        Tarjeta = 3
     }
+
 }

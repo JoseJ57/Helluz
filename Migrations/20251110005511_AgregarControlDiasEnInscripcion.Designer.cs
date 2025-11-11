@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Helluz.Migrations
 {
     [DbContext(typeof(MyContext))]
-    [Migration("20251109014142_Primera")]
-    partial class Primera
+    [Migration("20251110005511_AgregarControlDiasEnInscripcion")]
+    partial class AgregarControlDiasEnInscripcion
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -52,7 +52,7 @@ namespace Helluz.Migrations
                     b.Property<bool>("Estado")
                         .HasColumnType("bit");
 
-                    b.Property<DateOnly>("FechaNacimiento")
+                    b.Property<DateOnly?>("FechaNacimiento")
                         .HasColumnType("date");
 
                     b.Property<string>("Nombre")
@@ -61,35 +61,11 @@ namespace Helluz.Migrations
                         .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("NroEmergencia")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("IdAlumno");
 
                     b.ToTable("Alumnos");
-                });
-
-            modelBuilder.Entity("Helluz.Models.AlumnoHorario", b =>
-                {
-                    b.Property<int>("IdAlumnoHorario")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdAlumnoHorario"));
-
-                    b.Property<int>("IdAlumno")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdHorario")
-                        .HasColumnType("int");
-
-                    b.HasKey("IdAlumnoHorario");
-
-                    b.HasIndex("IdAlumno");
-
-                    b.HasIndex("IdHorario");
-
-                    b.ToTable("AlumnoHorarios");
                 });
 
             modelBuilder.Entity("Helluz.Models.AsistenciaAlumno", b =>
@@ -203,7 +179,7 @@ namespace Helluz.Migrations
                     b.Property<int?>("IdDisciplinaViernes")
                         .HasColumnType("int");
 
-                    b.Property<int>("IdInstructor")
+                    b.Property<int?>("IdInstructor")
                         .HasColumnType("int");
 
                     b.Property<bool>("Jueves")
@@ -246,6 +222,9 @@ namespace Helluz.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdInscripcion"));
 
+                    b.Property<int>("ControlDias")
+                        .HasColumnType("int");
+
                     b.Property<int>("Estado")
                         .HasColumnType("int");
 
@@ -256,6 +235,9 @@ namespace Helluz.Migrations
                         .HasColumnType("date");
 
                     b.Property<int>("IdAlumno")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdHorario")
                         .HasColumnType("int");
 
                     b.Property<int>("IdMembresia")
@@ -270,6 +252,8 @@ namespace Helluz.Migrations
                     b.HasKey("IdInscripcion");
 
                     b.HasIndex("IdAlumno");
+
+                    b.HasIndex("IdHorario");
 
                     b.HasIndex("IdMembresia");
 
@@ -304,7 +288,7 @@ namespace Helluz.Migrations
                     b.Property<bool>("Estado")
                         .HasColumnType("bit");
 
-                    b.Property<DateOnly>("FechaNacimiento")
+                    b.Property<DateOnly?>("FechaNacimiento")
                         .HasColumnType("date");
 
                     b.Property<string>("Nombre")
@@ -338,7 +322,7 @@ namespace Helluz.Migrations
                     b.Property<int>("DiasPorSemana")
                         .HasColumnType("int");
 
-                    b.Property<int>("DuracionSemanas")
+                    b.Property<int>("Duracion")
                         .HasColumnType("int");
 
                     b.Property<bool>("EsPromocion")
@@ -357,7 +341,7 @@ namespace Helluz.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Nro_sesiones")
+                    b.Property<int>("UnidadTiempo")
                         .HasColumnType("int");
 
                     b.HasKey("IdMembresia");
@@ -417,25 +401,6 @@ namespace Helluz.Migrations
                     b.ToTable("Usuarios");
                 });
 
-            modelBuilder.Entity("Helluz.Models.AlumnoHorario", b =>
-                {
-                    b.HasOne("Helluz.Models.Alumno", "Alumno")
-                        .WithMany()
-                        .HasForeignKey("IdAlumno")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Helluz.Models.Horario", "Horario")
-                        .WithMany("AlumnoHorarios")
-                        .HasForeignKey("IdHorario")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Alumno");
-
-                    b.Navigation("Horario");
-                });
-
             modelBuilder.Entity("Helluz.Models.AsistenciaAlumno", b =>
                 {
                     b.HasOne("Helluz.Models.Alumno", "Alumno")
@@ -486,9 +451,7 @@ namespace Helluz.Migrations
 
                     b.HasOne("Helluz.Models.Instructor", "Instructor")
                         .WithMany("Horarios")
-                        .HasForeignKey("IdInstructor")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("IdInstructor");
 
                     b.Navigation("DisciplinaJueves");
 
@@ -511,6 +474,12 @@ namespace Helluz.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Helluz.Models.Horario", "Horario")
+                        .WithMany()
+                        .HasForeignKey("IdHorario")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Helluz.Models.Membresia", "Membresia")
                         .WithMany("Inscripcion")
                         .HasForeignKey("IdMembresia")
@@ -518,6 +487,8 @@ namespace Helluz.Migrations
                         .IsRequired();
 
                     b.Navigation("Alumno");
+
+                    b.Navigation("Horario");
 
                     b.Navigation("Membresia");
                 });
@@ -540,8 +511,6 @@ namespace Helluz.Migrations
 
             modelBuilder.Entity("Helluz.Models.Horario", b =>
                 {
-                    b.Navigation("AlumnoHorarios");
-
                     b.Navigation("AsistenciaInstructors");
                 });
 

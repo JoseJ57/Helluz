@@ -7,7 +7,7 @@
 <div class="container py-4">
     <div class="row justify-content-center">
         <div class="col-md-6">
-            <div class="card ">
+            <div class="card">
                 <div class="card-header">
                     <h4 class="mb-0">
                         <i class="fas fa-exclamation-triangle"></i> Confirmar Eliminación
@@ -43,24 +43,24 @@
                             <span class="badge bg-info">@Model.DiasPorSemana días/semana</span>
                         </dd>
 
-                        <dt class="col-sm-4">Duración (Semanas):</dt>
+                        <dt class="col-sm-4">Duración:</dt>
                         <dd class="col-sm-8">
-                            <span class="badge bg-info">@Model.DuracionSemanas semanas</span>
+                            <span class="badge bg-info">@Model.Duracion @Model.UnidadTiempo</span>
                         </dd>
 
                         <dt class="col-sm-4">Número de Sesiones:</dt>
                         <dd class="col-sm-8">
-                            <span class="badge bg-secondary">@(Model.DiasPorSemana* Model.DuracionSemanas) sesiones</span>
+                            <span class="badge bg-secondary">@((Model.DiasPorSemana) * (Model.Duracion)) sesiones</span>
                         </dd>
 
-
-                        @if (Model.EsPromocion && Model.FechaActivo.HasValue)
+                        @if (Model.EsPromocion && Model.FechaActivo.HasValue && Model.FechaInactivo.HasValue)
                         {
                             <dt class="col-sm-4">Vigencia:</dt>
                             <dd class="col-sm-8">
-                                @Model.FechaActivo.Value.ToString("dd MMM")
+                                <span>@Model.FechaActivo.Value.ToString("dd MMM") - @Model.FechaInactivo.Value.ToString("dd MMM")</span>
                             </dd>
-}
+                        }
+
                         <dt class="col-sm-4">Estado:</dt>
                         <dd class="col-sm-8">
                             @if (Model.Estado)
@@ -77,9 +77,7 @@
                         {
                             <dt class="col-sm-4">Inscripciones:</dt>
                             <dd class="col-sm-8">
-                                <span class="badge bg-danger">
-                                    @Model.Inscripcion.Count inscripciones asociadas
-                                </span>
+                                <span class="badge bg-danger">@Model.Inscripcion.Count inscripciones asociadas</span>
                             </dd>
                         }
                     </dl>
@@ -100,7 +98,7 @@
                             </a>
                             @if (!Model.Inscripcion.Any())
                             {
-                                <button type="submit" class="btn btn-delete">
+                                <button type="submit" class="btn btn-danger">
                                     <i class="fas fa-trash"></i> Eliminar
                                 </button>
                             }
