@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+﻿using Helluz.Dto;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -7,7 +7,7 @@ namespace Helluz.Models
     public class Membresia
     {
         [Key]
-        [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int IdMembresia { get; set; }
 
         [Required]
@@ -17,13 +17,13 @@ namespace Helluz.Models
         public float Costo { get; set; }
 
         [Required]
-        public int Nro_sesiones { get; set; }
+        public int DiasPorSemana { get; set; }
 
         [Required]
-        public int DiasPorSemana { get; set; }       // Nuevo campo: cuántos días por semana
+        public int Duracion { get; set; }
 
         [Required]
-        public int DuracionSemanas { get; set; }     // Nuevo campo: duración total en semanas
+        public UnidadTiempo UnidadTiempo { get; set; }
 
         public DateTime? FechaActivo { get; set; }
         public DateTime? FechaInactivo { get; set; }

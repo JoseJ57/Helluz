@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Helluz.Contexto;
+using Helluz.Dto;
+using Helluz.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Helluz.Contexto;
-using Helluz.Models;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Helluz.Controllers
 {
@@ -19,29 +19,74 @@ namespace Helluz.Controllers
             _context = context;
         }
 
+        /// <summary>
+        /// Actualiza el estado de la inscripción según la fecha actual.
+        /// </summary>
+        private void ActualizarEstadoInscripcion(Inscripcion inscripcion)
+        {
+            var hoy = DateOnly.FromDateTime(DateTime.Today);
+
+            if (inscripcion.FechaInicio <= hoy && hoy <= inscripcion.FechaFin)
+                inscripcion.Estado = EstadoInscripcion.Activa;
+            else
+                inscripcion.Estado = EstadoInscripcion.Vencida;
+        }
+
         // GET: Inscripciones
         public async Task<IActionResult> Index()
         {
-            var myContext = _context.Inscripcions.Include(i => i.Alumno).Include(i => i.Membresia);
-            return View(await myContext.ToListAsync());
+            var inscripciones = await _context.Inscripcions
+                .Include(i => i.Alumno)
+                .Include(i => i.Membresia)
+                .Include(i => i.Horario)
+                .ToListAsync();
+
+            var hoy = DateOnly.FromDateTime(DateTime.Today);
+            var diaSemana = DateTime.Today.DayOfWeek;
+            bool cambios = false;
+
+            foreach (var inscripcion in inscripciones)
+            {
+                // Actualizar estado de inscripción
+                var estadoAnterior = inscripcion.Estado;
+                if (inscripcion.FechaInicio <= hoy && hoy <= inscripcion.FechaFin)
+                    inscripcion.Estado = EstadoInscripcion.Activa;
+                else
+                    inscripcion.Estado = EstadoInscripcion.Vencida;
+
+                if (inscripcion.Estado != estadoAnterior)
+                {
+                    _context.Update(inscripcion);
+                    cambios = true;
+                }
+
+                // 🔹 Reiniciar ControlDias los lunes si la inscripción está activa
+                if (diaSemana == DayOfWeek.Monday && inscripcion.Estado == EstadoInscripcion.Activa && inscripcion.ControlDias != 0)
+                {
+                    inscripcion.ControlDias = 0;
+                    _context.Update(inscripcion);
+                    cambios = true;
+                }
+            }
+
+            if (cambios)
+                await _context.SaveChangesAsync();
+
+            return View(inscripciones);
         }
 
         // GET: Inscripciones/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
             var inscripcion = await _context.Inscripcions
                 .Include(i => i.Alumno)
                 .Include(i => i.Membresia)
+                .Include(i => i.Horario)
                 .FirstOrDefaultAsync(m => m.IdInscripcion == id);
-            if (inscripcion == null)
-            {
-                return NotFound();
-            }
+
+            if (inscripcion == null) return NotFound();
 
             return View(inscripcion);
         }
@@ -50,6 +95,11 @@ namespace Helluz.Controllers
         public IActionResult Create()
         {
             ViewData["IdAlumno"] = new SelectList(_context.Alumnos, "IdAlumno", "Apellido");
+            ViewData["IdHorario"] = new SelectList(
+                _context.Horarios
+                    .OrderBy(h => h.HoraInicio)
+                    .Select(h => new { h.IdHorario, Display = h.HoraInicio + " - " + h.HoraFin }),
+                "IdHorario", "Display");
 
             ViewBag.Membresias = _context.Membresias
                 .Select(m => new
@@ -57,143 +107,109 @@ namespace Helluz.Controllers
                     m.IdMembresia,
                     m.Nombre,
                     m.DiasPorSemana,
-                    m.DuracionSemanas
+                    m.Duracion,
+                    m.UnidadTiempo
                 })
                 .ToList();
 
             return View();
         }
 
-
-
         // POST: Inscripciones/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IdInscripcion,MetodoPago,NroPermisos,Estado,IdAlumno,IdMembresia")] Inscripcion inscripcion)
+        public async Task<IActionResult> Create([Bind("IdInscripcion,FechaInicio,FechaFin,MetodoPago,NroPermisos,Estado,IdAlumno,IdMembresia,IdHorario")] Inscripcion inscripcion)
         {
             if (ModelState.IsValid)
             {
-                // Obtener la membresía seleccionada
-                var membresia = await _context.Membresias.FindAsync(inscripcion.IdMembresia);
-                if (membresia != null)
-                {
-                    // Fecha de inicio = hoy
-                    inscripcion.FechaInicio = DateOnly.FromDateTime(DateTime.Today);
+                // Inicializar ControlDias en 0 al crear la inscripción
+                inscripcion.ControlDias = 0;
 
-                    // Calcular fecha fin según días por semana y duración en semanas
-                    int totalDias = membresia.DiasPorSemana * membresia.DuracionSemanas;
-                    DateTime fechaTemp = DateTime.Today;
-                    int diasContados = 0;
+                // Actualiza el estado según fechas
+                ActualizarEstadoInscripcion(inscripcion);
 
-                    while (diasContados < totalDias)
-                    {
-                        fechaTemp = fechaTemp.AddDays(1);
-                        if (fechaTemp.DayOfWeek != DayOfWeek.Saturday && fechaTemp.DayOfWeek != DayOfWeek.Sunday)
-                        {
-                            diasContados++;
-                        }
-                    }
-
-                    // Convertimos a DateOnly
-                    inscripcion.FechaFin = DateOnly.FromDateTime(fechaTemp);
-                }
-
-                // Guardar en la base
                 _context.Add(inscripcion);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
 
-            // Si hay error, recargar los selects
             ViewData["IdAlumno"] = new SelectList(_context.Alumnos, "IdAlumno", "Apellido", inscripcion.IdAlumno);
+            ViewData["IdHorario"] = new SelectList(
+                _context.Horarios.Select(h => new { h.IdHorario, Display = h.HoraInicio + " - " + h.HoraFin }),
+                "IdHorario", "Display",
+                inscripcion.IdHorario);
+            ViewBag.Membresias = _context.Membresias.Select(m => new { m.IdMembresia, m.Nombre }).ToList();
+
+            return View(inscripcion);
+        }
+
+        // GET: Inscripciones/Edit/5
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null) return NotFound();
+
+            var inscripcion = await _context.Inscripcions.FindAsync(id);
+            if (inscripcion == null) return NotFound();
+
+            ViewData["IdAlumno"] = new SelectList(_context.Alumnos, "IdAlumno", "Apellido", inscripcion.IdAlumno);
+            ViewData["IdHorario"] = new SelectList(
+                _context.Horarios.Select(h => new { h.IdHorario, Display = h.HoraInicio + " - " + h.HoraFin }),
+                "IdHorario", "Display",
+                inscripcion.IdHorario);
             ViewBag.Membresias = _context.Membresias
-                .Select(m => new
-                {
-                    m.IdMembresia,
-                    m.Nombre,
-                    m.Nro_sesiones,
-                    m.DiasPorSemana,
-                    m.DuracionSemanas
-                })
+                .Select(m => new { m.IdMembresia, m.Nombre, m.DiasPorSemana, m.Duracion })
                 .ToList();
 
             return View(inscripcion);
         }
 
-
-        // GET: Inscripciones/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var inscripcion = await _context.Inscripcions.FindAsync(id);
-            if (inscripcion == null)
-            {
-                return NotFound();
-            }
-            ViewData["IdAlumno"] = new SelectList(_context.Alumnos, "IdAlumno", "Apellido", inscripcion.IdAlumno);
-            ViewData["IdMembresia"] = new SelectList(_context.Membresias, "IdMembresia", "Nombre", inscripcion.IdMembresia);
-            return View(inscripcion);
-        }
-
         // POST: Inscripciones/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("IdInscripcion,FechaInicio,FechaFin,MetodoPago,NroPermisos,Estado,IdAlumno,IdMembresia")] Inscripcion inscripcion)
+        public async Task<IActionResult> Edit(int id, [Bind("IdInscripcion,FechaInicio,FechaFin,MetodoPago,NroPermisos,Estado,IdAlumno,IdMembresia,IdHorario")] Inscripcion inscripcion)
         {
-            if (id != inscripcion.IdInscripcion)
-            {
-                return NotFound();
-            }
+            if (id != inscripcion.IdInscripcion) return NotFound();
 
             if (ModelState.IsValid)
             {
                 try
                 {
+                    ActualizarEstadoInscripcion(inscripcion);
                     _context.Update(inscripcion);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!InscripcionExists(inscripcion.IdInscripcion))
-                    {
                         return NotFound();
-                    }
                     else
-                    {
                         throw;
-                    }
                 }
                 return RedirectToAction(nameof(Index));
             }
+
             ViewData["IdAlumno"] = new SelectList(_context.Alumnos, "IdAlumno", "Apellido", inscripcion.IdAlumno);
-            ViewData["IdMembresia"] = new SelectList(_context.Membresias, "IdMembresia", "Nombre", inscripcion.IdMembresia);
+            ViewData["IdHorario"] = new SelectList(
+                _context.Horarios.Select(h => new { h.IdHorario, Display = h.HoraInicio + " - " + h.HoraFin }),
+                "IdHorario", "Display",
+                inscripcion.IdHorario);
+            ViewBag.Membresias = _context.Membresias.Select(m => new { m.IdMembresia, m.Nombre }).ToList();
+
             return View(inscripcion);
         }
 
         // GET: Inscripciones/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
             var inscripcion = await _context.Inscripcions
                 .Include(i => i.Alumno)
                 .Include(i => i.Membresia)
+                .Include(i => i.Horario)
                 .FirstOrDefaultAsync(m => m.IdInscripcion == id);
-            if (inscripcion == null)
-            {
-                return NotFound();
-            }
+
+            if (inscripcion == null) return NotFound();
 
             return View(inscripcion);
         }
@@ -205,9 +221,7 @@ namespace Helluz.Controllers
         {
             var inscripcion = await _context.Inscripcions.FindAsync(id);
             if (inscripcion != null)
-            {
                 _context.Inscripcions.Remove(inscripcion);
-            }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

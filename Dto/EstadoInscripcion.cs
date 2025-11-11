@@ -1,9 +1,13 @@
-﻿namespace Helluz.Dto
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Helluz.Dto
 {
     public enum EstadoInscripcion
     {
-        activa=0,
-        venciada=1,
+        [Display(Name = "Activa")]
+        Activa = 0,
 
+        [Display(Name = "Vencida")]
+        Vencida = 1
     }
 }

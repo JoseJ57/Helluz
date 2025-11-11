@@ -60,39 +60,23 @@
                                 <td>
                                     @if (item.EsPromocion)
                                     {
-                                        <span class="text">
-                                            <i class="fas fa-tag"></i> Promoción
-                                        </span>
+                                        <span class="text"><i class="fas fa-tag"></i> Promoción</span>
                                     }
                                     else
                                     {
-                                        <span class="text">
-                                            <i class="fas fa-id-card"></i> Membresía
-                                        </span>
+                                        <span class="text"><i class="fas fa-id-card"></i> Membresía</span>
                                     }
                                 </td>
                                 <td class="text">@item.Nombre</td>
                                 <td class="text">$@item.Costo.ToString("N2")</td>
-
-                                <td>@item.Nro_sesiones</td>
+                                <td>@item.Duracion</td>
                                 <td>@item.DiasPorSemana</td>
-                                <td>@item.DuracionSemanas</td>
-
-                                <td>
-                                    <span class="text ">
-                                        @item.Nro_sesiones sesiones
-                                    </span>
-                                </td>
-
+                                <td>@item.Duracion @item.UnidadTiempo</td>
                                 <td>
                                     @if (item.EsPromocion && item.FechaActivo.HasValue && item.FechaInactivo.HasValue)
                                     {
                                         <small class="text">
-
                                             <i class="fas fa-calendar-alt"></i>
-
-                                            <i class="fas fa-calendar-alt "></i>
-
                                             @item.FechaActivo.Value.ToString("dd MMM") -
                                             @item.FechaInactivo.Value.ToString("dd MMM")
                                         </small>
@@ -105,29 +89,22 @@
                                 <td>
                                     @if (item.Estado)
                                     {
-                                        <span class="badge bg-success">
-                                            <i class="fas fa-check"></i> Activa
-                                        </span>
+                                        <span class="badge bg-success"><i class="fas fa-check"></i> Activa</span>
                                     }
                                     else
                                     {
-                                        <span class="badge bg-danger">
-                                            <i class="fas fa-times"></i> Inactiva
-                                        </span>
+                                        <span class="badge bg-danger"><i class="fas fa-times"></i> Inactiva</span>
                                     }
                                 </td>
                                 <td>
                                     <div class="btn-group" role="group">
-                                        <a asp-action="Details" asp-route-id="@item.IdMembresia"
-                                           class="btn btn-details" title="Ver detalles">
+                                        <a asp-action="Details" asp-route-id="@item.IdMembresia" class="btn btn-details" title="Ver detalles">
                                             <i class="fas fa-eye"></i>
                                         </a>
-                                        <a asp-action="Edit" asp-route-id="@item.IdMembresia"
-                                           class="btn btn-edit" title="Editar">
+                                        <a asp-action="Edit" asp-route-id="@item.IdMembresia" class="btn btn-edit" title="Editar">
                                             <i class="fas fa-edit"></i>
                                         </a>
-                                        <a asp-action="Delete" asp-route-id="@item.IdMembresia"
-                                           class="btn btn-delete" title="Eliminar">
+                                        <a asp-action="Delete" asp-route-id="@item.IdMembresia" class="btn btn-delete" title="Eliminar">
                                             <i class="fas fa-trash"></i>
                                         </a>
                                     </div>

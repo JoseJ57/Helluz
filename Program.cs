@@ -1,4 +1,5 @@
 using Helluz.Contexto;
+using Helluz.Dto;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using TuProyecto.Services;
@@ -9,8 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<MyContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("CadenaConexion")));
 
-//configuracion de Cookies para usuarios y roles 
-
+// Configuración de Cookies para usuarios y roles 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(option =>
     {
@@ -18,10 +18,14 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         option.ExpireTimeSpan = TimeSpan.FromMinutes(30);
         option.AccessDeniedPath = "/Home/Privacy";
     });
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<MembresiaService>();
 builder.Services.AddHostedService<ActualizadorPromocionesBgService>();
+builder.Services.AddHostedService<ReinicioControlDiasService>(); // Reinicio semanal del control de días
+builder.Services.AddHostedService<FaltaInstructorService>();
+
 
 var app = builder.Build();
 
@@ -29,7 +33,6 @@ var app = builder.Build();
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
@@ -44,6 +47,5 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}")
     .WithStaticAssets();
-
 
 app.Run();

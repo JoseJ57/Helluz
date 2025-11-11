@@ -37,7 +37,7 @@
 
                         <dt class="col-sm-4">Fecha de Nacimiento:</dt>
                         <dd class="col-sm-8">
-                            @Model.FechaNacimiento.ToString("dd 'de' MMMM 'de' yyyy")
+                            @Model.FechaNacimiento?.ToString("yyyy-MM-dd") ?? ""
                         </dd>
 
                         <dt class="col-sm-4">Celular:</dt>

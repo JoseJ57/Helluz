@@ -50,24 +50,33 @@ namespace Helluz.Controllers
         }
 
         // POST: Alumnoes/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Alumno alumno)
+        public async Task<IActionResult> Create([Bind("IdAlumno,Nombre,Apellido,Carnet,FechaNacimiento,Celular,NroEmergencia,Correo,Estado")] Alumno alumno)
         {
             if (ModelState.IsValid)
             {
+                // ---- Validar duplicado de carnet en Alumnos ----
+                bool carnetEnAlumnos = await _context.Alumnos.AnyAsync(a => a.Carnet == alumno.Carnet);
+
+                // ---- Validar duplicado de carnet en Instructores ----
+                bool carnetEnInstructores = await _context.Instructors.AnyAsync(i => i.Carnet == alumno.Carnet);
+
+                if (carnetEnAlumnos || carnetEnInstructores)
+                {
+                    ModelState.AddModelError("Carnet", $"❌ El carnet {alumno.Carnet} ya está registrado en otro alumno o instructor.");
+                    return View(alumno);
+                }
+
                 _context.Add(alumno);
                 await _context.SaveChangesAsync();
-
-                // Devuelve un pequeño script para cerrar y refrescar
-                return Content("<script>window.opener.location.reload(); window.close();</script>", "text/html");
+                TempData["Success"] = "Alumno registrado correctamente.";
+                return RedirectToAction(nameof(Index));
             }
+
+            TempData["Error"] = "Ocurrió un error al registrar el alumno. Verifique los datos.";
             return View(alumno);
         }
-
-
 
         // GET: Alumnoes/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -86,8 +95,6 @@ namespace Helluz.Controllers
         }
 
         // POST: Alumnoes/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("IdAlumno,Nombre,Apellido,Carnet,FechaNacimiento,Celular,NroEmergencia,Correo,Estado")] Alumno alumno)
@@ -99,6 +106,20 @@ namespace Helluz.Controllers
 
             if (ModelState.IsValid)
             {
+                // ---- Validar duplicado de carnet en Alumnos (excepto el actual) ----
+                bool carnetEnAlumnos = await _context.Alumnos
+                    .AnyAsync(a => a.Carnet == alumno.Carnet && a.IdAlumno != alumno.IdAlumno);
+
+                // ---- Validar duplicado de carnet en Instructores ----
+                bool carnetEnInstructores = await _context.Instructors
+                    .AnyAsync(i => i.Carnet == alumno.Carnet);
+
+                if (carnetEnAlumnos || carnetEnInstructores)
+                {
+                    ModelState.AddModelError("Carnet", $"❌ El carnet {alumno.Carnet} ya está registrado en otro alumno o instructor.");
+                    return View(alumno);
+                }
+
                 try
                 {
                     _context.Update(alumno);

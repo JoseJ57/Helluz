@@ -43,11 +43,11 @@
                         <!-- Nombre -->
                         <div class="mb-3">
                             <label asp-for="Nombre" class="form-label fw-bold"></label>
-                            <input asp-for="Nombre" class="form-control" placeholder="Ej: Membresía Premium, Promo Verano 2025" autocomplete="off"/>
+                            <input asp-for="Nombre" class="form-control" placeholder="Ej: Membresía Premium, Promo Verano 2025" autocomplete="off" />
                             <span asp-validation-for="Nombre" class="text-danger"></span>
                         </div>
 
-                        <!-- Costo y Sesiones en dos columnas -->
+                        <!-- Costo -->
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="mb-3">
@@ -61,7 +61,7 @@
                             </div>
                         </div>
 
-                        <!-- Dias, Semanas y Nro Sesiones-->
+                        <!-- Dias por semana -->
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label asp-for="DiasPorSemana" class="form-label fw-bold"></label>
@@ -69,22 +69,20 @@
                                 <span asp-validation-for="DiasPorSemana" class="text-danger"></span>
                             </div>
 
+                            <!-- Duración -->
                             <div class="col-md-6 mb-3">
-                                <label asp-for="DuracionSemanas" class="form-label fw-bold"></label>
-                                <input asp-for="DuracionSemanas" id="DuracionSemanas" class="form-control" type="number" min="1" />
-                                <span asp-validation-for="DuracionSemanas" class="text-danger"></span>
-                            </div>
-
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label asp-for="Nro_sesiones" class="form-label fw-bold">Número de Sesiones</label>
-                                    <input asp-for="Nro_sesiones" id="Nro_sesiones" class="form-control" type="number" readonly />
-                                    <span asp-validation-for="Nro_sesiones" class="text-danger"></span>
+                                <label class="form-label fw-bold">Duración</label>
+                                <div class="input-group">
+                                    <input asp-for="Duracion" id="Duracion" class="form-control" type="number" min="1" />
+                                    <select asp-for="UnidadTiempo" class="form-select">
+                                        <option value="0">Días</option>
+                                        <option value="1">Meses</option>
+                                        <option value="2">Años</option>
+                                    </select>
                                 </div>
+                                <span asp-validation-for="Duracion" class="text-danger"></span>
                             </div>
-
                         </div>
-
 
                         <!-- Fechas (solo para promociones) -->
                         <div id="seccionFechas" style="display: none;">
@@ -138,9 +136,7 @@
 </div>
 
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+    @(await Html.PartialAsync("_ValidationScriptsPartial"))
 
     <script>
         $(document).ready(function() {
@@ -172,17 +168,8 @@
                 }
             });
 
-            // --- NUEVO: Calcular Nro_sesiones automáticamente ---
-            function actualizarSesiones() {
-                var dias = parseInt($('#DiasPorSemana').val()) || 0;
-                var semanas = parseInt($('#DuracionSemanas').val()) || 0;
-                $('#Nro_sesiones').val(dias * semanas);
-            }
-
-            $('#DiasPorSemana, #DuracionSemanas').on('input change', actualizarSesiones);
-
-            // Ejecutar al cargar la página para inicializar
-            actualizarSesiones();
+            // --- NUEVO: Ajustar comportamiento de duración ---
+            // No necesitamos calcular Nro_sesiones aquí, eso se hará en Inscripción
         });
     </script>
 }

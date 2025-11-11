@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Helluz.Migrations
 {
     /// <inheritdoc />
-    public partial class Primera : Migration
+    public partial class Inicial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -20,9 +20,9 @@ namespace Helluz.Migrations
                     Nombre = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     Apellido = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     Carnet = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FechaNacimiento = table.Column<DateOnly>(type: "date", nullable: false),
+                    FechaNacimiento = table.Column<DateOnly>(type: "date", nullable: true),
                     Celular = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    NroEmergencia = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    NroEmergencia = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Correo = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Estado = table.Column<bool>(type: "bit", nullable: false)
                 },
@@ -54,9 +54,9 @@ namespace Helluz.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Costo = table.Column<float>(type: "real", nullable: false),
-                    Nro_sesiones = table.Column<int>(type: "int", nullable: false),
                     DiasPorSemana = table.Column<int>(type: "int", nullable: false),
-                    DuracionSemanas = table.Column<int>(type: "int", nullable: false),
+                    Duracion = table.Column<int>(type: "int", nullable: false),
+                    UnidadTiempo = table.Column<int>(type: "int", nullable: false),
                     FechaActivo = table.Column<DateTime>(type: "datetime2", nullable: true),
                     FechaInactivo = table.Column<DateTime>(type: "datetime2", nullable: true),
                     EsPromocion = table.Column<bool>(type: "bit", nullable: false),
@@ -121,37 +121,6 @@ namespace Helluz.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Inscripcions",
-                columns: table => new
-                {
-                    IdInscripcion = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    FechaInicio = table.Column<DateOnly>(type: "date", nullable: false),
-                    FechaFin = table.Column<DateOnly>(type: "date", nullable: false),
-                    MetodoPago = table.Column<int>(type: "int", nullable: false),
-                    NroPermisos = table.Column<int>(type: "int", nullable: false),
-                    Estado = table.Column<int>(type: "int", nullable: false),
-                    IdAlumno = table.Column<int>(type: "int", nullable: false),
-                    IdMembresia = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Inscripcions", x => x.IdInscripcion);
-                    table.ForeignKey(
-                        name: "FK_Inscripcions_Alumnos_IdAlumno",
-                        column: x => x.IdAlumno,
-                        principalTable: "Alumnos",
-                        principalColumn: "IdAlumno",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Inscripcions_Membresias_IdMembresia",
-                        column: x => x.IdMembresia,
-                        principalTable: "Membresias",
-                        principalColumn: "IdMembresia",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Instructors",
                 columns: table => new
                 {
@@ -160,7 +129,7 @@ namespace Helluz.Migrations
                     Nombre = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Apellido = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Carnet = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    FechaNacimiento = table.Column<DateOnly>(type: "date", nullable: false),
+                    FechaNacimiento = table.Column<DateOnly>(type: "date", nullable: true),
                     Correo = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Celular = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Estado = table.Column<bool>(type: "bit", nullable: false),
@@ -194,7 +163,7 @@ namespace Helluz.Migrations
                     IdDisciplinaJueves = table.Column<int>(type: "int", nullable: true),
                     Viernes = table.Column<bool>(type: "bit", nullable: false),
                     IdDisciplinaViernes = table.Column<int>(type: "int", nullable: true),
-                    IdInstructor = table.Column<int>(type: "int", nullable: false)
+                    IdInstructor = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -228,34 +197,7 @@ namespace Helluz.Migrations
                         name: "FK_Horarios_Instructors_IdInstructor",
                         column: x => x.IdInstructor,
                         principalTable: "Instructors",
-                        principalColumn: "IdInstructor",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "AlumnoHorarios",
-                columns: table => new
-                {
-                    IdAlumnoHorario = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    IdAlumno = table.Column<int>(type: "int", nullable: false),
-                    IdHorario = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AlumnoHorarios", x => x.IdAlumnoHorario);
-                    table.ForeignKey(
-                        name: "FK_AlumnoHorarios_Alumnos_IdAlumno",
-                        column: x => x.IdAlumno,
-                        principalTable: "Alumnos",
-                        principalColumn: "IdAlumno",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_AlumnoHorarios_Horarios_IdHorario",
-                        column: x => x.IdHorario,
-                        principalTable: "Horarios",
-                        principalColumn: "IdHorario",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "IdInstructor");
                 });
 
             migrationBuilder.CreateTable(
@@ -286,15 +228,43 @@ namespace Helluz.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateIndex(
-                name: "IX_AlumnoHorarios_IdAlumno",
-                table: "AlumnoHorarios",
-                column: "IdAlumno");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_AlumnoHorarios_IdHorario",
-                table: "AlumnoHorarios",
-                column: "IdHorario");
+            migrationBuilder.CreateTable(
+                name: "Inscripcions",
+                columns: table => new
+                {
+                    IdInscripcion = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FechaInicio = table.Column<DateOnly>(type: "date", nullable: false),
+                    FechaFin = table.Column<DateOnly>(type: "date", nullable: false),
+                    MetodoPago = table.Column<int>(type: "int", nullable: false),
+                    NroPermisos = table.Column<int>(type: "int", nullable: false),
+                    Estado = table.Column<int>(type: "int", nullable: false),
+                    IdAlumno = table.Column<int>(type: "int", nullable: false),
+                    IdMembresia = table.Column<int>(type: "int", nullable: false),
+                    IdHorario = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Inscripcions", x => x.IdInscripcion);
+                    table.ForeignKey(
+                        name: "FK_Inscripcions_Alumnos_IdAlumno",
+                        column: x => x.IdAlumno,
+                        principalTable: "Alumnos",
+                        principalColumn: "IdAlumno",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Inscripcions_Horarios_IdHorario",
+                        column: x => x.IdHorario,
+                        principalTable: "Horarios",
+                        principalColumn: "IdHorario",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Inscripcions_Membresias_IdMembresia",
+                        column: x => x.IdMembresia,
+                        principalTable: "Membresias",
+                        principalColumn: "IdMembresia",
+                        onDelete: ReferentialAction.Cascade);
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AsistenciaAlumnos_IdAlumno",
@@ -347,6 +317,11 @@ namespace Helluz.Migrations
                 column: "IdAlumno");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Inscripcions_IdHorario",
+                table: "Inscripcions",
+                column: "IdHorario");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Inscripcions_IdMembresia",
                 table: "Inscripcions",
                 column: "IdMembresia");
@@ -363,9 +338,6 @@ namespace Helluz.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "AlumnoHorarios");
-
-            migrationBuilder.DropTable(
                 name: "AsistenciaAlumnos");
 
             migrationBuilder.DropTable(
@@ -378,10 +350,10 @@ namespace Helluz.Migrations
                 name: "TokenQrs");
 
             migrationBuilder.DropTable(
-                name: "Horarios");
+                name: "Alumnos");
 
             migrationBuilder.DropTable(
-                name: "Alumnos");
+                name: "Horarios");
 
             migrationBuilder.DropTable(
                 name: "Membresias");

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+﻿using Helluz.Validations;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -7,43 +8,58 @@ namespace Helluz.Models
     public class Alumno
     {
         [Key]
-        [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int IdAlumno { get; set; }
-        [Required]
-        [StringLength(20, ErrorMessage = "El Nombre del Alumno no puede tener mas de 20 caracteres.")]
-        [RegularExpression(@"^[A-Za-z]+$", ErrorMessage = "El Nombre del Alumno solo puede contener letras.")]
+
+        [Required(ErrorMessage = "El nombre del alumno es obligatorio.")]
+        [StringLength(20, ErrorMessage = "El nombre del alumno no puede tener más de 20 caracteres.")]
+        [RegularExpression(@"^[a-zA-ZñÑ\s]+$", ErrorMessage = "El nombre del alumno solo puede contener letras y espacios.")]
         public string? Nombre { get; set; }
-        [Required]
-        [StringLength(20, ErrorMessage = "El Apellido del Alumno no puede tener mas de 20 caracteres.")]
-        [RegularExpression(@"^[A-Za-z]+$", ErrorMessage = "El Apellido del Alumno solo puede contener letras.")]
+
+        [Required(ErrorMessage = "El apellido del alumno es obligatorio.")]
+        [StringLength(20, ErrorMessage = "El apellido del alumno no puede tener más de 20 caracteres.")]
+        [RegularExpression(@"^[a-zA-ZñÑ\s]+$", ErrorMessage = "El apellido del alumno solo puede contener letras y espacios.")]
         public string? Apellido { get; set; }
-        [Required]
+
+        [Required(ErrorMessage = "El carnet es obligatorio.")]
         public string? Carnet { get; set; }
-        [Required]
-        public DateOnly FechaNacimiento { get; set; }
+
+        //[Required(ErrorMessage = "La fecha de nacimiento es obligatoria.")]
+        [FechaNoFutura]
+        public DateOnly? FechaNacimiento { get; set; }
+
         [NotMapped]
         public int Edad
         {
             get
             {
+                if (!FechaNacimiento.HasValue)
+                    return 0;
+
+                var fecha = FechaNacimiento.Value;
                 var hoy = DateOnly.FromDateTime(DateTime.Now);
-                int edad = hoy.Year - FechaNacimiento.Year;
-                if (hoy < FechaNacimiento.AddYears(edad))
+                int edad = hoy.Year - fecha.Year;
+                if (hoy < fecha.AddYears(edad))
                     edad--;
                 return edad;
             }
         }
-        [Required]
+
+        [Required(ErrorMessage = "El celular es obligatorio.")]
+        [Phone(ErrorMessage = "Número de celular inválido.")]
         public string? Celular { get; set; }
-        [Required]
+
+        //[Required(ErrorMessage = "El número de emergencia es obligatorio.")]
         public string? NroEmergencia { get; set; }
-        [EmailAddress(ErrorMessage ="El correo no es valido")]
+
+        [EmailAddress(ErrorMessage = "El correo no es válido.")]
         public string? Correo { get; set; }
+
         [Required]
-        public bool Estado { get; set; }
+        public bool Estado { get; set; } = true;
 
-        public ICollection<Inscripcion> Inscripciones {  get; set; }=new List<Inscripcion>();
-        public ICollection<AsistenciaAlumno> Asistencia_Alumnos {  get; set; }=new List<AsistenciaAlumno>();
-
+        // Relaciones
+        public ICollection<Inscripcion> Inscripciones { get; set; } = new List<Inscripcion>();
+        public ICollection<AsistenciaAlumno> Asistencia_Alumnos { get; set; } = new List<AsistenciaAlumno>();
     }
 }
