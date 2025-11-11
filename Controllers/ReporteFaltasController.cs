@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Helluz.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "administrador")]
     public class ReporteFaltasController : Controller
     {
         // GET: ReporteFaltasController

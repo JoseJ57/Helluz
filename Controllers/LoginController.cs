@@ -10,17 +10,18 @@ using System.Security.Claims;
 
 namespace Laboratorios.Controllers
 {
-   
+    [AllowAnonymous] // ⭐ Permite acceso sin autenticación a este controlador
     public class LoginController : Controller
     {
         private readonly MyContext _context;
-private readonly IMemoryCache _cache;
+        private readonly IMemoryCache _cache;
 
-public LoginController(MyContext context, IMemoryCache cache)
-{
-    _context = context;
-    _cache = cache;
-}
+        public LoginController(MyContext context, IMemoryCache cache)
+        {
+            _context = context;
+            _cache = cache;
+        }
+
         public class LoginIntento
         {
             public int Intentos { get; set; } = 0;
@@ -29,23 +30,24 @@ public LoginController(MyContext context, IMemoryCache cache)
 
         public IActionResult Index()
         {
-            //if (User.Identity.IsAuthenticated)
-            //{
-            //    // Redirigir según el rol del usuario
-            //    if (User.IsInRole("administrador"))
-            //    {
-            //        return RedirectToAction("Index", "Home");
-            //    }
-            //    else
-            //    {
-            //        return RedirectToAction("Index", "Instructor");
-            //    }
-            //}
+            // ⭐ CRÍTICO: Si ya está autenticado, redirigir
+            if (User.Identity.IsAuthenticated)
+            {
+                if (User.IsInRole("administrador"))
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Instructor");
+                }
+            }
 
             return View();
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken] // ⭐ Seguridad adicional
         public async Task<IActionResult> Login(string Nombre_usuario, string Contraseña)
         {
             var cacheKey = $"login-{Nombre_usuario}";
@@ -100,13 +102,52 @@ public LoginController(MyContext context, IMemoryCache cache)
                 new Claim(ClaimTypes.NameIdentifier, usuario.IdUsuario.ToString()),
                 new Claim(ClaimTypes.Role, usuario.Rol!.ToString())
             };
+
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+
+            var authProperties = new AuthenticationProperties
+            {
+                // ⭐ Configuración importante
+                IsPersistent = false, // No recordar sesión al cerrar navegador
+                ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(30),
+                AllowRefresh = true
+            };
+
+            await HttpContext.SignInAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme,
+                new ClaimsPrincipal(claimsIdentity),
+                authProperties
+            );
         }
+
+        // ⭐ CAMBIOS CRÍTICOS EN LOGOUT
+        [HttpPost] // Debe ser POST, no GET
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
         {
+            // Cerrar sesión
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+            // Limpiar sesión
+            HttpContext.Session.Clear();
+
+            // ⭐ Headers para prevenir caché
+            Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
+            Response.Headers["Pragma"] = "no-cache";
+            Response.Headers["Expires"] = "0";
+
             return RedirectToAction("Index", "Login");
+        }
+
+        // ⭐ Método auxiliar para verificar sesión (opcional)
+        [HttpGet]
+        public IActionResult CheckSession()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                return Ok();
+            }
+            return Unauthorized();
         }
     }
 }

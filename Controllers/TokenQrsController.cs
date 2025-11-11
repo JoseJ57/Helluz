@@ -15,7 +15,7 @@ using static QRCoder.PayloadGenerator;
 
 namespace Helluz.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "administrador")]
     public class TokenQrsController : Controller
     {
         private readonly MyContext _context;

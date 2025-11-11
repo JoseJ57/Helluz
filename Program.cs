@@ -1,4 +1,4 @@
-using Helluz.Contexto;
+﻿using Helluz.Contexto;
 using Helluz.Dto;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
@@ -10,22 +10,39 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<MyContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("CadenaConexion")));
 
-// Configuraci�n de Cookies para usuarios y roles 
+// ⭐ AGREGAR SESIÓN (OBLIGATORIO)
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
+// ⭐ AGREGAR MEMORIA CACHE (para los intentos de login)
+builder.Services.AddMemoryCache();
+
+// ⭐ Configuración MEJORADA de autenticación
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-    .AddCookie(option =>
+    .AddCookie(options =>
     {
-        option.LoginPath = "/Login/Index";
-        option.ExpireTimeSpan = TimeSpan.FromMinutes(30);
-        option.AccessDeniedPath = "/Home/Privacy";
+        options.LoginPath = "/Login/Index";
+        options.LogoutPath = "/Login/Logout";
+        options.AccessDeniedPath = "/Login/Index";
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+        options.SlidingExpiration = true;
+
+        // Configuración de seguridad de cookies
+        options.Cookie.HttpOnly = true;
+        options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+        options.Cookie.SameSite = SameSiteMode.Strict;
     });
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<MembresiaService>();
 builder.Services.AddHostedService<ActualizadorPromocionesBgService>();
-builder.Services.AddHostedService<ReinicioControlDiasService>(); // Reinicio semanal del control de d�as
+builder.Services.AddHostedService<ReinicioControlDiasService>();
 builder.Services.AddHostedService<FaltaInstructorService>();
-
 
 var app = builder.Build();
 
@@ -37,22 +54,25 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseStaticFiles();
 app.UseRouting();
-app.UseAuthentication();
-app.UseAuthorization();
-// En Program.cs, despu�s de app.UseAuthorization();
+
+// ⭐ Headers anti-caché ANTES de autenticación
 app.Use(async (context, next) =>
 {
     context.Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
     context.Response.Headers["Pragma"] = "no-cache";
-    context.Response.Headers["Expires"] = "-1";
+    context.Response.Headers["Expires"] = "0";
     await next();
 });
-app.MapStaticAssets();
+
+// ⭐ ORDEN CORRECTO
+app.UseSession();
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Inicio}/{action=Index}/{id?}")
-    .WithStaticAssets();
+    pattern: "{controller=Inicio}/{action=Index}/{id?}");
 
 app.Run();

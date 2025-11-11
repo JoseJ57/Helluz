@@ -82,9 +82,22 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-white" asp-area="" asp-controller="Login" asp-action="Index">
-                        <i class="fas fa-sign-out-alt"></i> Salir
-                    </a>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <div class="d-flex align-items-center">
+                            <span class="navbar-text me-3">
+                                Bienvenido: <strong>@User.Identity.Name</strong>
+                            </span>
+
+                            <!-- ⭐ BOTÓN DE LOGOUT CORRECTO -->
+                            <form asp-action="Logout" asp-controller="Login" method="post" class="d-inline">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-outline-danger btn-sm">
+                                    <i class="bi bi-box-arrow-right"></i> Salir
+                                </button>
+                            </form>
+                        </div>
+                    }
                 </li>
             </ul>
         </div>
@@ -176,6 +189,19 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
 
     <script>
+        window.addEventListener('pageshow', function(event) {
+            if (event.persisted) {
+                window.location.reload();
+            }
+        });
+
+        // Verificar autenticación solo en páginas protegidas
+        @if (!User.Identity.IsAuthenticated && Context.Request.Path != "/Login/Index")
+        {
+                <text>
+                window.location.href = '@Url.Action("Index", "Login")';
+                </text>
+        }
         // Script del menú lateral
         document.addEventListener('DOMContentLoaded', function () {
             var offcanvasElement = document.getElementById('offcanvasMenu');

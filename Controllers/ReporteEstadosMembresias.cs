@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Helluz.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "administrador")]
     public class ReporteEstadosMembresias : Controller
     {
         private readonly MyContext _context;

@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace TuProyecto.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "administrador")]
     public class MembresiasController : Controller
     {
         private readonly MyContext _context;

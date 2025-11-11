@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Helluz.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "administrador")]
     public class AlumnoesController : Controller
     {
         private readonly MyContext _context;

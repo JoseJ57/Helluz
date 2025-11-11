@@ -1,65 +1,75 @@
 ﻿@{
     Layout = null;
 }
-
 <!DOCTYPE html>
-
 <html>
 <head>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css" rel="stylesheet">
-
     <meta name="viewport" content="width=device-width" />
-    <title>Index</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <title>Iniciar Sesión</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link href="~/css/Login.css" rel="stylesheet" />
-    
-
 </head>
 <body>
-    
-                <form asp-controller="Login" asp-action="Login" method="post" class="w-75 fade-in login-container" id="login-form">
-                    <div class="text-center mb-4">
-                        <h1>Iniciar Sesión</h1>
-                        <img src="~/imagenes/LoginUser.png" class="login-icono" width="200" height="200">
-                    </div>
-                    <div asp-validation-summary="All" class="text-danger text-center mb-3"></div>
+    <!-- ⭐ Si ya está autenticado, redirigir -->
+    @if (User.Identity.IsAuthenticated)
+    {
+        <script>
+            window.location.href = '@(User.IsInRole("administrador") ? Url.Action("Index", "Home") : Url.Action("Index", "Instructor"))';
+        </script>
+    }
 
-                    <div class="mb-3">
-                        <label for="usuario" class="form-label">Usuario</label>
-                        <input type="text" placeholder="Ingrese su Usuario...." class="form-control" id="usuario" name="Nombre_usuario">
-                    </div>
-                    <div class="mb-3 position-relative">
-                        <label for="exampleInputPassword1" class="form-label">Contraseña</label>
-                        <input type="password" placeholder="Ingrese su Contraseña...." class="form-control" id="exampleInputPassword1" name="Contraseña">
-                        <span class="position-absolute" style="top: 50%; right: 10px; cursor: pointer; transform: translateY(-50%);" onclick="togglePassword()">
-                            <i class="bi bi-eye-slash" id="toggleIcon"></i>
-                        </span>
-                    </div>
+    <form asp-controller="Login" asp-action="Login" method="post" class="w-75 fade-in login-container" id="login-form">
+        <div class="text-center mb-4">
+            <h1>Iniciar Sesión</h1>
+            <img src="~/imagenes/LoginUser.png" class="login-icono" width="200" height="200">
+        </div>
+        <div asp-validation-summary="All" class="text-danger text-center mb-3"></div>
 
-                    <div class="d-grid gap-2 col-6 mx-auto">
-                        <button type="submit" class="btn btn-outline-primary">Ingresar</button>
-                    </div>
+        <div class="mb-3">
+            <label for="usuario" class="form-label">Usuario</label>
+            <input type="text" placeholder="Ingrese su Usuario...." class="form-control" id="usuario" name="Nombre_usuario">
+        </div>
+        <div class="mb-3 position-relative">
+            <label for="exampleInputPassword1" class="form-label">Contraseña</label>
+            <input type="password" placeholder="Ingrese su Contraseña...." class="form-control" id="exampleInputPassword1" name="Contraseña">
+            <span class="position-absolute" style="top: 50%; right: 10px; cursor: pointer; transform: translateY(-50%);" onclick="togglePassword()">
+                <i class="bi bi-eye-slash" id="toggleIcon"></i>
+            </span>
+        </div>
+
+        <div class="d-grid gap-2 col-6 mx-auto">
+            <button type="submit" class="btn btn-outline-primary">Ingresar</button>
+        </div>
         <p class="footer-text">© 2025 MMA Academy</p>
-                </form>
+    </form>
 
-     <script>
+    <script>
         function togglePassword() {
             const passwordInput = document.getElementById('exampleInputPassword1');
             const toggleIcon = document.getElementById('toggleIcon');
             const isPasswordVisible = passwordInput.type === 'text';
-
-            passwordInput.type = isPasswordVisible ? 'password' : 'text'; // Alterna el tipo de entrada
-            toggleIcon.classList.toggle('bi-eye', isPasswordVisible); // Cambia el icono
+            passwordInput.type = isPasswordVisible ? 'password' : 'text';
+            toggleIcon.classList.toggle('bi-eye', isPasswordVisible);
             toggleIcon.classList.toggle('bi-eye-slash', !isPasswordVisible);
         }
-    </script>
 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
+        // Prevenir navegación con caché
+        window.addEventListener('pageshow', function(event) {
+            if (event.persisted) {
+                window.location.reload();
+            }
+        });
+
         window.addEventListener('DOMContentLoaded', () => {
             document.getElementById('login-form').classList.add('show');
         });
     </script>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Helluz.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "administrador")]
     public class DisciplinasController : Controller
     {
         private readonly MyContext _context;
