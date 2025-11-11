@@ -78,8 +78,8 @@ namespace Helluz.Controllers
 
             // Estadísticas para el reporte
             ViewBag.TotalInscripciones = inscripciones.Count;
-            ViewBag.InscripcionesActivas = inscripciones.Count(i => i.Estado == Dto.EstadoInscripcion.activa);
-            ViewBag.InscripcionesVencidas = inscripciones.Count(i => i.Estado == Dto.EstadoInscripcion.venciada);
+            ViewBag.InscripcionesActivas = inscripciones.Count(i => i.Estado == Dto.EstadoInscripcion.Activa);
+            ViewBag.InscripcionesVencidas = inscripciones.Count(i => i.Estado == Dto.EstadoInscripcion.Vencida);
 
             return View(inscripciones);
         }
