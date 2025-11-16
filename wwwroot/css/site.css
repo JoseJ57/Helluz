@@ -1,4 +1,4 @@
-html {
+Ôªøhtml {
   font-size: 14px;
 }
 *{
@@ -66,11 +66,11 @@ a:hover{
     top: 0; /* Pegado arriba */
     left: 0; /* Alineado al borde izquierdo */
     width: 100%; /* Ocupa todo el ancho de la pantalla */
-    background-color: #212529; /* Fondo oscuro (igual al men˙) */
+    background-color: #212529; /* Fondo oscuro (igual al men√∫) */
     color: white; /* Letras blancas */
     z-index: 1050; /* Se asegura de que quede encima del resto del contenido */
     padding: 10px 20px; /* Espaciado interno */
-    display: flex; /* AlineaciÛn del contenido */
+    display: flex; /* Alineaci√≥n del contenido */
     align-items: center;
     justify-content: space-between;
     box-shadow: 0 2px 5px rgba(0,0,0,0.3); /* Sombra sutil */
@@ -155,6 +155,8 @@ input{
 
 
 
+
+
 @media (max-width: 575.98px) {
     .card-header h4,
     .card-header h3,
@@ -176,24 +178,24 @@ input{
         font-size: 0.875rem;
     }
 
-    /* Ajustar tablas en mÛviles */
+    /* Ajustar tablas en m√≥viles */
     .table-responsive {
         font-size: 0.85rem;
     }
 
-    /* Reducir padding de cards en mÛviles */
+    /* Reducir padding de cards en m√≥viles */
     .card-body {
         padding: 1rem !important;
     }
 
-    /* Alertas m·s compactas */
+    /* Alertas m√°s compactas */
     .alert {
         padding: 0.5rem 0.75rem;
         font-size: 0.875rem;
     }
 }
 
-/* Ajustes para mÛviles y tablets pequeÒas */
+/* Ajustes para m√≥viles y tablets peque√±as */
 @media (max-width: 767.98px) {
     .container-fluid,
     .container {
@@ -201,7 +203,7 @@ input{
         padding-right: 0.75rem;
     }
 
-    /* Hacer modals full-screen en mÛviles */
+    /* Hacer modals full-screen en m√≥viles */
     .modal-dialog {
         margin: 0;
         max-width: 100%;
@@ -212,16 +214,16 @@ input{
         min-height: 100vh;
     }
 
-    /* Mejorar navegaciÛn en mÛviles */
+    /* Mejorar navegaci√≥n en m√≥viles */
     .navbar-collapse {
         max-height: 70vh;
         overflow-y: auto;
     }
 }
 
-/* Mejorar ·rea t·ctil en mÛviles y tablets */
+/* Mejorar √°rea t√°ctil en m√≥viles y tablets */
 @media (max-width: 991.98px) {
-    /* Checkboxes y radios m·s grandes */
+    /* Checkboxes y radios m√°s grandes */
     .form-check-input {
         width: 1.25em;
         height: 1.25em;
@@ -231,24 +233,24 @@ input{
     .form-check-label {
         padding-left: 0.25rem;
         cursor: pointer;
-        min-height: 44px; /* ¡rea t·ctil recomendada por Apple/Google */
+        min-height: 44px; /* √Årea t√°ctil recomendada por Apple/Google */
         display: flex;
         align-items: center;
     }
 
-    /* Botones con ·rea t·ctil mÌnima */
+    /* Botones con √°rea t√°ctil m√≠nima */
     .btn {
         min-height: 44px;
         padding: 0.5rem 1rem;
     }
 
-    /* Links m·s f·ciles de tocar */
+    /* Links m√°s f√°ciles de tocar */
     a {
         padding: 0.25rem 0;
         display: inline-block;
     }
 
-    /* Dropdowns m·s t·ctiles */
+    /* Dropdowns m√°s t√°ctiles */
     .dropdown-item {
         padding: 0.75rem 1rem;
     }
@@ -274,10 +276,10 @@ body {
 }
 
 /* ============================================
-   MEJORAS PARA INPUTS EN M”VILES
+   MEJORAS PARA INPUTS EN M√ìVILES
    ============================================ */
 
-/* Normalizar inputs numÈricos */
+/* Normalizar inputs num√©ricos */
 input[type="number"],
 input[type="date"],
 input[type="text"],
@@ -289,7 +291,7 @@ input[type="password"] {
     border-radius: 0.25rem;
 }
 
-    /* Remover spinners en inputs numÈricos */
+    /* Remover spinners en inputs num√©ricos */
     input[type="number"]::-webkit-inner-spin-button,
     input[type="number"]::-webkit-outer-spin-button {
         -webkit-appearance: none;
@@ -311,7 +313,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
    OPTIMIZACIONES PARA iOS
    ============================================ */
 
-/* Prevenir zoom autom·tico en iOS */
+/* Prevenir zoom autom√°tico en iOS */
 @media screen and (-webkit-min-device-pixel-ratio: 0) {
     select,
     textarea,
@@ -341,7 +343,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
    MEJORAS DE ACCESIBILIDAD
    ============================================ */
 
-    /* Focus visible para navegaciÛn con teclado */
+    /* Focus visible para navegaci√≥n con teclado */
     *:focus-visible {
         outline: 2px solid #0d6efd;
         outline-offset: 2px;
@@ -387,14 +389,14 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     }
 }
 
-/* Ocultar en mÛviles */
+/* Ocultar en m√≥viles */
 @media (max-width: 767.98px) {
     .hide-mobile {
         display: none !important;
     }
 }
 
-/* Mostrar solo en mÛviles */
+/* Mostrar solo en m√≥viles */
 @media (min-width: 768px) {
     .show-mobile {
         display: none !important;
@@ -414,7 +416,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
             border: 0;
         }
 
-        /* Opcional: Hacer tablas en cards verticales en mÛviles */
+        /* Opcional: Hacer tablas en cards verticales en m√≥viles */
         .table-responsive.table-card thead {
             display: none;
         }
@@ -465,14 +467,14 @@ input[type="date"]::-webkit-calendar-picker-indicator {
    MEJORAS DE RENDIMIENTO
    ============================================ */
 
-/* Optimizar renderizado de im·genes */
+/* Optimizar renderizado de im√°genes */
 img {
     max-width: 100%;
     height: auto;
     display: block;
 }
 
-/* Habilitar aceleraciÛn por hardware */
+/* Habilitar aceleraci√≥n por hardware */
 .card,
 .modal,
 .dropdown-menu {
@@ -501,3 +503,5 @@ img {
         page-break-inside: avoid;
     }
 }
+
+

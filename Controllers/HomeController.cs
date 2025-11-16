@@ -25,15 +25,34 @@ namespace Helluz.Controllers
 
         public IActionResult Index()
         {
+            var hoy = DateOnly.FromDateTime(DateTime.Today);
+
+            var inicioMes = new DateOnly(DateTime.Today.Year, DateTime.Today.Month, 1);
+            var finMes = inicioMes.AddMonths(1).AddDays(-1);
+
+            // Total dinero ganado en el mes actual (sumando costo de membresías de inscripciones del mes)
+            var totalDineroMes = _context.Inscripcions
+                .Where(i => i.FechaInicio >= inicioMes && i.FechaInicio <= finMes)
+                .Include(i => i.Membresia)
+                .Sum(i => (float?)i.Membresia.Costo) ?? 0;
+
+            // Total de asistencias del día (alumnos + instructores)
+            var asistenciasHoy = _context.AsistenciaAlumnos.Count(a => a.Fecha == hoy)
+                                  + _context.AsistenciaInstructor.Count(a => a.Fecha == hoy);
+
             var model = new DashboardViewModel
             {
                 TotalAlumnos = _context.Alumnos.Count(),
                 TotalUsuarios = _context.Usuarios.Count(),
-                TotalInstructores = _context.Instructors.Count()
+                TotalInstructores = _context.Instructors.Count(),
+
+                TotalDineroMesActual = totalDineroMes,
+                AsistenciasHoy = asistenciasHoy
             };
 
             return View(model);
         }
+
 
         public IActionResult Privacy()
         {

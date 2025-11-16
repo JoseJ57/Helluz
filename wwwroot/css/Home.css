@@ -1,30 +1,64 @@
 ﻿body {
-    color:black;
-    font-family:'Times New Roman', Times, serif;
-    background-position:center;
-    background-size:cover;
-    margin-top:80px;
+    color: black;
+    font-family: 'Times New Roman', Times, serif;
+    margin-top: 80px;
+    background: #212529;
 }
-/*
-.container {
-    margin-top: 120px; 
-    display: flex;
-    justify-content: space-between;
-}box-shadow: rgba(0, 0, 0, 0.35) 0px 15px 20px;
-    */
-.card-home {
-    margin: 20px;
-    color: white;
-    font-family:'Sans Serif Collection';
-    background-color: #212529;
-    border-radius: 5px;
-    width: 250px;
-    height: 150px;
-    font-size: 25px;
-    text-align: center;
-    border:groove 5px rgb(0, 0, 0);
-}
-
+    h4{
+        font-family:'Sans Serif Collection', 'Cascadia Code';
+        font-size:1.5em;
+    }
 p,h3{
     margin-top:15px;
 }
+p{
+    font-size:2rem;
+}
+
+.seccion {
+    display: flex;
+    width: 40vw;
+    height: 60vh;
+    
+}
+
+/* TARJETAS LINEALES GRANDES */
+.cardhome {
+    width: 100%;
+    max-width: 600px; /* Las tarjetas serán largas */
+    padding: 20px 25px;
+    border: 2px solid #212529;
+    box-shadow:0 0 10px 0 black;
+    border-radius: 10px;
+    background: #212529;
+    transition: .3s ease-in-out;
+    color:white;
+    text-align:center;
+    margin:10px;
+    
+}
+
+    /* Estilo general del contenido */
+    .cardhome h4 {
+        margin: 0 0 10px 0;
+        font-size: 22px;
+    }
+
+    .cardhome p {
+        font-size: 26px;
+        font-weight: bold;
+    }
+
+    /* Efecto hover */
+    .cardhome:hover {
+        border-color: #f00;
+        transform: scale(1.02);
+        box-shadow: 0 0 10px 0 #f00;
+    }
+    @media (max-width:480px){
+        .seccion{
+            display:flex;
+            flex-direction: column;
+        }
+
+    }

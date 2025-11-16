@@ -1,35 +1,64 @@
-﻿@model Helluz.Models.DashboardViewModel
-
-@{
-    ViewData["Title"] = "Home Page";
-}
+﻿@model DashboardViewModel;
+<!DOCTYPE html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
     <link href="~/css/Home.css" rel="stylesheet" />
 </head>
+<body>
+    <div class="seccion">
 
-<div class="container mt-5">
-    <h2 class="text-left mb-4">Panel de Control</h2>
-
-    <div class="row text-center">
-        <div class="col-md-4">
-            <div class="card card-home">
-                <h3>@Model.TotalAlumnos</h3>
-                <p>Alumnos</p>
-            </div>
+        <div class="cardhome">
+            <h4>Alumnos Registrados</h4>
+            <p>@Model.TotalAlumnos </p>
         </div>
 
-        <div class="col-md-4">
-            <div class="card card-home">
-                <h3>@Model.TotalUsuarios</h3>
-                <p>Usuarios</p>
-            </div>
+        <div class="cardhome">
+            <h4>Instructores Registrados</h4>
+            <p>@Model.TotalInstructores </p>
         </div>
 
-        <div class="col-md-4">
-            <div class="card card-home">
-                <h3>@Model.TotalInstructores</h3>
-                <p>Instructores</p>
-            </div>
+        <div class="cardhome">
+            <h4>Usuarios Registrados</h4>
+            <p>@Model.TotalUsuarios </p>
         </div>
+
+        <div class="cardhome">
+            <h4>Ganancias del Mes Actual</h4>
+            <p>@Model.TotalDineroMesActual </p>
+        </div>
+
+        <div class="cardhome">
+            <h4>Asistencias del día</h4>
+            <p>@Model.AsistenciasHoy</p>
+        </div>
+
     </div>
-</div>
+
+</body>
+</html>
+
+
+<!-- Bootstrap Icons CDN -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+<script>
+    document.querySelectorAll("h3").forEach(el => {
+        const target = +el.innerText.replace(" Bs", "");
+        let count = 0;
+        const step = target / 40;
+
+        const update = () => {
+            count += step;
+            if (count < target) {
+                el.innerText = Math.floor(count);
+                requestAnimationFrame(update);
+            } else {
+                el.innerText = target;
+            }
+        };
+
+        update();
+    });
+</script>
