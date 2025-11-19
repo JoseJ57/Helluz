@@ -1,0 +1,196 @@
+﻿body {
+    overflow-x: hidden;
+    margin: 0;
+   
+    padding: 0;
+}
+
+/* Header */
+.Encabezado {
+    height: 100px;
+    padding: 0 15px !important;
+    z-index: 1040;
+}
+
+/* Contenedor principal con transición */
+.main-wrapper {
+    transition: margin-left 0.3s ease;
+    margin: auto;
+    margin-top: 150px;
+}
+
+/* Sidebar colapsado - solo para desktop */
+.sidebar-collapsed {
+    position: fixed;
+    left: 0;
+    top: 70px;
+    height: calc(100vh - 70px);
+    width: 5px;
+    background: #343a40;
+    z-index: 1030;
+    cursor: pointer;
+    transition: width 0.3s ease;
+}
+
+    .sidebar-collapsed::before {
+        content: '\f054';
+        font-family: 'Font Awesome 6 Free';
+        font-weight: 900;
+        position: absolute;
+        right: -15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #fff;
+        font-size: 14px;
+        opacity: 0.7;
+    }
+
+/* Sidebar expandido */
+.sidebar-expanded {
+    position: fixed;
+    left: 0;
+    top: 100px;
+    height: calc(100vh - 70px);
+    width: 250px;
+    background: #343a40;
+    z-index: 1030;
+    overflow-y: auto;
+    transition: transform 0.3s ease;
+}
+
+.sidebar-header {
+    padding: 15px;
+    border-bottom: 1px solid #495057;
+}
+
+.sidebar-body {
+    padding: 15px;
+}
+
+/* Ajuste del contenido cuando el sidebar está expandido */
+.content-shifted {
+    margin-left: 250px;
+}
+
+/* Overlay para desktop */
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    top: 70px;
+    left: 0;
+    width: 100%;
+    height: calc(100vh - 70px);
+    background: transparent;
+    z-index: 1025;
+}
+
+    .sidebar-overlay.show {
+        display: block;
+    }
+
+/* Offcanvas mobile - solo visible en móvil */
+.mobile-menu {
+    display: none;
+}
+
+/* Responsive */
+@media (max-width: 991.98px) {
+    /* Ocultar sidebar de desktop */
+    .sidebar-collapsed, .sidebar-expanded {
+        display: none !important;
+    }
+
+    /* Mostrar botón hamburguesa mobile */
+    .mobile-menu {
+        display: block;
+        background: #212529;
+    }
+    .mobile-menu:hover{
+        background:#343a40;
+    }
+
+    /* Header ajustes mobile */
+    .Encabezado {
+        height: auto;
+        min-height: 60px;
+        padding: 10px 15px !important;
+    }
+
+    .header-content {
+        flex-wrap: wrap;
+    }
+
+    .logo-section {
+        order: 1;
+        flex: 0 0 auto;
+    }
+
+    .user-section {
+        order: 2;
+        flex: 0 0 auto;
+        margin-left: auto;
+    }
+
+    .attendance-form {
+        order: 3;
+        flex: 0 0 100%;
+        margin-top: 10px;
+    }
+
+    .main-wrapper {
+        margin-top: auto;
+        margin-left: 0 !important;
+    }
+
+    /* Ajustar formulario de asistencia */
+    #formAsistencia {
+        width: 100%;
+        justify-content: center;
+    }
+
+        #formAsistencia input {
+            flex: 1;
+            max-width: 300px;
+        }
+}
+
+@media (max-width: 575.98px) {
+    .navbar-brand h4 {
+        font-size: 1.2rem;
+    }
+
+    .navbar-brand img {
+        width: 45px;
+        height: 45px;
+    }
+
+    .user-name {
+        display: none;
+    }
+
+    #formAsistencia input {
+        max-width: 200px;
+    }
+}
+
+/* Desktop - ocultar botón hamburguesa mobile */
+@media (min-width: 992px) {
+    .mobile-menu {
+        display: none !important;
+    }
+}
+
+/* Footer responsivo */
+footer {
+    margin-top: 40px;
+    padding: 20px 0;
+}
+
+/* Container fluido responsivo */
+@media (min-width: 992px) {
+    .container-main {
+        max-width: 100%;
+        padding-right: 30px;
+        padding-left: 30px;
+    }
+}

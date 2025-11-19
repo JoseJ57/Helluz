@@ -1,6 +1,4 @@
-﻿
-@using System.Security.Claims
-
+﻿@using System.Security.Claims
 
 <!DOCTYPE html>
 <html lang="en">
@@ -13,176 +11,226 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Helluz.styles.css" asp-append-version="true" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-
-    <style>
-        body {
-            overflow-x: hidden;
-        }
-
-        .Encabezado {
-            height: 100px;
-            padding-top: 4px !important;
-            padding-bottom: 4px !important;
-        }
-
-        main {
-            margin-top: 100px;
-            padding: 20px;
-        }
-
-        footer {
-            margin-top: 20px;
-        }
-
-        .offcanvas-start {
-            width: 200px !important;
-        }
-
-        .offcanvas {
-            margin-top: 100px;
-        }
-
-        /* Campo de asistencia */
-        #formAsistencia input {
-            width: 150px;
-        }
-    </style>
+    <link href="~/css/Menus.css" rel="stylesheet" />
 </head>
 <body>
-    <!-- Header fijo con botón hamburguesa y logo -->
+    <!-- Header fijo -->
     <header class="Encabezado navbar navbar-dark bg-dark fixed-top">
-        <div class="container-fluid d-flex align-items-center justify-content-between">
-            <div class="d-flex align-items-center">
-                <button class="btn btn-dark me-2" id="btnMenu" type="button"
-                        data-bs-toggle="offcanvas"
-                        data-bs-target="#offcanvasMenu"
-                        aria-controls="offcanvasMenu">
-                    <i class="fas fa-bars fa-lg text-white"></i>
-                </button>
+        <div class="container-fluid">
+            <div class="d-flex align-items-center w-100 header-content">
+                <!-- Logo y botón hamburguesa mobile -->
+                <div class="d-flex align-items-center logo-section">
+                    <!-- Botón hamburguesa solo mobile -->
+                    <button class="btn btn-dark me-2 mobile-menu" type="button"
+                            data-bs-toggle="offcanvas"
+                            data-bs-target="#mobileOffcanvas"
+                            aria-controls="mobileOffcanvas">
+                        <i class="fas fa-bars fa-lg text-white"></i>
+                    </button>
 
-                <a class="navbar-brand d-flex align-items-center" href="@Url.Action("Index", "Home")">
-                    <img src="~/imagenes/HelluzLogo.jpg" alt="Logo del sistema" width="60" height="60" />
-                    <h4 class="ms-2 mb-0 text-white">Helluz</h4>
-                </a>
+                    <a class="navbar-brand d-flex align-items-center" href="@Url.Action("Index", "Home")">
+                        <img src="~/imagenes/HelluzLogo.jpg" alt="Logo del sistema" width="60" height="60" class="rounded" />
+                        <h4 class="ms-2 mb-0 text-white d-none d-sm-block">Helluz</h4>
+                    </a>
+                </div>
 
-                <!-- 🔹 Campo para registrar asistencia -->
-                <form id="formAsistencia" class="d-flex align-items-center ms-3" onsubmit="registrarAsistencia(event)">
-                    <input type="text" id="inputCarnet" class="form-control form-control-sm me-2"
+                <!-- Usuario y logout -->
+                <div class="ms-auto user-section">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <div class="d-flex align-items-center">
+                            <span class="navbar-text me-2 text-white user-name">
+                                <span class="d-none d-md-inline">Bienvenido: </span><strong>@User.Identity.Name</strong>
+                            </span>
+                            <form asp-action="Logout" asp-controller="Login" method="post" class="d-inline">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-outline-danger btn-sm">
+                                    <i class="bi bi-box-arrow-right"></i> <span class="d-none d-sm-inline">Salir</span>
+                                </button>
+                            </form>
+                        </div>
+                    }
+                </div>
+
+                <!-- Campo de asistencia -->
+                <div class="attendance-form d-none d-lg-flex ms-3">
+                    <form id="formAsistencia" class="d-flex align-items-center" onsubmit="registrarAsistencia(event)">
+                        <input type="text" id="inputCarnet" class="form-control form-control-sm me-2"
+                               style="width: 150px;" placeholder="Carnet..." />
+                        <button type="submit" class="btn btn-success btn-sm">
+                            <i class="fas fa-check"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Formulario de asistencia mobile (debajo del header) -->
+            <div class="w-100 d-lg-none mt-2">
+                <form id="formAsistenciaMobile" class="d-flex align-items-center justify-content-center" onsubmit="registrarAsistenciaMobile(event)">
+                    <input type="text" id="inputCarnetMobile" class="form-control form-control-sm me-2"
                            placeholder="Carnet..." />
                     <button type="submit" class="btn btn-success btn-sm">
                         <i class="fas fa-check"></i>
                     </button>
                 </form>
             </div>
-
-            <ul class="navbar-nav flex-row">
-                <li class="nav-item me-3">
-                    <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Index">
-                        <i class="fas fa-home"></i> Inicio
-                    </a>
-                </li>
-                <li class="nav-item">
-                    @if (User.Identity.IsAuthenticated)
-                    {
-                        <div class="d-flex align-items-center">
-                            <span class="navbar-text me-3">
-                                Bienvenido: <strong>@User.Identity.Name</strong>
-                            </span>
-
-                            <!-- ⭐ BOTÓN DE LOGOUT CORRECTO -->
-                            <form asp-action="Logout" asp-controller="Login" method="post" class="d-inline">
-                                @Html.AntiForgeryToken()
-                                <button type="submit" class="btn btn-outline-danger btn-sm">
-                                    <i class="bi bi-box-arrow-right"></i> Salir
-                                </button>
-                            </form>
-                        </div>
-                    }
-                </li>
-            </ul>
         </div>
     </header>
 
-    <!-- Offcanvas lateral -->
-    <div class="offcanvas offcanvas-start bg-dark text-white" tabindex="-1" id="offcanvasMenu"
-         aria-labelledby="offcanvasMenuLabel" data-bs-backdrop="false">
-        <div class="offcanvas-header border-bottom border-secondary">
-            <h5 class="offcanvas-title" id="offcanvasMenuLabel">Menú</h5>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-        </div>
+    <!-- Sidebar Desktop - Colapsado por defecto -->
+    <div class="sidebar-collapsed d-none d-lg-block" id="sidebarCollapsed"></div>
 
-        <div class="offcanvas-body">
-            <ul class="navbar-nav flex-column w-100">
-                <li class="nav-item">
+    <!-- Sidebar Desktop - Expandido -->
+    <div class="sidebar-expanded d-none d-lg-block" id="sidebarExpanded" style="transform: translateX(-100%);">
+        <div class="sidebar-header">
+            <h5 class="text-white mb-0">Menú</h5>
+        </div>
+        <div class="sidebar-body">
+            <ul class="navbar-nav flex-column">
+                <li class="nav-item mb-2">
                     <a class="nav-link text-white" asp-area="" asp-controller="Asistencia" asp-action="Index">
-                        <i class=""></i> Asistencia
+                        <i class="fas fa-clipboard-check me-2"></i> Asistencia
                     </a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item mb-2">
                     <a class="nav-link text-white" asp-area="" asp-controller="Alumnoes" asp-action="Index">
-                        <i class="fas fa-user-graduate"></i> Alumnos
+                        <i class="fas fa-user-graduate me-2"></i> Alumnos
                     </a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item mb-2">
                     <a class="nav-link text-white" asp-area="" asp-controller="Inscripciones" asp-action="Index">
-                        <i class="fas fa-desktop"></i> Inscripciones
+                        <i class="fas fa-desktop me-2"></i> Inscripciones
                     </a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item mb-2">
                     <a class="nav-link text-white" asp-area="" asp-controller="Instructors" asp-action="Index">
-                        <i class="fas fa-chalkboard-teacher"></i> Instructores
+                        <i class="fas fa-chalkboard-teacher me-2"></i> Instructores
                     </a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item mb-2">
                     <a class="nav-link text-white" asp-area="" asp-controller="Usuarios" asp-action="Index">
-                        <i class="fas fa-chalkboard-teacher"></i> Usuarios
+                        <i class="fas fa-users me-2"></i> Usuarios
                     </a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item mb-2">
                     <a class="nav-link text-white" asp-area="" asp-controller="Membresias" asp-action="Index">
-                        <i class="fas fa-id-card"></i> Membresías
+                        <i class="fas fa-id-card me-2"></i> Membresías
                     </a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item mb-2">
                     <a class="nav-link text-white" asp-area="" asp-controller="Horarios" asp-action="Index">
-                        <i class="fas fa-calendar-alt"></i> Horarios
+                        <i class="fas fa-calendar-alt me-2"></i> Horarios
                     </a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item mb-2">
                     <a class="nav-link text-white" asp-area="" asp-controller="Disciplinas" asp-action="Index">
-                        <i class="fas fa-dumbbell"></i> Disciplinas
+                        <i class="fas fa-dumbbell me-2"></i> Disciplinas
                     </a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item mb-2">
                     <a class="nav-link text-white" asp-area="" asp-controller="TokenQrs" asp-action="Index">
-                        <i class="fas fa-qrcode"></i> Qr
+                        <i class="fas fa-qrcode me-2"></i> QR
                     </a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item mb-2">
                     <a class="nav-link text-white" asp-area="" asp-controller="ReporteEstadosMembresias" asp-action="Index">
-                        <i class="fas fa-qrcode"></i> Estados Inscripciones
+                        <i class="fas fa-chart-line me-2"></i> Estados Inscripciones
                     </a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item mb-2">
                     <a class="nav-link text-white" asp-area="" asp-controller="ReportesFinancieros" asp-action="Index">
-                        <i class="fas fa-qrcode"></i> Finanzas
+                        <i class="fas fa-dollar-sign me-2"></i> Finanzas
                     </a>
                 </li>
             </ul>
         </div>
     </div>
 
-    <div class="container">
-        <main role="main" class="pb-3 ">
-            @RenderBody()
-        </main>
+    <!-- Overlay para cerrar sidebar en desktop -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Offcanvas Mobile -->
+    <div class="offcanvas offcanvas-start bg-dark text-white d-lg-none" tabindex="-1" id="mobileOffcanvas"
+         aria-labelledby="mobileOffcanvasLabel">
+        <div class="offcanvas-header border-bottom border-secondary">
+            <h5 class="offcanvas-title" id="mobileOffcanvasLabel">Menú</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <ul class="navbar-nav flex-column">
+                <li class="nav-item mb-2">
+                    <a class="nav-link text-white" asp-area="" asp-controller="Asistencia" asp-action="Index">
+                        <i class="fas fa-clipboard-check me-2"></i> Asistencia
+                    </a>
+                </li>
+                <li class="nav-item mb-2">
+                    <a class="nav-link text-white" asp-area="" asp-controller="Alumnoes" asp-action="Index">
+                        <i class="fas fa-user-graduate me-2"></i> Alumnos
+                    </a>
+                </li>
+                <li class="nav-item mb-2">
+                    <a class="nav-link text-white" asp-area="" asp-controller="Inscripciones" asp-action="Index">
+                        <i class="fas fa-desktop me-2"></i> Inscripciones
+                    </a>
+                </li>
+                <li class="nav-item mb-2">
+                    <a class="nav-link text-white" asp-area="" asp-controller="Instructors" asp-action="Index">
+                        <i class="fas fa-chalkboard-teacher me-2"></i> Instructores
+                    </a>
+                </li>
+                <li class="nav-item mb-2">
+                    <a class="nav-link text-white" asp-area="" asp-controller="Usuarios" asp-action="Index">
+                        <i class="fas fa-users me-2"></i> Usuarios
+                    </a>
+                </li>
+                <li class="nav-item mb-2">
+                    <a class="nav-link text-white" asp-area="" asp-controller="Membresias" asp-action="Index">
+                        <i class="fas fa-id-card me-2"></i> Membresías
+                    </a>
+                </li>
+                <li class="nav-item mb-2">
+                    <a class="nav-link text-white" asp-area="" asp-controller="Horarios" asp-action="Index">
+                        <i class="fas fa-calendar-alt me-2"></i> Horarios
+                    </a>
+                </li>
+                <li class="nav-item mb-2">
+                    <a class="nav-link text-white" asp-area="" asp-controller="Disciplinas" asp-action="Index">
+                        <i class="fas fa-dumbbell me-2"></i> Disciplinas
+                    </a>
+                </li>
+                <li class="nav-item mb-2">
+                    <a class="nav-link text-white" asp-area="" asp-controller="TokenQrs" asp-action="Index">
+                        <i class="fas fa-qrcode me-2"></i> QR
+                    </a>
+                </li>
+                <li class="nav-item mb-2">
+                    <a class="nav-link text-white" asp-area="" asp-controller="ReporteEstadosMembresias" asp-action="Index">
+                        <i class="fas fa-chart-line me-2"></i> Estados Inscripciones
+                    </a>
+                </li>
+                <li class="nav-item mb-2">
+                    <a class="nav-link text-white" asp-area="" asp-controller="ReportesFinancieros" asp-action="Index">
+                        <i class="fas fa-dollar-sign me-2"></i> Finanzas
+                    </a>
+                </li>
+            </ul>
+        </div>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2025 - Helluz - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <!-- Contenedor principal -->
+    <div class="main-wrapper" id="mainWrapper">
+        <div class="container-fluid container-main">
+            <main role="main" class="pb-3" >
+                @RenderBody()
+            </main>
         </div>
-    </footer>
+
+        <footer class="border-top footer text-muted">
+            <div class="container-fluid container-main">
+                &copy; 2025 - Helluz - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            </div>
+        </footer>
+    </div>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
@@ -195,30 +243,63 @@
             }
         });
 
-        // Verificar autenticación solo en páginas protegidas
+        // Verificar autenticación
         @if (!User.Identity.IsAuthenticated && Context.Request.Path != "/Login/Index")
         {
                 <text>
                 window.location.href = '@Url.Action("Index", "Login")';
                 </text>
         }
-        // Script del menú lateral
-        document.addEventListener('DOMContentLoaded', function () {
-            var offcanvasElement = document.getElementById('offcanvasMenu');
-            var offcanvas = new bootstrap.Offcanvas(offcanvasElement, {
-                backdrop: false,
-                scroll: true
-            });
 
-            var links = offcanvasElement.querySelectorAll('.nav-link');
-            links.forEach(function (link) {
-                link.addEventListener('click', function (e) {
-                    e.stopImmediatePropagation();
+        // Sidebar Desktop functionality
+        document.addEventListener('DOMContentLoaded', function () {
+            const sidebarCollapsed = document.getElementById('sidebarCollapsed');
+            const sidebarExpanded = document.getElementById('sidebarExpanded');
+            const sidebarOverlay = document.getElementById('sidebarOverlay');
+            const mainWrapper = document.getElementById('mainWrapper');
+            let isExpanded = false;
+
+            // Solo ejecutar en desktop
+            if (window.innerWidth >= 992) {
+                // Mostrar sidebar al pasar el mouse por la barra colapsada
+                sidebarCollapsed.addEventListener('mouseenter', function() {
+                    if (!isExpanded) {
+                        sidebarExpanded.style.transform = 'translateX(0)';
+                        sidebarOverlay.classList.add('show');
+                        mainWrapper.classList.add('content-shifted');
+                        isExpanded = true;
+                    }
                 });
+
+                // Ocultar sidebar al salir del área expandida
+                sidebarExpanded.addEventListener('mouseleave', function() {
+                    sidebarExpanded.style.transform = 'translateX(-100%)';
+                    sidebarOverlay.classList.remove('show');
+                    mainWrapper.classList.remove('content-shifted');
+                    isExpanded = false;
+                });
+
+                // También cerrar al hacer click en el overlay
+                sidebarOverlay.addEventListener('click', function() {
+                    sidebarExpanded.style.transform = 'translateX(-100%)';
+                    sidebarOverlay.classList.remove('show');
+                    mainWrapper.classList.remove('content-shifted');
+                    isExpanded = false;
+                });
+            }
+
+            // Reajustar al cambiar tamaño de ventana
+            window.addEventListener('resize', function() {
+                if (window.innerWidth < 992) {
+                    sidebarExpanded.style.transform = 'translateX(-100%)';
+                    sidebarOverlay.classList.remove('show');
+                    mainWrapper.classList.remove('content-shifted');
+                    isExpanded = false;
+                }
             });
         });
 
-        // Script para registrar asistencia
+        // Función para registrar asistencia (desktop)
         async function registrarAsistencia(e) {
             e.preventDefault();
             const carnet = document.getElementById("inputCarnet").value.trim();
@@ -238,6 +319,31 @@
                 const data = await respuesta.json();
                 alert(data.mensaje);
                 document.getElementById("inputCarnet").value = "";
+            } catch {
+                alert("Error al registrar la asistencia.");
+            }
+        }
+
+        // Función para registrar asistencia (mobile)
+        async function registrarAsistenciaMobile(e) {
+            e.preventDefault();
+            const carnet = document.getElementById("inputCarnetMobile").value.trim();
+
+            if (!carnet) {
+                alert("Por favor, ingrese un carnet válido.");
+                return;
+            }
+
+            try {
+                const respuesta = await fetch("/Asistencia/Registrar", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: `carnet=${encodeURIComponent(carnet)}`
+                });
+
+                const data = await respuesta.json();
+                alert(data.mensaje);
+                document.getElementById("inputCarnetMobile").value = "";
             } catch {
                 alert("Error al registrar la asistencia.");
             }

@@ -1,87 +1,107 @@
 ﻿html {
-  font-size: 14px;
+    font-size: 14px;
 }
-*{
-    font-family:'Sans Serif Collection';
+
+* {
+    font-family: 'Sans Serif Collection';
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
     margin-bottom: 60px;
-    /*background: linear-gradient(#fff 90%, #902 100%);*/
-    margin-top:100px;
+    margin-top: 100px;
 }
+
+/* Main con margin-left solo en desktop */
 main {
-    margin-left:220px;
+    margin-left: auto;
 }
+
+/* Responsive: Quitar margin-left en tablets y móviles */
+@media (max-width: 991.98px) {
+    body {
+        margin-top: 60px;
+    }
+
+    main {
+        margin-left: 0 !important;
+        margin-top:40% !important;
+    }
+}
+
 .form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
-  color: var(--bs-secondary-color);
-  text-align: end;
+    color: var(--bs-secondary-color);
+    text-align: end;
 }
 
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
-  text-align: start;
+    text-align: start;
 }
-.nav-link{
-    padding:15px 20px;
-    margin:5px;
+
+.nav-link {
+    padding: 15px 20px;
+    margin: 5px;
     color: white;
-    font-size:20px;
+    font-size: 20px;
 }
-.nav-link:hover{
-    background-color: #444;
-    border-radius: 10px;
-    border-left: solid 2px #902;
-}
+
+    .nav-link:hover {
+        background-color: #444;
+        border-radius: 10px;
+        border-left: solid 2px #902;
+    }
+
 a {
     text-decoration: none;
     padding: 10px 20px;
     color: black;
     border: solid 1px black;
-    border-radius:10px;
-    margin:20px;
+    border-radius: 10px;
+    margin: 20px;
 }
-a:hover{
-    background-color: #444;
-    border-radius:10px;
-    color:white;
-}
+
+    a:hover {
+        background-color: #444;
+        border-radius: 10px;
+        color: white;
+    }
 
 .Encabezado {
-    position: fixed; /* Lo deja fijo en la pantalla */
-    top: 0; /* Pegado arriba */
-    left: 0; /* Alineado al borde izquierdo */
-    width: 100%; /* Ocupa todo el ancho de la pantalla */
-    background-color: #212529; /* Fondo oscuro (igual al menú) */
-    color: white; /* Letras blancas */
-    z-index: 1050; /* Se asegura de que quede encima del resto del contenido */
-    padding: 10px 20px; /* Espaciado interno */
-    display: flex; /* Alineación del contenido */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #212529;
+    color: white;
+    z-index: 1050;
+    padding: 10px 20px;
+    display: flex;
     align-items: center;
     justify-content: space-between;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.3); /* Sombra sutil */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
 }
 
-.btn{
-    background:#fff;
-    color:#222;
-    border-radius:25px;
-    border:solid 2px #222;
+.btn {
+    background: #fff;
+    color: #222;
+    border-radius: 25px;
+    border: solid 2px #222;
 }
+
     .btn:hover {
         background: #212529;
         color: white;
@@ -90,18 +110,20 @@ a:hover{
         transition: 0.5s;
     }
 
-h2{
+h2 {
     color: #f00;
-    border-radius:10px;
+    border-radius: 10px;
     border-left: solid 5px;
-    padding:15px;
+    padding: 15px;
     background: #f5f5f5;
 }
-.text{
-    color:#222;
-    font-size:18px;
+
+.text {
+    color: #222;
+    font-size: 18px;
 }
 
+/* Tablas responsivas */
 th {
     background: #212529 !important;
     border-bottom: solid 2px #f00 !important;
@@ -112,396 +134,99 @@ th {
 table {
     box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset !important;
 }
-.btn-delete:hover{
-    background:#dc3545;
+
+/* Hacer tablas responsivas en móvil */
+@media (max-width: 991.98px) {
+    .table-responsive {
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    table {
+        min-width: 100%;
+        font-size: 14px;
+    }
+
+    th, td {
+        padding: 8px !important;
+        font-size: 14px;
+    }
+
+    .btn-group {
+        flex-wrap: nowrap;
+    }
+
+        .btn-group .btn {
+            padding: 5px 10px;
+            font-size: 12px;
+        }
 }
-.btn-details:hover{
-    background:#0d6efd;
+
+@media (max-width: 575.98px) {
+    .text {
+        font-size: 14px;
+    }
+
+    h2 {
+        font-size: 1.3rem;
+        padding: 10px;
+    }
+
+    table {
+        font-size: 12px;
+    }
+
+    th, td {
+        padding: 5px !important;
+        font-size: 12px;
+    }
 }
-.btn-edit:hover{
-    background:#ffe107;
+
+.btn-delete:hover {
+    background: #dc3545;
 }
-.card-edit{
-    background:#ffe107;
-    color:#000;
+
+.btn-details:hover {
+    background: #0d6efd;
 }
+
+.btn-edit:hover {
+    background: #ffe107;
+}
+
+.card-edit {
+    background: #ffe107;
+    color: #000;
+}
+
 .card-details {
     background: #0d6efd;
     color: #fff;
 }
+
 .card-delete {
     background: #dc3545;
     color: #fff;
 }
 
-.card-header{
+.card-header {
     background: #212529;
-    color:white;
+    color: white;
 }
 
 .card {
     box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset !important;
 }
-input{
-    border-left:solid 5px #444 !important;
-    font-size:20px;
-}
-.table[{
-    overflow:scroll;
-    min-width:500px;
+
+input {
+    border-left: solid 5px #444 !important;
+    font-size: 20px;
 }
 
-
-
-
-
-
-
+/* Inputs responsivos */
 @media (max-width: 575.98px) {
-    .card-header h4,
-    .card-header h3,
-    .card-header h5 {
-        font-size: 1.1rem !important;
-    }
-
-    .btn {
-        width: 100%;
-        padding: 0.5rem;
-        font-size: 0.9rem;
-    }
-
-    .form-label {
-        font-size: 0.9rem;
-    }
-
-    .input-group-text {
-        font-size: 0.875rem;
-    }
-
-    /* Ajustar tablas en móviles */
-    .table-responsive {
-        font-size: 0.85rem;
-    }
-
-    /* Reducir padding de cards en móviles */
-    .card-body {
-        padding: 1rem !important;
-    }
-
-    /* Alertas más compactas */
-    .alert {
-        padding: 0.5rem 0.75rem;
-        font-size: 0.875rem;
+    input {
+        font-size: 16px;
     }
 }
-
-/* Ajustes para móviles y tablets pequeñas */
-@media (max-width: 767.98px) {
-    .container-fluid,
-    .container {
-        padding-left: 0.75rem;
-        padding-right: 0.75rem;
-    }
-
-    /* Hacer modals full-screen en móviles */
-    .modal-dialog {
-        margin: 0;
-        max-width: 100%;
-    }
-
-    .modal-content {
-        border-radius: 0;
-        min-height: 100vh;
-    }
-
-    /* Mejorar navegación en móviles */
-    .navbar-collapse {
-        max-height: 70vh;
-        overflow-y: auto;
-    }
-}
-
-/* Mejorar área táctil en móviles y tablets */
-@media (max-width: 991.98px) {
-    /* Checkboxes y radios más grandes */
-    .form-check-input {
-        width: 1.25em;
-        height: 1.25em;
-        margin-top: 0.125em;
-    }
-
-    .form-check-label {
-        padding-left: 0.25rem;
-        cursor: pointer;
-        min-height: 44px; /* Área táctil recomendada por Apple/Google */
-        display: flex;
-        align-items: center;
-    }
-
-    /* Botones con área táctil mínima */
-    .btn {
-        min-height: 44px;
-        padding: 0.5rem 1rem;
-    }
-
-    /* Links más fáciles de tocar */
-    a {
-        padding: 0.25rem 0;
-        display: inline-block;
-    }
-
-    /* Dropdowns más táctiles */
-    .dropdown-item {
-        padding: 0.75rem 1rem;
-    }
-}
-
-/* Ajustes para tablets en horizontal */
-@media (min-width: 768px) and (max-width: 991.98px) {
-    .col-md-6 {
-        flex: 0 0 50%;
-        max-width: 50%;
-    }
-}
-
-/* Prevenir desbordamiento horizontal en todas las pantallas */
-body {
-    overflow-x: hidden;
-}
-
-.card,
-.modal-content,
-.table-responsive {
-    overflow: hidden;
-}
-
-/* ============================================
-   MEJORAS PARA INPUTS EN MÓVILES
-   ============================================ */
-
-/* Normalizar inputs numéricos */
-input[type="number"],
-input[type="date"],
-input[type="text"],
-input[type="email"],
-input[type="tel"],
-input[type="password"] {
-    -webkit-appearance: none;
-    -moz-appearance: textfield;
-    border-radius: 0.25rem;
-}
-
-    /* Remover spinners en inputs numéricos */
-    input[type="number"]::-webkit-inner-spin-button,
-    input[type="number"]::-webkit-outer-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
-    }
-
-/* Firefox */
-input[type="number"] {
-    -moz-appearance: textfield;
-}
-
-/* Mejorar inputs de fecha en iOS */
-input[type="date"]::-webkit-calendar-picker-indicator {
-    background: transparent;
-    cursor: pointer;
-}
-
-/* ============================================
-   OPTIMIZACIONES PARA iOS
-   ============================================ */
-
-/* Prevenir zoom automático en iOS */
-@media screen and (-webkit-min-device-pixel-ratio: 0) {
-    select,
-    textarea,
-    input[type="text"],
-    input[type="password"],
-    input[type="datetime"],
-    input[type="datetime-local"],
-    input[type="date"],
-    input[type="month"],
-    input[type="time"],
-    input[type="week"],
-    input[type="number"],
-    input[type="email"],
-    input[type="url"],
-    input[type="search"],
-    input[type="tel"] {
-        font-size: 16px !important;
-    }
-}
-
-/* Suavizar scroll en iOS */
-* {
-    -webkit-overflow-scrolling: touch;
-}
-
-    /* ============================================
-   MEJORAS DE ACCESIBILIDAD
-   ============================================ */
-
-    /* Focus visible para navegación con teclado */
-    *:focus-visible {
-        outline: 2px solid #0d6efd;
-        outline-offset: 2px;
-    }
-
-    /* Ocultar outline solo cuando se usa mouse */
-    *:focus:not(:focus-visible) {
-        outline: none;
-    }
-
-/* ============================================
-   UTILIDADES RESPONSIVAS PERSONALIZADAS
-   ============================================ */
-
-/* Espaciado vertical responsivo */
-.py-responsive {
-    padding-top: 1rem;
-    padding-bottom: 1rem;
-}
-
-@media (min-width: 768px) {
-    .py-responsive {
-        padding-top: 2rem;
-        padding-bottom: 2rem;
-    }
-}
-
-@media (min-width: 992px) {
-    .py-responsive {
-        padding-top: 3rem;
-        padding-bottom: 3rem;
-    }
-}
-
-/* Texto responsivo */
-.text-responsive {
-    font-size: 0.875rem;
-}
-
-@media (min-width: 768px) {
-    .text-responsive {
-        font-size: 1rem;
-    }
-}
-
-/* Ocultar en móviles */
-@media (max-width: 767.98px) {
-    .hide-mobile {
-        display: none !important;
-    }
-}
-
-/* Mostrar solo en móviles */
-@media (min-width: 768px) {
-    .show-mobile {
-        display: none !important;
-    }
-}
-
-/* ============================================
-   MEJORAS PARA TABLAS RESPONSIVAS
-   ============================================ */
-
-@media (max-width: 767.98px) {
-    .table-responsive {
-        border: 0;
-    }
-
-        .table-responsive table {
-            border: 0;
-        }
-
-        /* Opcional: Hacer tablas en cards verticales en móviles */
-        .table-responsive.table-card thead {
-            display: none;
-        }
-
-        .table-responsive.table-card tbody tr {
-            display: block;
-            margin-bottom: 1rem;
-            border: 1px solid #dee2e6;
-            border-radius: 0.25rem;
-            padding: 0.5rem;
-        }
-
-        .table-responsive.table-card tbody td {
-            display: block;
-            text-align: right;
-            border: 0;
-            padding: 0.25rem 0.5rem;
-        }
-
-            .table-responsive.table-card tbody td::before {
-                content: attr(data-label);
-                float: left;
-                font-weight: bold;
-            }
-}
-
-/* ============================================
-   ANIMACIONES SUAVES
-   ============================================ */
-
-.slide-in {
-    animation: slideIn 0.3s ease-out;
-}
-
-@keyframes slideIn {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* ============================================
-   MEJORAS DE RENDIMIENTO
-   ============================================ */
-
-/* Optimizar renderizado de imágenes */
-img {
-    max-width: 100%;
-    height: auto;
-    display: block;
-}
-
-/* Habilitar aceleración por hardware */
-.card,
-.modal,
-.dropdown-menu {
-    transform: translateZ(0);
-    will-change: transform;
-}
-
-/* ============================================
-   PRINT STYLES
-   ============================================ */
-
-@media print {
-    .no-print,
-    .btn,
-    .navbar,
-    .sidebar {
-        display: none !important;
-    }
-
-    body {
-        font-size: 12pt;
-    }
-
-    .card {
-        border: 1px solid #000;
-        page-break-inside: avoid;
-    }
-}
-
-
