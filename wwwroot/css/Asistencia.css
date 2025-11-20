@@ -1,0 +1,49 @@
+﻿html, body {
+    margin: 0;
+}
+
+body {
+   background:#212529;
+}
+
+.card{
+    margin:auto;
+    margin-top:10%;
+    align-items:center;
+    border:solid 1px #fff;
+    width:400px;
+    padding:20px;
+    border-radius:10px !important;
+    box-shadow: 0 0 10px 0 #fff;
+
+    background-color:rgb(255,255,255,0.5);
+}
+
+form{
+    margin-top:10px;
+    padding:20px;
+    color:#000;
+    font-family:sans-serif;
+    font-size: 1rem;
+}
+.btn {
+    background: #212529;
+    color:white;
+    border-radius:15px;
+    padding:10px;
+    margin-top: 15px;
+}
+.btn:hover{
+    transition:0.3s;
+    background:#212529;
+    box-shadow: 0 0 10px 0 #fff;
+    padding: 11px ;
+    color:white;
+}
+
+.imagen{
+    margin-top:15px;
+    width:40%;
+    border-radius:100px;
+    box-shadow:0 0 15px 0 #212529;
+}
