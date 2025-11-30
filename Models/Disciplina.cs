@@ -10,8 +10,9 @@ namespace Helluz.Models
         public int IdDisciplina { get; set; }
 
         [Required]
+        [StringLength(20, ErrorMessage = "El nombre no puede tener más de 20 caracteres.")]
         public string? NombreDisciplina { get; set; }
-
+        [StringLength(120, ErrorMessage = "La descripción no puede tener más de 120 caracteres.")]
         public string? Descripcion { get; set; }
 
         [Required]

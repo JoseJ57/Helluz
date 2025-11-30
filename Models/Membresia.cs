@@ -11,6 +11,7 @@ namespace Helluz.Models
         public int IdMembresia { get; set; }
 
         [Required]
+        [StringLength(30, ErrorMessage = "El nombre no puede tener más de 30 caracteres.")]
         public string? Nombre { get; set; }
 
         [Required]

@@ -13,17 +13,17 @@ namespace Helluz.Models
         public int IdInstructor { get; set; }
 
         [Required(ErrorMessage = "El nombre es obligatorio.")]
-        [StringLength(50, ErrorMessage = "El nombre no puede tener más de 50 caracteres.")]
-        [RegularExpression(@"^[a-zA-ZñÑ\s]+$", ErrorMessage = "El nombre solo puede contener letras y espacios.")]
+        [StringLength(30, ErrorMessage = "El nombre no puede tener más de 30 caracteres.")]
+        [RegularExpression(@"^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s'-]+$", ErrorMessage = "El nombre solo puede contener letras y espacios.")]
         public string Nombre { get; set; } = null!;
 
         [Required(ErrorMessage = "El apellido es obligatorio.")]
-        [StringLength(50, ErrorMessage = "El apellido no puede tener más de 50 caracteres.")]
-        [RegularExpression(@"^[a-zA-ZñÑ\s]+$", ErrorMessage = "El apellido solo puede contener letras y espacios.")]
+        [StringLength(30, ErrorMessage = "El apellido no puede tener más de 30 caracteres.")]
+        [RegularExpression(@"^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s'-]+$", ErrorMessage = "El apellido solo puede contener letras y espacios.")]
         public string Apellido { get; set; } = null!;
 
         [Required(ErrorMessage = "El carnet es obligatorio.")]
-        [StringLength(20, ErrorMessage = "El carnet no puede tener más de 20 caracteres.")]
+        [StringLength(10, ErrorMessage = "El carnet no puede tener más de 10 caracteres.")]
         public string Carnet { get; set; } = null!;
 
         //[Required(ErrorMessage = "La fecha de nacimiento es obligatoria.")]
