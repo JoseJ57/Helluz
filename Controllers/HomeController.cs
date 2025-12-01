@@ -25,6 +25,11 @@ namespace Helluz.Controllers
 
         public IActionResult Index()
         {
+            if (!User.IsInRole("administrador") && !User.IsInRole("instructor"))
+            {
+                return Unauthorized();
+            }
+
             var hoy = DateOnly.FromDateTime(DateTime.Today);
 
             var inicioMes = new DateOnly(DateTime.Today.Year, DateTime.Today.Month, 1);

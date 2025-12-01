@@ -10,7 +10,7 @@ using System.Security.Claims;
 
 namespace Laboratorios.Controllers
 {
-    [AllowAnonymous] // ⭐ Permite acceso sin autenticación a este controlador
+    [AllowAnonymous] // Permite acceso sin autenticación a este controlador
     public class LoginController : Controller
     {
         private readonly MyContext _context;
@@ -30,21 +30,16 @@ namespace Laboratorios.Controllers
 
         public IActionResult Index()
         {
-            // ⭐ CRÍTICO: Si ya está autenticado, redirigir
-            if (User.Identity.IsAuthenticated)
+            // Si ya está autenticado, redirigir a Home
+            if (User.Identity != null && User.Identity.IsAuthenticated)
             {
-                if (User.IsInRole("administrador"))
-                {
-                    return RedirectToAction("Index", "Home");
-                }
-                else
-                {
-                    return RedirectToAction("Index", "Instructor");
-                }
+                return RedirectToAction("Index", "Home");
             }
 
             return View();
         }
+
+
 
         [HttpPost]
         [ValidateAntiForgeryToken] // ⭐ Seguridad adicional
@@ -88,10 +83,7 @@ namespace Laboratorios.Controllers
             _cache.Remove(cacheKey);
             await SetUserCookie(usuario);
 
-            if (usuario.Rol == Helluz.Dto.Roles.administrador)
-                return RedirectToAction("Index", "Home");
-            else
-                return RedirectToAction("Index", "Instructor");
+            return RedirectToAction("Index", "Home");
         }
 
         private async Task SetUserCookie(Usuario usuario)
@@ -100,7 +92,7 @@ namespace Laboratorios.Controllers
             {
                 new Claim(ClaimTypes.Name, usuario!.NombreUsuario!),
                 new Claim(ClaimTypes.NameIdentifier, usuario.IdUsuario.ToString()),
-                new Claim(ClaimTypes.Role, usuario.Rol!.ToString())
+                new Claim(ClaimTypes.Role, usuario.Rol.ToString())
             };
 
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -143,7 +135,7 @@ namespace Laboratorios.Controllers
         [HttpGet]
         public IActionResult CheckSession()
         {
-            if (User.Identity.IsAuthenticated)
+            if (User.Identity != null && User.Identity.IsAuthenticated)
             {
                 return Ok();
             }

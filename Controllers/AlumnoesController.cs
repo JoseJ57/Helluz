@@ -24,6 +24,11 @@ namespace Helluz.Controllers
         // GET: Alumnoes
         public async Task<IActionResult> Index()
         {
+            if (!User.IsInRole("administrador") && !User.IsInRole("instructor"))
+            {
+                return Unauthorized();
+            }
+
             return View(await _context.Alumnos.ToListAsync());
         }
 

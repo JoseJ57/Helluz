@@ -37,6 +37,11 @@ namespace Helluz.Controllers
         // GET: Inscripciones
         public async Task<IActionResult> Index()
         {
+            if (!User.IsInRole("administrador") && !User.IsInRole("instructor"))
+            {
+                return Unauthorized();
+            }
+
             var inscripciones = await _context.Inscripcions
                 .Include(i => i.Alumno)
                 .Include(i => i.Membresia)

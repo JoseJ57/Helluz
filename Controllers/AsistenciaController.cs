@@ -1,14 +1,16 @@
 ﻿using Helluz.Contexto;
 using Helluz.Dto;
 using Helluz.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Threading.Tasks;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Helluz.Controllers
 {
+    [AllowAnonymous]
     public class AsistenciaController : Controller
     {
         private readonly MyContext _context;

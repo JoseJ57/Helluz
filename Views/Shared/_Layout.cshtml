@@ -14,6 +14,9 @@
     <link href="~/css/Menus.css" rel="stylesheet" />
 </head>
 <body>
+    @{
+        bool esAdmin = User.IsInRole("administrador");
+    }
     <!-- Header fijo -->
     <header class="Encabezado navbar navbar-dark bg-dark fixed-top">
         <div class="container-fluid">
@@ -36,11 +39,12 @@
 
                 <!-- Usuario y logout -->
                 <div class="ms-auto user-section">
-                    @if (User.Identity.IsAuthenticated)
+                    @if (User.Identity?.IsAuthenticated == true)
                     {
                         <div class="d-flex align-items-center">
                             <span class="navbar-text me-2 text-white user-name">
-                                <span class="d-none d-md-inline">Bienvenido: </span><strong>@User.Identity.Name</strong>
+                                <span class="d-none d-md-inline">Bienvenido: </span>
+                                <strong>@User.Identity?.Name</strong>
                             </span>
                             <form asp-action="Logout" asp-controller="Login" method="post" class="d-inline">
                                 @Html.AntiForgeryToken()
@@ -87,61 +91,80 @@
         </div>
         <div class="sidebar-body">
             <ul class="navbar-nav flex-column">
+
+                <!-- Asistencia -->
                 <li class="nav-item mb-2">
-                    <a class="nav-link text-white" asp-area="" asp-controller="Asistencia" asp-action="Index">
+                    <a class="nav-link text-white" asp-controller="Asistencia" asp-action="Index">
                         <i class="fas fa-clipboard-check me-2"></i> Asistencia
                     </a>
                 </li>
+
+                <!-- Alumnos -->
                 <li class="nav-item mb-2">
-                    <a class="nav-link text-white" asp-area="" asp-controller="Alumnoes" asp-action="Index">
+                    <a class="nav-link text-white" asp-controller="Alumnoes" asp-action="Index">
                         <i class="fas fa-user-graduate me-2"></i> Alumnos
                     </a>
                 </li>
+
+                <!-- Inscripciones -->
                 <li class="nav-item mb-2">
-                    <a class="nav-link text-white" asp-area="" asp-controller="Inscripciones" asp-action="Index">
+                    <a class="nav-link text-white" asp-controller="Inscripciones" asp-action="Index">
                         <i class="fas fa-desktop me-2"></i> Inscripciones
                     </a>
                 </li>
+
+                <!-- QR -->
                 <li class="nav-item mb-2">
-                    <a class="nav-link text-white" asp-area="" asp-controller="Instructors" asp-action="Index">
-                        <i class="fas fa-chalkboard-teacher me-2"></i> Instructores
-                    </a>
-                </li>
-                <li class="nav-item mb-2">
-                    <a class="nav-link text-white" asp-area="" asp-controller="Usuarios" asp-action="Index">
-                        <i class="fas fa-users me-2"></i> Usuarios
-                    </a>
-                </li>
-                <li class="nav-item mb-2">
-                    <a class="nav-link text-white" asp-area="" asp-controller="Membresias" asp-action="Index">
-                        <i class="fas fa-id-card me-2"></i> Membresías
-                    </a>
-                </li>
-                <li class="nav-item mb-2">
-                    <a class="nav-link text-white" asp-area="" asp-controller="Horarios" asp-action="Index">
-                        <i class="fas fa-calendar-alt me-2"></i> Horarios
-                    </a>
-                </li>
-                <li class="nav-item mb-2">
-                    <a class="nav-link text-white" asp-area="" asp-controller="Disciplinas" asp-action="Index">
-                        <i class="fas fa-dumbbell me-2"></i> Disciplinas
-                    </a>
-                </li>
-                <li class="nav-item mb-2">
-                    <a class="nav-link text-white" asp-area="" asp-controller="TokenQrs" asp-action="Index">
+                    <a class="nav-link text-white" asp-controller="TokenQrs" asp-action="Index">
                         <i class="fas fa-qrcode me-2"></i> QR
                     </a>
                 </li>
-                <li class="nav-item mb-2">
-                    <a class="nav-link text-white" asp-area="" asp-controller="ReporteEstadosMembresias" asp-action="Index">
-                        <i class="fas fa-chart-line me-2"></i> Estados Inscripciones
-                    </a>
-                </li>
-                <li class="nav-item mb-2">
-                    <a class="nav-link text-white" asp-area="" asp-controller="ReportesFinancieros" asp-action="Index">
-                        <i class="fas fa-dollar-sign me-2"></i> Finanzas
-                    </a>
-                </li>
+
+                <!-- SOLO ADMIN -->
+                @if (esAdmin)
+                {
+                    <li class="nav-item mb-2">
+                        <a class="nav-link text-white" asp-controller="Instructors" asp-action="Index">
+                            <i class="fas fa-chalkboard-teacher me-2"></i> Instructores
+                        </a>
+                    </li>
+
+                    <li class="nav-item mb-2">
+                        <a class="nav-link text-white" asp-controller="Usuarios" asp-action="Index">
+                            <i class="fas fa-users me-2"></i> Usuarios
+                        </a>
+                    </li>
+
+                    <li class="nav-item mb-2">
+                        <a class="nav-link text-white" asp-controller="Membresias" asp-action="Index">
+                            <i class="fas fa-id-card me-2"></i> Membresías
+                        </a>
+                    </li>
+
+                    <li class="nav-item mb-2">
+                        <a class="nav-link text-white" asp-controller="Horarios" asp-action="Index">
+                            <i class="fas fa-calendar-alt me-2"></i> Horarios
+                        </a>
+                    </li>
+
+                    <li class="nav-item mb-2">
+                        <a class="nav-link text-white" asp-controller="Disciplinas" asp-action="Index">
+                            <i class="fas fa-dumbbell me-2"></i> Disciplinas
+                        </a>
+                    </li>
+
+                    <li class="nav-item mb-2">
+                        <a class="nav-link text-white" asp-controller="ReporteEstadosMembresias" asp-action="Index">
+                            <i class="fas fa-chart-line me-2"></i> Estados Inscripciones
+                        </a>
+                    </li>
+
+                    <li class="nav-item mb-2">
+                        <a class="nav-link text-white" asp-controller="ReportesFinancieros" asp-action="Index">
+                            <i class="fas fa-dollar-sign me-2"></i> Finanzas
+                        </a>
+                    </li>
+                }
             </ul>
         </div>
     </div>
@@ -243,13 +266,11 @@
             }
         });
 
-        // Verificar autenticación
-        @if (!User.Identity.IsAuthenticated && Context.Request.Path != "/Login/Index")
-        {
-                <text>
-                window.location.href = '@Url.Action("Index", "Login")';
-                </text>
-        }
+                // Verificar autenticación
+        
+               
+    
+
 
         // Sidebar Desktop functionality
         document.addEventListener('DOMContentLoaded', function () {
