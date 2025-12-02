@@ -1,5 +1,6 @@
 ﻿using Helluz.Contexto;
 using Helluz.Dto;
+using Helluz.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using TuProyecto.Services;
@@ -43,6 +44,7 @@ builder.Services.AddScoped<MembresiaService>();
 builder.Services.AddHostedService<ActualizadorPromocionesBgService>();
 builder.Services.AddHostedService<ReinicioControlDiasService>();
 builder.Services.AddHostedService<FaltaInstructorService>();
+builder.Services.AddScoped<PasswordService>();
 
 var app = builder.Build();
 

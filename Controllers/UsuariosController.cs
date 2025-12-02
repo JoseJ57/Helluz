@@ -1,6 +1,7 @@
 ﻿using Helluz.Contexto;
 using Helluz.Dto;
 using Helluz.Models;
+using Helluz.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -16,10 +17,11 @@ namespace Helluz.Controllers
     public class UsuariosController : Controller
     {
         private readonly MyContext _context;
-
-        public UsuariosController(MyContext context)
+        private readonly PasswordService _passwordService;
+        public UsuariosController(MyContext context, PasswordService passwordService)
         {
             _context = context;
+            _passwordService = passwordService;
         }
 
         // GET: Usuarios
@@ -70,10 +72,15 @@ namespace Helluz.Controllers
             if (ModelState.IsValid)
             {
                 // ✅ Asignar estado automáticamente en el controlador
+                usuario.Password = _passwordService.HashPassword(usuario.Password!);
+
+                // Asignar estado automáticamente
                 usuario.Estado = true;
 
                 _context.Usuarios.Add(usuario);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
+
+                TempData["Exito"] = "Usuario creado exitosamente";
                 return RedirectToAction(nameof(Index));
             }
 
@@ -101,6 +108,13 @@ namespace Helluz.Controllers
             {
                 return NotFound();
             }
+
+            ViewBag.Roles = new SelectList(
+                Enum.GetValues(typeof(Roles))
+                    .Cast<Roles>()
+                    .Select(r => new { Id = (int)r, Nombre = r.ToString() }),
+                "Id", "Nombre", usuario.Rol);
+
             return View(usuario);
         }
 
@@ -120,25 +134,53 @@ namespace Helluz.Controllers
             {
                 try
                 {
-                    _context.Update(usuario);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!UsuarioExists(usuario.IdUsuario))
+                    // Obtener usuario original de la BD
+                    var usuarioOriginal = await _context.Usuarios.FindAsync(id);
+
+                    if (usuarioOriginal == null)
                     {
                         return NotFound();
                     }
-                    else
+
+                    // Actualizar campos
+                    usuarioOriginal.NombreUsuario = usuario.NombreUsuario;
+                    usuarioOriginal.Estado = usuario.Estado;
+                    usuarioOriginal.Rol = usuario.Rol;
+
+                    // ⭐ SOLO actualizar contraseña si se ingresó una nueva
+                    if (!string.IsNullOrEmpty(usuario.Password))
                     {
-                        throw;
+                        // Verificar si la contraseña ya está hasheada (evitar doble hash)
+                        if (!usuario.Password.Contains('.'))
+                        {
+                            usuarioOriginal.Password = _passwordService.HashPassword(usuario.Password);
+                        }
+                        else
+                        {
+                            usuarioOriginal.Password = usuario.Password;
+                        }
                     }
+
+                    await _context.SaveChangesAsync();
+                    TempData["Exito"] = "Usuario actualizado exitosamente";
                 }
+                catch (Exception)
+                {
+                    ModelState.AddModelError("", "Error al actualizar el usuario");
+                    return View(usuario);
+                }
+
                 return RedirectToAction(nameof(Index));
             }
+
+            ViewBag.Roles = new SelectList(
+                Enum.GetValues(typeof(Roles))
+                    .Cast<Roles>()
+                    .Select(r => new { Id = (int)r, Nombre = r.ToString() }),
+                "Id", "Nombre", usuario.Rol);
+
             return View(usuario);
         }
-
         // GET: Usuarios/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {

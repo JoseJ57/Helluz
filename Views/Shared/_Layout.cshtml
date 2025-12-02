@@ -36,7 +36,16 @@
                         <h4 class="ms-2 mb-0 text-white d-none d-sm-block">Helluz</h4>
                     </a>
                 </div>
-
+                <!-- Campo de asistencia -->
+                <div class="attendance-form d-none d-lg-flex ms-3">
+                    <form id="formAsistencia" class="d-flex align-items-center" onsubmit="registrarAsistencia(event)">
+                        <input type="text" id="inputCarnet" class="form-control form-control-sm me-2"
+                               style="width: 150px;" placeholder="Carnet..." />
+                        <button type="submit" class="btn btn-success btn-sm">
+                            <i class="fas fa-check"></i>
+                        </button>
+                    </form>
+                </div>
                 <!-- Usuario y logout -->
                 <div class="ms-auto user-section">
                     @if (User.Identity?.IsAuthenticated == true)
@@ -56,16 +65,7 @@
                     }
                 </div>
 
-                <!-- Campo de asistencia -->
-                <div class="attendance-form d-none d-lg-flex ms-3">
-                    <form id="formAsistencia" class="d-flex align-items-center" onsubmit="registrarAsistencia(event)">
-                        <input type="text" id="inputCarnet" class="form-control form-control-sm me-2"
-                               style="width: 150px;" placeholder="Carnet..." />
-                        <button type="submit" class="btn btn-success btn-sm">
-                            <i class="fas fa-check"></i>
-                        </button>
-                    </form>
-                </div>
+               
             </div>
 
             <!-- Formulario de asistencia mobile (debajo del header) -->

@@ -1,11 +1,10 @@
 ﻿body {
     color: black;
-    font-family: 'Times New Roman', Times, serif;
     margin-top: 80px;
-    background: #212529;
+    background: #fff;
 }
     h4{
-        font-family:'Sans Serif Collection', 'Cascadia Code';
+        font-family:'Bahnschrift SemiCondensed';
         font-size:1.5em;
     }
 p,h3{
@@ -17,9 +16,9 @@ p{
 
 .seccion {
     display: flex;
-    width: 40vw;
+    width: 100%;
     height: 60vh;
-    
+    justify-content:space-between;
 }
 
 /* TARJETAS LINEALES GRANDES */
@@ -27,26 +26,29 @@ p{
     width: 100%;
     max-width: 600px; /* Las tarjetas serán largas */
     padding: 20px 25px;
-    border: 2px solid #212529;
-    box-shadow:0 0 10px 0 black;
+    border: 2px solid #333;
+    box-shadow: 0 0 10px 0 #333;
     border-radius: 10px;
-    background: #212529;
+    background: #212427;
     transition: .3s ease-in-out;
-    color:white;
-    text-align:center;
-    margin:10px;
-    
+    color: #999;
+    text-align: center;
+    margin: 10px;
 }
 
     /* Estilo general del contenido */
     .cardhome h4 {
-        margin: 0 0 10px 0;
-        font-size: 22px;
+        margin: 15px 0 10px 0;
+        font-size: 2em;
+        font-weight:bold;
     }
 
     .cardhome p {
-        font-size: 26px;
+        margin-top:4rem;
+        font-size: 3rem;
         font-weight: bold;
+        color:#fff;
+        margin-bottom:4rem;
     }
 
     /* Efecto hover */
@@ -55,6 +57,14 @@ p{
         transform: scale(1.02);
         box-shadow: 0 0 10px 0 #f00;
     }
+    
+    .icono{
+        font-size:4rem;
+        color:#999;
+
+    }
+    
+    
     @media (max-width:480px){
         .seccion{
             display:flex;

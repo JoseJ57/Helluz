@@ -1,5 +1,6 @@
 ﻿using Helluz.Contexto;
 using Helluz.Models;
+using Helluz.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
@@ -15,11 +16,13 @@ namespace Laboratorios.Controllers
     {
         private readonly MyContext _context;
         private readonly IMemoryCache _cache;
+        private readonly PasswordService _passwordService; // ⭐ AGREGADO
 
-        public LoginController(MyContext context, IMemoryCache cache)
+        public LoginController(MyContext context, IMemoryCache cache, PasswordService passwordService)
         {
             _context = context;
             _cache = cache;
+            _passwordService = passwordService; // ⭐ AGREGADO
         }
 
         public class LoginIntento
@@ -38,8 +41,6 @@ namespace Laboratorios.Controllers
 
             return View();
         }
-
-
 
         [HttpPost]
         [ValidateAntiForgeryToken] // ⭐ Seguridad adicional
@@ -60,7 +61,8 @@ namespace Laboratorios.Controllers
 
             var usuario = await _context.Usuarios.FirstOrDefaultAsync(x => x.NombreUsuario == Nombre_usuario);
 
-            if (usuario == null || usuario.Password != Contraseña)
+            // ⭐ CAMBIO PRINCIPAL: Verificar contraseña encriptada
+            if (usuario == null || !_passwordService.VerifyPassword(Contraseña, usuario.Password!))
             {
                 estado.Intentos++;
 

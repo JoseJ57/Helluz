@@ -52,7 +52,7 @@
     top: 100px;
     height: calc(100vh - 70px);
     width: 250px;
-    background: #343a40;
+    background: #212529;
     z-index: 1030;
     overflow-y: auto;
     transition: transform 0.3s ease;

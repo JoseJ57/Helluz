@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="~/css/Home.css" rel="stylesheet" />
 </head>
 <body>
@@ -13,26 +15,38 @@
         <div class="cardhome">
             <h4>Alumnos Registrados</h4>
             <p>@Model.TotalAlumnos </p>
+            <i class="icono alumno fas fa-user-graduate"></i>
+
         </div>
 
         <div class="cardhome">
             <h4>Instructores Registrados</h4>
             <p>@Model.TotalInstructores </p>
+            <i class="icono instructor fas fa-chalkboard-teacher "></i>
+
         </div>
 
         <div class="cardhome">
             <h4>Usuarios Registrados</h4>
             <p>@Model.TotalUsuarios </p>
+            <i class="icono usuario fas fa-users"></i>
+
         </div>
 
         <div class="cardhome">
             <h4>Ganancias del Mes Actual</h4>
             <p>@Model.TotalDineroMesActual </p>
+            <i class="icono ganancias fas fa-dollar-sign"></i>
+
         </div>
 
         <div class="cardhome">
             <h4>Asistencias del día</h4>
+            <br />
+            <br />
             <p>@Model.AsistenciasHoy</p>
+            <i class="icono asistencia fas fa-clipboard-check"></i>
+
         </div>
 
     </div>

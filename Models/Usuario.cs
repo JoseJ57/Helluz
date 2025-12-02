@@ -14,7 +14,9 @@ namespace Helluz.Models
         [RegularExpression(@"^[A-Za-z]+$", ErrorMessage = "El Nombre solo puede contener letras.")]
         public string? NombreUsuario { get; set; }
         [Required(ErrorMessage = "La contraseña es obligatoria.")]
-        [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()\-_=+\[\]{};:,.?])[^ ]{8,16}$",ErrorMessage = "La contraseña debe tener entre 8 y 16 caracteres e incluir mayúscula, minúscula, número y símbolo.")]
+        [StringLength(200, MinimumLength = 8, ErrorMessage = "La contraseña debe tener entre 8 y 12 caracteres.")]
+        [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()\-_=+\[\]{};:,.?])[^ ]{8,12}$",
+    ErrorMessage = "La contraseña debe tener entre 8 y 12 caracteres e incluir mayúscula, minúscula, número y símbolo.")]
         public string? Password { get; set; }
 
         public bool Estado {  get; set; }
