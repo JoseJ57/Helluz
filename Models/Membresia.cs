@@ -17,10 +17,12 @@ namespace Helluz.Models
         [Required]
         public float Costo { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Los días por semana son obligatorios")]
+        [Range(1, 5, ErrorMessage = "Debe ingresar entre 1 y 5 días por semana")]
         public int DiasPorSemana { get; set; }
 
         [Required]
+        [Range(1, 500, ErrorMessage = "Debe ingresar entre 1 y 500")]
         public int Duracion { get; set; }
 
         [Required]
