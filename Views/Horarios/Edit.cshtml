@@ -8,24 +8,9 @@
 <h4>Editar Horario</h4>
 <hr />
 
-<style>
-    table {
-        margin: 0 auto;
-        max-width: 95%;
-        border-collapse: separate;
-        border-spacing: 0.5rem;
-    }
-
-    td, th {
-        min-width: 120px;
-        text-align: center;
-    }
-
-    table select.form-select {
-        width: 100%;
-        min-width: 120px;
-    }
-</style>
+<head>
+    <link href="~/css/horarios.css" rel="stylesheet" />
+</head>
 
 <form asp-action="Edit" method="post">
     <input type="hidden" asp-for="IdHorario" />
