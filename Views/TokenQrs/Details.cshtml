@@ -1,24 +1,229 @@
 ﻿@model Helluz.Models.TokenQr
-
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Detalles del Código QR";
 }
 
-<h1>Detalles</h1>
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header card-details">
+                    <h4 class="mb-0">
+                        <i class="fas fa-info-circle"></i> Detalles del Código QR
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <!-- Tipo -->
+                    <div class="mb-4 text-center">
+                        <h3>
+                            <span class="text">
+                                <i class="fas fa-qrcode"></i> CÓDIGO QR
+                            </span>
+                        </h3>
+                    </div>
 
-<div>
-    <hr />
-    <dt class="col-sm-3">Código QR</dt>
-    <dd class="col-sm-9">
-        <!-- ⭐ CAMBIO AQUÍ: Usar la imagen guardada -->
-        <img src="~/qr/qr_@(Model.IdToken).png"
-             alt="QR para marcar asistencia"
-             width="300"
-             height="300"
-             class="border border-dark p-2" />
-    </dd>
+                    <dl class="row">
+                        <dt class="text col-sm-4">ID:</dt>
+                        <dd class="text col-sm-8">#@Model.IdToken</dd>
+
+                        <dt class="text col-sm-4">Token:</dt>
+                        <dd class="col-sm-8">
+                            <strong class="fs-6 font-monospace">@Model.Token</strong>
+                            <button class="btn btn-sm btn-outline-secondary ms-2"
+                                    onclick="copiarToken('@Model.Token')"
+                                    title="Copiar token">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </dd>
+
+                        <dt class="text col-sm-4">Fecha de Generación:</dt>
+                        <dd class="col-sm-8">
+                            <span class="text">
+                                <i class="fas fa-calendar-alt me-1"></i>
+                                @Model.FechaGeneracion.ToString("dd/MM/yyyy")
+                            </span>
+                        </dd>
+
+                        <dt class="col-sm-4">Estado Actual:</dt>
+                        <dd class="col-sm-8">
+                            @if (Model.Estado)
+                            {
+                                <h4>
+                                    <span class="badge bg-success">
+                                        <i class="fas fa-check-circle"></i> ACTIVO
+                                    </span>
+                                </h4>
+                                <small class="text-success">
+                                    <i class="fas fa-info-circle"></i> Este código QR puede ser escaneado
+                                </small>
+                            }
+                            else
+                            {
+                                <h4>
+                                    <span class="badge bg-danger">
+                                        <i class="fas fa-times-circle"></i> INACTIVO
+                                    </span>
+                                </h4>
+                                <small class="text-danger">
+                                    <i class="fas fa-exclamation-triangle"></i> Este código QR no puede ser utilizado
+                                </small>
+                            }
+                        </dd>
+                    </dl>
+
+                    <hr>
+
+                    <!-- Código QR -->
+                    <div class="text-center my-4">
+                        <h5 class="mb-3">
+                            <i class="fas fa-qrcode text-primary"></i> Código QR para Escanear
+                        </h5>
+                        <div class="d-inline-block p-3 bg-white border border-2 rounded shadow-sm">
+                            <img src="~/qr/qr_@(Model.IdToken).png"
+                                 alt="QR para marcar asistencia"
+                                 class="img-fluid"
+                                 style="max-width: 300px; max-height: 300px;"
+                                 id="qrImage" />
+                        </div>
+                        <div class="mt-3">
+                            <button class="btn btn-primary" onclick="descargarQR()">
+                                <i class="fas fa-download"></i> Descargar Código QR
+                            </button>
+                            <button class="btn btn-secondary" onclick="imprimirQR()">
+                                <i class="fas fa-print"></i> Imprimir
+                            </button>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <!-- Botones de acción -->
+                    <div class="d-flex justify-content-between flex-wrap gap-2">
+                        <a asp-action="Index" class="btn btn-back">
+                            <i class="fas fa-arrow-left"></i> Volver al Listado
+                        </a>
+                        <div>
+                            <a asp-action="Delete" asp-route-id="@Model.IdToken" class="btn btn-delete">
+                                <i class="fas fa-trash"></i> Eliminar
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.IdToken">Ediart</a> |
-    <a asp-action="Index">Regresar</a>
-</div>
+
+@section Scripts {
+    <script>
+        // Copiar token al portapapeles
+        function copiarToken(token) {
+            navigator.clipboard.writeText(token).then(function() {
+                // Mostrar mensaje de éxito
+                const btn = event.target.closest('button');
+                const originalHTML = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-check"></i>';
+                btn.classList.add('btn-success');
+                btn.classList.remove('btn-outline-secondary');
+
+                setTimeout(function() {
+                    btn.innerHTML = originalHTML;
+                    btn.classList.remove('btn-success');
+                    btn.classList.add('btn-outline-secondary');
+                }, 2000);
+            }).catch(function(err) {
+                alert('No se pudo copiar el token: ' + err);
+            });
+        }
+
+        // Descargar código QR
+               // Descargar código QR
+        function descargarQR() {
+            const imgSrc = '/qr/qr_@(Model.IdToken).png';
+
+            fetch(imgSrc)
+                .then(response => response.blob())
+                .then(blob => {
+                    const url = window.URL.createObjectURL(blob);
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.download = 'codigo_qr_@(Model.IdToken).png';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    window.URL.revokeObjectURL(url);
+                })
+                .catch(err => {
+                    alert('Error al descargar el código QR: ' + err);
+                });
+        }
+
+        // Imprimir código QR
+        function imprimirQR() {
+            const ventanaImpresion = window.open('', '_blank');
+            const imgSrc = document.getElementById('qrImage').src;
+            const token = '@Model.Token';
+            const idToken = '@Model.IdToken';
+            const fecha = '@Model.FechaGeneracion.ToString("dd-MM-yyyy")';
+            const estado = '@(Model.Estado ? "Activo" : "Inactivo")';
+
+            ventanaImpresion.document.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>Imprimir Código QR</title>
+                    <style>
+                        body {
+                            display: flex;
+                            flex-direction: column;
+                            align-items: center;
+                            justify-content: center;
+                            min-height: 100vh;
+                            margin: 0;
+                            font-family: Arial, sans-serif;
+                        }
+                        .container {
+                            text-align: center;
+                            padding: 20px;
+                        }
+                        img {
+                            max-width: 400px;
+                            border: 2px solid #000;
+                            padding: 10px;
+                        }
+                        h2 {
+                            margin-bottom: 20px;
+                        }
+                        .info {
+                            margin-top: 20px;
+                            font-size: 14px;
+                            color: #666;
+                        }
+                        @@media print {
+                            button { display: none; }
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="container">
+                        <h2>Código QR - Token: ${token}</h2>
+                        <img src="${imgSrc}" alt="Código QR" />
+                        <div class="info">
+                            <p><strong>ID:</strong> #${idToken}</p>
+                            <p><strong>Fecha:</strong> ${fecha}</p>
+                            <p><strong>Estado:</strong> ${estado}</p>
+                        </div>
+                    </div>
+                </body>
+                </html>
+            `);
+
+            ventanaImpresion.document.close();
+            ventanaImpresion.focus();
+
+            setTimeout(function() {
+                ventanaImpresion.print();
+            }, 250);
+        }
+    </script>
+}

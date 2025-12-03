@@ -1,23 +1,21 @@
 ﻿@model Helluz.Models.TokenQr
-
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Eliminar Código QR";
 }
 
 <div class="container py-4">
     <div class="row justify-content-center">
         <div class="col-md-6">
             <div class="card shadow">
-                <div class="card-header bg-danger text-white">
+                <div class="card-header card-delete">
                     <h4 class="mb-0">
                         <i class="fas fa-exclamation-triangle"></i> Confirmar Eliminación
                     </h4>
                 </div>
-
                 <div class="card-body">
                     <div class="alert alert-warning">
                         <i class="fas fa-exclamation-circle"></i>
-                        ¿Estás seguro de que deseas eliminar este token QR?
+                        ¿Estás seguro de que deseas eliminar este código QR?
                     </div>
 
                     <dl class="row">
@@ -25,14 +23,14 @@
                         <dd class="col-sm-8">#@Model.IdToken</dd>
 
                         <dt class="col-sm-4">Token:</dt>
-                        <dd class="col-sm-8 text-break">
+                        <dd class="col-sm-8 text-break font-monospace">
                             <i class="fas fa-qrcode"></i> @Model.Token
                         </dd>
 
                         <dt class="col-sm-4">Fecha de Generación:</dt>
                         <dd class="col-sm-8">
                             <i class="fas fa-calendar-alt"></i>
-                            @Model.FechaGeneracion.ToString("dd 'de' MMMM 'de' yyyy, HH:mm")
+                            @Model.FechaGeneracion.ToString("dd/MM/yyyy")
                         </dd>
 
                         <dt class="col-sm-4">Estado:</dt>
@@ -52,23 +50,45 @@
                         </dd>
                     </dl>
 
+                    <!-- Vista previa del QR que se eliminará -->
+                    <div class="text-center my-3 p-3 bg-light rounded">
+                        <p class="text-muted mb-2">
+                            <small><i class="fas fa-image"></i> Código QR que será eliminado:</small>
+                        </p>
+                        <img src="~/qr/qr_@(Model.IdToken).png"
+                             alt="QR a eliminar"
+                             class="img-thumbnail"
+                             style="max-width: 150px; max-height: 150px;" />
+                    </div>
+
+                    <div class="alert alert-danger mt-3">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <strong>Advertencia:</strong> Esta acción no se puede deshacer. El código QR será eliminado permanentemente.
+                    </div>
+
                     <hr />
 
                     <form asp-action="Delete">
                         <input type="hidden" asp-for="IdToken" />
                         <div class="d-flex justify-content-between">
-                            <a asp-action="Index" class="btn btn-secondary">
+                            <a asp-action="Index" class="btn btn-back">
                                 <i class="fas fa-arrow-left"></i> Cancelar
                             </a>
-
-                            <button type="submit" class="btn btn-delete">
+                            <button type="submit" class="btn btn-delete" onclick="return confirmarEliminacion()">
                                 <i class="fas fa-trash"></i> Eliminar
                             </button>
                         </div>
                     </form>
-
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        function confirmarEliminacion() {
+            return confirm('¿Estás completamente seguro de que deseas eliminar este código QR? Esta acción no se puede revertir.');
+        }
+    </script>
+}
