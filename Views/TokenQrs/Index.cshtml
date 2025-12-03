@@ -1,58 +1,117 @@
 ﻿@model IEnumerable<Helluz.Models.TokenQr>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Códigos QR";
 }
 
-<h1>Qrs</h1>
-
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Token)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FechaGeneracion)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Estado)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Token)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FechaGeneracion)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Estado)
-            </td>
-                <td>
-                    <img src="~/qr/qr_@(item.IdToken).png"
-                         alt="QR"
-                         width="100"
-                         height="100" />
-                </td>
-
-
-            <td>
-                <a asp-action="Details" asp-route-id="@item.IdToken">Ver</a> |
-                <a asp-action="Delete" asp-route-id="@item.IdToken">Delete</a>
-            </td>
-        </tr>
-        }
-        <div class="mb-3">
-            <a asp-action="GenerarQr" class="btn btn-success">
-                <i class="bi bi-qr-code"></i> Generar QR
+<div class="container-fluid py-4">
+    <div class="row mb-4 align-items-center">
+        <div class="col-md-6">
+            <h2><i class="fas fa-qrcode"></i> Códigos QR</h2>
+        </div>
+        <div class="col-md-6 text-end">
+            <a asp-action="GenerarQr" class="btn btn-register">
+                <i class="fas fa-plus"></i> Generar QR
             </a>
         </div>
+    </div>
 
-    </tbody>
-</table>
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fas fa-check-circle"></i> @TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="fas fa-exclamation-circle"></i> @TempData["Error"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <div class="card shadow-lg">
+        <div class="card-body">
+            @if (!Model.Any())
+            {
+                <div class="alert alert-info text-center">
+                    <i class="fas fa-info-circle"></i> No hay códigos QR generados.
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle" id="tablaQrs">
+                        <thead>
+                            <tr>
+                                <th>Token</th>
+                                <th>Fecha de Generación</th>
+                                <th>Estado</th>
+                                <th>Código QR</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td class="text">@item.Token</td>
+                                    <td class="text">@item.FechaGeneracion.ToString("dd/MM/yyyy")</td>
+                                    <td>
+                                        @if (item.Estado)
+                                        {
+                                            <span class="badge bg-success">
+                                                <i class="fas fa-check"></i> Activo
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-danger">
+                                                <i class="fas fa-times"></i> Inactivo
+                                            </span>
+                                        }
+                                    </td>
+                                    <td class="text-center">
+                                        <img src="~/qr/qr_@(item.IdToken).png"
+                                             alt="QR Code"
+                                             class="img-thumbnail"
+                                             width="100"
+                                             height="100" />
+                                    </td>
+                                    <td>
+                                        <div class="btn-group" role="group">
+                                            <a asp-action="Details" asp-route-id="@item.IdToken"
+                                               class="btn btn-details" title="Ver detalles">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                            <a asp-action="Delete" asp-route-id="@item.IdToken"
+                                               class="btn btn-delete" title="Eliminar">
+                                                <i class="fas fa-trash"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#tablaQrs').DataTable({
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json'
+                },
+                order: [[1, 'desc']],
+                pageLength: 10
+            });
+        });
+    </script>
+}

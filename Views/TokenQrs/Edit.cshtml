@@ -1,44 +1,166 @@
 ﻿@model Helluz.Models.TokenQr
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Editar Código QR";
 }
 
-<h1>Editar</h1>
+<div class="container-fluid px-3 px-md-4 py-3 py-md-4">
+    <div class="row justify-content-center">
+        <div class="col-12 col-sm-11 col-md-10 col-lg-8 col-xl-7">
+            <div class="card shadow-sm">
+                <div class="card-header card-edit">
+                    <h4 class="mb-0 fs-5 fs-md-4">
+                        <i class="fas fa-qrcode me-2"></i> Editar Código QR
+                    </h4>
+                </div>
 
-<h4>Qr</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="IdToken" />
-            <div class="form-group">
-                <label asp-for="Token" class="control-label"></label>
-                <input asp-for="Token" class="form-control" />
-                <span asp-validation-for="Token" class="text-danger"></span>
+                <div class="card-body p-3 p-md-4">
+                    <form asp-action="Edit" id="formQr">
+                        <input type="hidden" asp-for="IdToken" />
+
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                        <!-- Token -->
+                        <div class="mb-3">
+                            <label asp-for="Token" class="form-label fw-bold">
+                                <i class="fas fa-key text-primary me-1"></i>
+                                Token
+                            </label>
+                            <input asp-for="Token" class="form-control" placeholder="Token del código QR" readonly />
+                            <small class="form-text text-muted">
+                                El token es generado automáticamente y no puede ser modificado
+                            </small>
+                            <span asp-validation-for="Token" class="text-danger small"></span>
+                        </div>
+
+                        <!-- Fecha de Generación -->
+                        <div class="mb-3">
+                            <label asp-for="FechaGeneracion" class="form-label fw-bold">
+                                <i class="fas fa-calendar text-info me-1"></i>
+                                Fecha de Generación
+                            </label>
+                            <!-- Cambié de datetime-local a date -->
+                            <input asp-for="FechaGeneracion"
+                                   class="form-control"
+                                   type="date"
+                                   readonly />
+                            <small class="form-text text-muted">
+                                Fecha en que se generó el código QR
+                            </small>
+                            <span asp-validation-for="FechaGeneracion" class="text-danger small"></span>
+                        </div>
+
+                        <hr class="my-3">
+
+                        <!-- Estado actual (informativo) -->
+                        <div class="alert @(Model.Estado ? "alert-success" : "alert-secondary") small">
+                            <strong>Estado actual:</strong>
+                            @if (Model.Estado)
+                            {
+                                <span><i class="fas fa-check-circle me-1"></i> Activo</span>
+                            }
+                            else
+                            {
+                                <span><i class="fas fa-times-circle me-1"></i> Inactivo</span>
+                            }
+                        </div>
+
+                        <!-- Estado (activo/inactivo) con Switch -->
+                        <div class="card border-primary mb-3">
+                            <div class="card-body p-3">
+                                <div class="form-check form-switch">
+                                    <input asp-for="Estado"
+                                           class="form-check-input"
+                                           type="checkbox"
+                                           id="estadoQr"
+                                           role="switch" />
+                                    <label class="form-check-label fw-bold" for="estadoQr" id="labelEstado">
+                                        @if (Model.Estado)
+                                        {
+                                            <i class="fas fa-check-circle text-success me-1"></i>
+                                            <span>Código QR Activo</span>
+                                        }
+                                        else
+                                        {
+                                            <i class="fas fa-times-circle text-secondary me-1"></i>
+                                            <span>Código QR Inactivo</span>
+                                        }
+                                    </label>
+                                </div>
+                                <small class="text-muted d-block mt-2">
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    Los códigos QR inactivos no podrán ser utilizados
+                                </small>
+                            </div>
+                        </div>
+
+                        <!-- Vista previa del QR -->
+                        <div class="card bg-light mb-3">
+                            <div class="card-body text-center p-3">
+                                <label class="form-label fw-bold">
+                                    <i class="fas fa-image text-secondary me-1"></i>
+                                    Vista Previa del Código QR
+                                </label>
+                                <div class="mt-2">
+                                    <img src="~/qr/qr_@(Model.IdToken).png"
+                                         alt="Código QR"
+                                         class="img-thumbnail"
+                                         style="max-width: 200px; max-height: 200px;" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="my-3">
+
+                        <!-- Botones -->
+                        <div class="d-flex flex-column flex-sm-row justify-content-between gap-2">
+                            <a asp-action="Index" class="btn btn-back order-2 order-sm-1">
+                                <i class="fas fa-arrow-left me-1"></i> Regresar
+                            </a>
+                            <button type="submit" class="btn btn-save order-1 order-sm-2">
+                                <i class="fas fa-save me-1"></i> Guardar Cambios
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="FechaGeneracion" class="control-label"></label>
-                <input asp-for="FechaGeneracion" class="form-control" />
-                <span asp-validation-for="FechaGeneracion" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Estado" /> @Html.DisplayNameFor(model => model.Estado)
-                </label>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Regresart</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        $(document).ready(function () {
+
+            // Mostrar texto dinámico según el estado del switch
+            $('#estadoQr').on('change', function () {
+                const isChecked = $(this).is(':checked');
+                const labelHtml = isChecked
+                    ? '<i class="fas fa-check-circle text-success me-1"></i><span>Código QR Activo</span>'
+                    : '<i class="fas fa-times-circle text-secondary me-1"></i><span>Código QR Inactivo</span>';
+
+                $('#labelEstado').html(labelHtml);
+            });
+
+            // Validar formulario antes de enviar
+            $('#formQr').on('submit', function (e) {
+                const token = $('input[name="Token"]').val().trim();
+
+                if (!token) {
+                    e.preventDefault();
+                    alert('El token no puede estar vacío.');
+                    return false;
+                }
+            });
+
+            // Prevenir zoom en iOS en inputs
+            if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+                $('input[type="text"], input[type="datetime-local"]').css('font-size', '16px');
+            }
+        });
+    </script>
 }
