@@ -86,10 +86,10 @@
                                  id="qrImage" />
                         </div>
                         <div class="mt-3">
-                            <button class="btn btn-primary" onclick="descargarQR()">
+                            <button type="button" class="btn btn-primary" onclick="descargarQR()">
                                 <i class="fas fa-download"></i> Descargar Código QR
                             </button>
-                            <button class="btn btn-secondary" onclick="imprimirQR()">
+                            <button type="button" class="btn btn-secondary" onclick="imprimirQR()">
                                 <i class="fas fa-print"></i> Imprimir
                             </button>
                         </div>
@@ -119,7 +119,6 @@
         // Copiar token al portapapeles
         function copiarToken(token) {
             navigator.clipboard.writeText(token).then(function() {
-                // Mostrar mensaje de éxito
                 const btn = event.target.closest('button');
                 const originalHTML = btn.innerHTML;
                 btn.innerHTML = '<i class="fas fa-check"></i>';
@@ -136,94 +135,31 @@
             });
         }
 
-        // Descargar código QR
-               // Descargar código QR
+        // Descargar código QR (método alternativo simple)
         function descargarQR() {
-            const imgSrc = '/qr/qr_@(Model.IdToken).png';
-
-            fetch(imgSrc)
-                .then(response => response.blob())
-                .then(blob => {
-                    const url = window.URL.createObjectURL(blob);
-                    const link = document.createElement('a');
-                    link.href = url;
-                    link.download = 'codigo_qr_@(Model.IdToken).png';
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
-                    window.URL.revokeObjectURL(url);
-                })
-                .catch(err => {
-                    alert('Error al descargar el código QR: ' + err);
-                });
+            const link = document.createElement('a');
+            link.href = document.getElementById('qrImage').src;
+            link.download = 'codigo_qr_@(Model.IdToken).png';
+            link.click();
         }
 
-        // Imprimir código QR
+        // Imprimir código QR (método simple)
         function imprimirQR() {
-            const ventanaImpresion = window.open('', '_blank');
+            const contenidoOriginal = document.body.innerHTML;
             const imgSrc = document.getElementById('qrImage').src;
-            const token = '@Model.Token';
-            const idToken = '@Model.IdToken';
-            const fecha = '@Model.FechaGeneracion.ToString("dd-MM-yyyy")';
-            const estado = '@(Model.Estado ? "Activo" : "Inactivo")';
 
-            ventanaImpresion.document.write(`
-                <!DOCTYPE html>
-                <html>
-                <head>
-                    <title>Imprimir Código QR</title>
-                    <style>
-                        body {
-                            display: flex;
-                            flex-direction: column;
-                            align-items: center;
-                            justify-content: center;
-                            min-height: 100vh;
-                            margin: 0;
-                            font-family: Arial, sans-serif;
-                        }
-                        .container {
-                            text-align: center;
-                            padding: 20px;
-                        }
-                        img {
-                            max-width: 400px;
-                            border: 2px solid #000;
-                            padding: 10px;
-                        }
-                        h2 {
-                            margin-bottom: 20px;
-                        }
-                        .info {
-                            margin-top: 20px;
-                            font-size: 14px;
-                            color: #666;
-                        }
-                        @@media print {
-                            button { display: none; }
-                        }
-                    </style>
-                </head>
-                <body>
-                    <div class="container">
-                        <h2>Código QR - Token: ${token}</h2>
-                        <img src="${imgSrc}" alt="Código QR" />
-                        <div class="info">
-                            <p><strong>ID:</strong> #${idToken}</p>
-                            <p><strong>Fecha:</strong> ${fecha}</p>
-                            <p><strong>Estado:</strong> ${estado}</p>
-                        </div>
-                    </div>
-                </body>
-                </html>
-            `);
+            document.body.innerHTML = `
+                <div style="text-align: center; padding: 40px;">
+                    <h2>Código QR - ID: @Model.IdToken</h2>
+                    <img src="${imgSrc}" style="max-width: 400px; border: 2px solid #000; padding: 10px;" />
+                    <p style="margin-top: 20px;">Token: @Model.Token</p>
+                    <p>Fecha: @Model.FechaGeneracion.ToString("dd-MM-yyyy")</p>
+                </div>
+            `;
 
-            ventanaImpresion.document.close();
-            ventanaImpresion.focus();
-
-            setTimeout(function() {
-                ventanaImpresion.print();
-            }, 250);
+            window.print();
+            document.body.innerHTML = contenidoOriginal;
+            location.reload();
         }
     </script>
 }
