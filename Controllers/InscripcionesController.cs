@@ -257,34 +257,38 @@ namespace Helluz.Controllers
             if (inscripcion == null)
                 return NotFound();
 
-            // Membresías activas
-            ViewBag.Membresias = _context.Membresias
-                .Where(m => m.Estado == true)
-                .Select(m => new
-                {
-                    m.IdMembresia,
-                    m.Nombre,
-                    m.DiasPorSemana,
-                    m.Duracion,
-                    m.UnidadTiempo
-                })
-                .ToList();
+            // Membresías activas convertidas a SelectList
+            ViewBag.Membresias = new SelectList(
+                _context.Membresias
+                    .Where(m => m.Estado == true) // o true si es bool
+                    .OrderBy(m => m.Nombre)
+                    .Select(m => new { m.IdMembresia, m.Nombre }),
+                "IdMembresia",
+                "Nombre",
+                inscripcion.IdMembresia
+            );
 
             // Horarios
             ViewBag.Horarios = new SelectList(
                 _context.Horarios
                     .OrderBy(h => h.HoraInicio)
                     .Select(h => new { h.IdHorario, Display = h.HoraInicio + " - " + h.HoraFin }),
-                "IdHorario", "Display", inscripcion.IdHorario);
+                "IdHorario", "Display",
+                inscripcion.IdHorario
+            );
 
             // Métodos de pago desde Enum
-            ViewBag.MetodosPago = Enum.GetValues(typeof(MetodosPagos))
-                .Cast<MetodosPagos>()
-                .Select(m => new { Value = m, Text = m.ToString() })
-                .ToList();
+            ViewBag.MetodosPago = new SelectList(
+                Enum.GetValues(typeof(MetodosPagos))
+                    .Cast<MetodosPagos>()
+                    .Select(m => new { Value = (int)m, Text = m.ToString() }),
+                "Value", "Text",
+                (int)inscripcion.MetodoPago
+            );
 
             return View(inscripcion);
         }
+
 
 
         // POST: Inscripciones/Renovar/5

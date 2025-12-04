@@ -22,7 +22,7 @@
                         <!-- Método de pago y NroPermisos -->
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label asp-for="MetodoPago" class="form-label fw-bold"></label>
+                                <label asp-for="MetodoPago" class="form-label fw-bold">Método de Pago</label>
                                 <select asp-for="MetodoPago" class="form-select">
                                     <option value="">Seleccione un método</option>
                                     @foreach (var metodo in Enum.GetValues(typeof(MetodosPagos)))
@@ -34,7 +34,7 @@
                             </div>
 
                             <div class="col-md-6 mb-3">
-                                <label asp-for="NroPermisos" class="form-label fw-bold"></label>
+                                <label asp-for="NroPermisos" class="form-label fw-bold">Nro. permisos</label>
                                 <input asp-for="NroPermisos" class="form-control" type="number" value="3" readonly />
                                 <span asp-validation-for="NroPermisos" class="text-danger"></span>
                             </div>
@@ -67,7 +67,7 @@
                         <!-- Alumno y Membresía -->
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label asp-for="IdAlumno" class="form-label fw-bold"></label>
+                                <label asp-for="IdAlumno" class="form-label fw-bold">Alumno</label>
 
                                 <div class="input-group">
                                     <select asp-for="IdAlumno" class="form-select" asp-items="ViewBag.IdAlumno">
@@ -87,7 +87,7 @@
                             </div>
 
                             <div class="col-md-6 mb-3">
-                                <label asp-for="IdMembresia" class="form-label fw-bold"></label>
+                                <label asp-for="IdMembresia" class="form-label fw-bold">Membresía</label>
                                 <select asp-for="IdMembresia" class="form-select" id="membresiaSelect">
                                     <option value="">Seleccione una membresía</option>
                                     @foreach (var m in (IEnumerable<dynamic>)ViewBag.Membresias)

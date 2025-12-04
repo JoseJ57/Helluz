@@ -103,3 +103,23 @@ footer {
 .icons-footer a:hover i {
     opacity: 0.7;
 }
+
+footer.icons-footer {
+    display: flex;
+    flex-wrap: wrap; /* Permite que se acomoden en varias filas si no caben */
+    justify-content: center; /* Centra todo horizontalmente */
+    align-items: center;
+    gap: 10px; /* Espacio entre iconos y texto */
+    text-align: center;
+}
+
+    footer.icons-footer small {
+        flex-basis: 100%; /* El texto ocupa toda la fila en móviles */
+        margin-bottom: 0.5rem;
+    }
+
+    footer.icons-footer a {
+        display: inline-flex; /* Para centrar el ícono dentro del enlace */
+        align-items: center;
+        justify-content: center;
+    }

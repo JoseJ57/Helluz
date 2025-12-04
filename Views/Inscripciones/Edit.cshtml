@@ -24,13 +24,13 @@
                         <!-- Fechas -->
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label asp-for="FechaInicio" class="form-label fw-bold"></label>
+                                <label asp-for="FechaInicio" class="form-label fw-bold">Fecha Inicio</label>
                                 <input asp-for="FechaInicio" class="form-control" type="date" id="FechaInicio" readonly
                                        value="@Model.FechaInicio.ToString("yyyy-MM-dd")" />
                                 <span asp-validation-for="FechaInicio" class="text-danger"></span>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label asp-for="FechaFin" class="form-label fw-bold"></label>
+                                <label asp-for="FechaFin" class="form-label fw-bold">Fecha Fin</label>
                                 <input asp-for="FechaFin" class="form-control" type="date" id="FechaFin" readonly
                                        value="@Model.FechaFin.ToString("yyyy-MM-dd")" />
                                 <span asp-validation-for="FechaFin" class="text-danger"></span>
@@ -40,7 +40,7 @@
                         <!-- Método de pago y NroPermisos -->
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label asp-for="MetodoPago" class="form-label fw-bold"></label>
+                                <label asp-for="MetodoPago" class="form-label fw-bold">Método de Pago</label>
                                 <select asp-for="MetodoPago" class="form-select"
                                         asp-items="@(new SelectList(Enum.GetValues(typeof(MetodosPagos)), Model.MetodoPago))">
                                     <option value="">Seleccione un método</option>
@@ -49,7 +49,7 @@
                             </div>
 
                             <div class="col-md-6 mb-3">
-                                <label asp-for="NroPermisos" class="form-label fw-bold"></label>
+                                <label asp-for="NroPermisos" class="form-label fw-bold">Nro. permisos</label>
                                 <input asp-for="NroPermisos" class="form-control" type="number" min="1" />
                                 <span asp-validation-for="NroPermisos" class="text-danger"></span>
                             </div>
@@ -68,7 +68,7 @@
                         <!-- Alumno, Membresía -->
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label asp-for="IdAlumno" class="form-label fw-bold"></label>
+                                <label asp-for="IdAlumno" class="form-label fw-bold">Alumno</label>
                                 <select asp-for="IdAlumno" class="form-select"
                                         asp-items="@(ViewData["IdAlumno"] as SelectList)">
                                     <option value="">Seleccione un alumno</option>
@@ -77,7 +77,7 @@
                             </div>
 
                             <div class="col-md-6 mb-3">
-                                <label asp-for="IdMembresia" class="form-label fw-bold"></label>
+                                <label asp-for="IdMembresia" class="form-label fw-bold">Membresía</label>
                                 <select asp-for="IdMembresia" class="form-select" id="membresiaSelect">
                                     <option value="">Seleccione una membresía</option>
                                 </select>
