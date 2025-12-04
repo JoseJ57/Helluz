@@ -1,25 +1,44 @@
-﻿body {
-    overflow-x: hidden;
+﻿/* ======================= */
+/* RESET Y BODY GENERAL    */
+/* ======================= */
+body, html {
+    height: 100%;
     margin: 0;
-   
     padding: 0;
+    font-family: 'Sans Serif Collection', sans-serif;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
 }
 
-/* Header */
+/* ======================= */
+/* HEADER                  */
+/* ======================= */
 .Encabezado {
+    width: 100%;
     height: 100px;
     padding: 0 15px !important;
+    background-color: #212529;
+    color: white;
     z-index: 1040;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
 }
 
-/* Contenedor principal con transición */
+/* ======================= */
+/* MAIN WRAPPER            */
+/* ======================= */
 .main-wrapper {
-    transition: margin-left 0.3s ease;
-    margin: auto;
+    flex: 1 0 auto; /* Ocupa todo el espacio disponible */
+    transition: margin-left 0.3s ease, margin-top 0.3s ease;
     margin-top: 150px;
 }
 
-/* Sidebar colapsado - solo para desktop */
+/* ======================= */
+/* SIDEBAR DESKTOP          */
+/* ======================= */
 .sidebar-collapsed {
     position: fixed;
     left: 0;
@@ -45,7 +64,6 @@
         opacity: 0.7;
     }
 
-/* Sidebar expandido */
 .sidebar-expanded {
     position: fixed;
     left: 0;
@@ -67,7 +85,6 @@
     padding: 15px;
 }
 
-/* Ajuste del contenido cuando el sidebar está expandido */
 .content-shifted {
     margin-left: 250px;
 }
@@ -88,14 +105,33 @@
         display: block;
     }
 
-/* Offcanvas mobile - solo visible en móvil */
+/* ======================= */
+/* OFFCANVAS MOBILE        */
+/* ======================= */
 .mobile-menu {
     display: none;
 }
 
-/* Responsive */
+/* ======================= */
+/* FOOTER                  */
+/* ======================= */
+footer {
+    flex-shrink: 0;
+    text-align: center;
+    padding: 1rem 1.5rem;
+    color: #fff;
+    background: #111;
+    width: 100%;
+}
+
+/* ======================= */
+/* RESPONSIVE MEDIA QUERIES */
+/* ======================= */
+
+/* Tablets y móviles */
 @media (max-width: 991.98px) {
-    /* Ocultar sidebar de desktop */
+
+    /* Ocultar sidebar desktop */
     .sidebar-collapsed, .sidebar-expanded {
         display: none !important;
     }
@@ -105,11 +141,12 @@
         display: block;
         background: #212529;
     }
-    .mobile-menu:hover{
-        background:#343a40;
-    }
 
-    /* Header ajustes mobile */
+        .mobile-menu:hover {
+            background: #343a40;
+        }
+
+    /* Header mobile */
     .Encabezado {
         height: auto;
         min-height: 60px;
@@ -138,23 +175,25 @@
     }
 
     .main-wrapper {
-        margin-top: auto;
+        margin-top: 0 !important;
         margin-left: 0 !important;
     }
 
     /* Ajustar formulario de asistencia */
-    #formAsistencia {
+    #formAsistencia, #formAsistenciaMobile {
         width: 100%;
         justify-content: center;
     }
 
-        #formAsistencia input {
+        #formAsistencia input, #formAsistenciaMobile input {
             flex: 1;
             max-width: 300px;
         }
 }
 
+/* Móviles pequeños */
 @media (max-width: 575.98px) {
+
     .navbar-brand h4 {
         font-size: 1.2rem;
     }
@@ -168,8 +207,13 @@
         display: none;
     }
 
-    #formAsistencia input {
+    #formAsistencia input, #formAsistenciaMobile input {
         max-width: 200px;
+    }
+
+    footer {
+        font-size: 0.8rem;
+        padding: 0.8rem 0.5rem;
     }
 }
 
@@ -178,16 +222,7 @@
     .mobile-menu {
         display: none !important;
     }
-}
 
-/* Footer responsivo */
-footer {
-    margin-top: 40px;
-    padding: 20px 0;
-}
-
-/* Container fluido responsivo */
-@media (min-width: 992px) {
     .container-main {
         max-width: 100%;
         padding-right: 30px;

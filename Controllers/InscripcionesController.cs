@@ -234,6 +234,80 @@ namespace Helluz.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        // GET: Inscripciones/Renovar/5
+        public async Task<IActionResult> Renovar(int id)
+        {
+            var inscripcion = await _context.Inscripcions
+                .Include(i => i.Membresia)
+                .Include(i => i.Alumno)
+                .Include(i => i.Horario)
+                .FirstOrDefaultAsync(i => i.IdInscripcion == id);
+
+            if (inscripcion == null)
+                return NotFound();
+
+            // Preparar listas para dropdowns
+            ViewBag.Membresias = new SelectList(_context.Membresias, "IdMembresia", "Nombre", inscripcion.IdMembresia);
+            ViewBag.Horarios = new SelectList(
+                _context.Horarios.OrderBy(h => h.HoraInicio)
+                .Select(h => new { h.IdHorario, Display = h.HoraInicio + " - " + h.HoraFin }),
+                "IdHorario", "Display", inscripcion.IdHorario);
+
+            ViewBag.MetodosPago = new SelectList(new[] { "Efectivo", "Tarjeta", "Transferencia" }, inscripcion.MetodoPago);
+
+            return View(inscripcion);
+        }
+
+        // POST: Inscripciones/Renovar/5
+        [HttpPost, ActionName("Renovar")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RenovarConfirmado([Bind("IdInscripcion,IdMembresia,MetodoPago,IdHorario")] Inscripcion inscripcion)
+        {
+            var inscripcionOriginal = await _context.Inscripcions
+                .Include(i => i.Membresia)
+                .FirstOrDefaultAsync(i => i.IdInscripcion == inscripcion.IdInscripcion);
+
+            if (inscripcionOriginal == null)
+                return NotFound();
+
+            // Actualizar membresía, método de pago y horario
+            var membresia = await _context.Membresias.FindAsync(inscripcion.IdMembresia);
+            inscripcionOriginal.Membresia = membresia;
+            inscripcionOriginal.IdMembresia = membresia.IdMembresia;
+            inscripcionOriginal.MetodoPago = inscripcion.MetodoPago;
+            inscripcionOriginal.IdHorario = inscripcion.IdHorario;
+
+            // --- 1. Nueva fecha de inicio ---
+            var hoy = DateOnly.FromDateTime(DateTime.Today);
+            inscripcionOriginal.FechaInicio = hoy;
+
+            // --- 2. Nueva fecha de fin ---
+            switch (membresia.UnidadTiempo)
+            {
+                case UnidadTiempo.Dia:
+                    inscripcionOriginal.FechaFin = hoy.AddDays(membresia.Duracion);
+                    break;
+                case UnidadTiempo.Mes:
+                    inscripcionOriginal.FechaFin = hoy.AddMonths(membresia.Duracion);
+                    break;
+                case UnidadTiempo.Año:
+                    inscripcionOriginal.FechaFin = hoy.AddYears(membresia.Duracion);
+                    break;
+            }
+
+            // --- 3. Reset controlar días por semana ---
+            inscripcionOriginal.ControlDias = 0;
+
+            // --- 4. Estado actualizado ---
+            ActualizarEstadoInscripcion(inscripcionOriginal);
+
+            // --- 5. Guardar cambios ---
+            _context.Update(inscripcionOriginal);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
+        }
+
         private bool InscripcionExists(int id)
         {
             return _context.Inscripcions.Any(e => e.IdInscripcion == id);

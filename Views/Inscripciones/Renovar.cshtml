@@ -1,0 +1,113 @@
+﻿@model Helluz.Models.Inscripcion
+
+@{
+    ViewData["Title"] = "Renovar Inscripción";
+}
+
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="mb-0">
+                        <i class="fas fa-redo-alt"></i> Renovar Inscripción
+                    </h4>
+                </div>
+
+                <div class="card-body">
+
+                    <div class="alert alert-info">
+                        <i class="fas fa-sync-alt"></i>
+                        Estás a punto de <strong>renovar esta inscripción</strong>.
+                    </div>
+
+                    <dl class="row">
+                        <dt class="col-sm-4">Alumno:</dt>
+                        <dd class="col-sm-8">
+                            <strong>@Model.Alumno.Apellido @Model.Alumno.Nombre</strong>
+                        </dd>
+
+                        <dt class="col-sm-4">Fecha Fin Actual:</dt>
+                        <dd class="col-sm-8">
+                            <span class="text-danger fw-bold">
+                                @Model.FechaFin.ToString("dd/MM/yyyy")
+                            </span>
+                        </dd>
+
+                        <dt class="col-sm-4">Estado Actual:</dt>
+                        <dd class="col-sm-8">
+                            @if (Model.Estado == Helluz.Dto.EstadoInscripcion.Activa)
+                            {
+                                <span class="badge bg-success">
+                                    <i class="fas fa-check-circle"></i> Activa
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-danger">
+                                    <i class="fas fa-times-circle"></i> Vencida
+                                </span>
+                            }
+                        </dd>
+                    </dl>
+
+                    <hr>
+
+                    <form asp-action="Renovar" method="post">
+                        <input type="hidden" asp-for="IdInscripcion" />
+
+                        <div class="mb-3">
+                            <label asp-for="IdMembresia" class="form-label">Membresía</label>
+                            <select asp-for="IdMembresia" class="form-select" asp-items="ViewBag.Membresias" id="selectMembresia"></select>
+                            <div class="mt-2">
+                                <span class="badge bg-info" id="badgeMembresia">
+                                    @Model.Membresia.DiasPorSemana días/semana • @Model.Membresia.Duracion @Model.Membresia.UnidadTiempo
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="MetodoPago" class="form-label">Método de Pago</label>
+                            <select asp-for="MetodoPago" class="form-select" asp-items="ViewBag.MetodosPago"></select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="IdHorario" class="form-label">Horario</label>
+                            <select asp-for="IdHorario" class="form-select" asp-items="ViewBag.Horarios"></select>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <a asp-action="Index" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left"></i> Cancelar
+                            </a>
+
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-redo"></i> Confirmar Renovación
+                            </button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Opcional: actualizar badge al cambiar la membresía seleccionada
+        const membresias = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(ViewBag.MembresiasList ?? new List<object>()));
+        const select = document.getElementById('selectMembresia');
+        const badge = document.getElementById('badgeMembresia');
+
+        select.addEventListener('change', function () {
+            const selectedId = parseInt(this.value);
+            const m = membresias.find(x => x.IdMembresia === selectedId);
+            if (m) {
+                badge.innerText = `${m.DiasPorSemana} días/semana • ${m.Duracion} ${m.UnidadTiempo}`;
+            }
+        });
+    </script>
+}
