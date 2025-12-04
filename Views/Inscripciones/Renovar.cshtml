@@ -1,4 +1,5 @@
-﻿@model Helluz.Models.Inscripcion
+﻿@using Helluz.Dto
+@model Helluz.Models.Inscripcion
 
 @{
     ViewData["Title"] = "Renovar Inscripción";
@@ -69,7 +70,13 @@
 
                         <div class="mb-3">
                             <label asp-for="MetodoPago" class="form-label">Método de Pago</label>
-                            <select asp-for="MetodoPago" class="form-select" asp-items="ViewBag.MetodosPago"></select>
+                            <select asp-for="MetodoPago" class="form-select">
+                                <option value="">Seleccione un método</option>
+                                @foreach (var metodo in Enum.GetValues(typeof(MetodosPagos)))
+                                {
+                                    <option value="@metodo">@metodo</option>
+                                }
+                            </select>
                         </div>
 
                         <div class="mb-3">

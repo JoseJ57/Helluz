@@ -25,7 +25,7 @@
                         <!-- Nombre de la Disciplina -->
                         <div class="mb-3">
                             <label asp-for="NombreDisciplina" class="form-label fw-bold"></label>
-                            <input asp-for="NombreDisciplina" class="form-control" placeholder="Ej: Yoga, Pilates, CrossFit" autocomplete="off" />
+                            <input asp-for="NombreDisciplina" class="form-control" placeholder="Ej: Boxing, Jiu-jitsu, MMA" autocomplete="off" />
                             <span asp-validation-for="NombreDisciplina" class="text-danger"></span>
                         </div>
 
@@ -42,13 +42,12 @@
                         <hr>
 
                         <!-- Estado -->
-                        <h5 class="mb-3">
-                            <i class="fas fa-toggle-on text-success"></i> Estado
-                        </h5>
+                        <input type="hidden" asp-for="Estado" value="true" />
 
                         <div class="mb-4">
                             <div class="form-check">
-                                <input class="form-check-input" asp-for="Estado" checked />
+                                <!-- Checkbox deshabilitado para que siempre esté activo -->
+                                <input class="form-check-input" asp-for="Estado" checked disabled />
                                 <label class="form-check-label" asp-for="Estado">
                                     <i class="fas fa-check-circle text-success"></i> Disciplina Activa
                                     <small class="text-muted d-block">La disciplina estará disponible para asignar a horarios y clases</small>

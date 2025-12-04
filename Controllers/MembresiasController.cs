@@ -76,6 +76,7 @@ namespace TuProyecto.Controllers
         public IActionResult Create()
         {
             ViewData["UnidadTiempoList"] = new SelectList(Enum.GetValues(typeof(UnidadTiempo)));
+          
             return View(new Membresia());
         }
 

@@ -68,9 +68,21 @@
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label asp-for="IdAlumno" class="form-label fw-bold"></label>
-                                <select asp-for="IdAlumno" class="form-select" asp-items="ViewBag.IdAlumno">
-                                    <option value="">Seleccione un alumno</option>
-                                </select>
+
+                                <div class="input-group">
+                                    <select asp-for="IdAlumno" class="form-select" asp-items="ViewBag.IdAlumno">
+                                        <option value="">Seleccione un alumno</option>
+                                    </select>
+
+                                    <!-- Botón con + para crear alumno -->
+                                    <a asp-controller="Alumnoes"
+                                       asp-action="Create"
+                                       class="btn btn-outline-primary"
+                                       title="Registrar nuevo alumno">
+                                        <i class="fas fa-plus"></i>
+                                    </a>
+                                </div>
+
                                 <span asp-validation-for="IdAlumno" class="text-danger"></span>
                             </div>
 

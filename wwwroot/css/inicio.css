@@ -91,3 +91,15 @@ footer {
 .container {
     flex: 1;
 }
+
+/* Solo los iconos */
+.icons-footer i {
+    color: #fff;
+    margin-left: 10px;
+    font-size: 1.2rem; /* opcional */
+}
+
+/* Opcional: efecto hover blanco con transparencia */
+.icons-footer a:hover i {
+    opacity: 0.7;
+}

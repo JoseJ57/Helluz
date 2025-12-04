@@ -109,6 +109,7 @@ namespace Helluz.Controllers
                 "IdHorario", "Display");
 
             ViewBag.Membresias = _context.Membresias
+                .Where(m => m.Estado == true)
                 .Select(m => new
                 {
                     m.IdMembresia,
@@ -160,11 +161,21 @@ namespace Helluz.Controllers
 
             ViewData["IdAlumno"] = new SelectList(_context.Alumnos, "IdAlumno", "Apellido", inscripcion.IdAlumno);
             ViewData["IdHorario"] = new SelectList(
-                _context.Horarios.Select(h => new { h.IdHorario, Display = h.HoraInicio + " - " + h.HoraFin }),
+                _context.Horarios
+                    .Select(h => new { h.IdHorario, Display = h.HoraInicio + " - " + h.HoraFin }),
                 "IdHorario", "Display",
                 inscripcion.IdHorario);
+
             ViewBag.Membresias = _context.Membresias
-                .Select(m => new { m.IdMembresia, m.Nombre, m.DiasPorSemana, m.Duracion })
+                .Where(m => m.Estado == true) // <-- Solo membresías activas
+                .Select(m => new
+                {
+                    m.IdMembresia,
+                    m.Nombre,
+                    m.DiasPorSemana,
+                    m.Duracion,
+                    m.UnidadTiempo
+                })
                 .ToList();
 
             return View(inscripcion);
@@ -246,17 +257,35 @@ namespace Helluz.Controllers
             if (inscripcion == null)
                 return NotFound();
 
-            // Preparar listas para dropdowns
-            ViewBag.Membresias = new SelectList(_context.Membresias, "IdMembresia", "Nombre", inscripcion.IdMembresia);
+            // Membresías activas
+            ViewBag.Membresias = _context.Membresias
+                .Where(m => m.Estado == true)
+                .Select(m => new
+                {
+                    m.IdMembresia,
+                    m.Nombre,
+                    m.DiasPorSemana,
+                    m.Duracion,
+                    m.UnidadTiempo
+                })
+                .ToList();
+
+            // Horarios
             ViewBag.Horarios = new SelectList(
-                _context.Horarios.OrderBy(h => h.HoraInicio)
-                .Select(h => new { h.IdHorario, Display = h.HoraInicio + " - " + h.HoraFin }),
+                _context.Horarios
+                    .OrderBy(h => h.HoraInicio)
+                    .Select(h => new { h.IdHorario, Display = h.HoraInicio + " - " + h.HoraFin }),
                 "IdHorario", "Display", inscripcion.IdHorario);
 
-            ViewBag.MetodosPago = new SelectList(new[] { "Efectivo", "Tarjeta", "Transferencia" }, inscripcion.MetodoPago);
+            // Métodos de pago desde Enum
+            ViewBag.MetodosPago = Enum.GetValues(typeof(MetodosPagos))
+                .Cast<MetodosPagos>()
+                .Select(m => new { Value = m, Text = m.ToString() })
+                .ToList();
 
             return View(inscripcion);
         }
+
 
         // POST: Inscripciones/Renovar/5
         [HttpPost, ActionName("Renovar")]

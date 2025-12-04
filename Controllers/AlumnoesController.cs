@@ -61,6 +61,8 @@ namespace Helluz.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("IdAlumno,Nombre,Apellido,Carnet,FechaNacimiento,Celular,NroEmergencia,Correo,Estado")] Alumno alumno)
         {
+            alumno.Estado = true; // siempre activo al crear
+
             if (ModelState.IsValid)
             {
                 // ---- Validar duplicado de carnet en Alumnos ----

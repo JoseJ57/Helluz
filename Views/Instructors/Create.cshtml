@@ -101,10 +101,13 @@
                             <span asp-validation-for="UsuarioId" class="text-danger"></span>
                         </div>
 
+                        <input type="hidden" asp-for="Estado" value="true" />
+
                         <div class="mb-4">
                             <div class="form-check">
-                                <input asp-for="Estado" class="form-check-input" checked />
-                                <label asp-for="Estado" class="form-check-label">
+                                <!-- Checkbox deshabilitado para que siempre esté activo -->
+                                <input class="form-check-input" asp-for="Estado" checked disabled />
+                                <label class="form-check-label" asp-for="Estado">
                                     <i class="fas fa-check-circle text-success"></i> Instructor Activo
                                     <small class="text-muted d-block">El instructor podrá dar clases inmediatamente</small>
                                 </label>
